@@ -1,0 +1,4734 @@
+<!DOCTYPE htmL> 
+<htmL lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Compatibilidade em Via Y - Protótipo</title>
+
+  <!-- Cor da barra do navegador / app -->
+  <meta name="theme-color" content="#1976d2">
+
+  <!-- Ícone da aba do navegador -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Manifesto para virar app no Android -->
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .app {
+      max-width: 900px;
+      margin: 24px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .app-header img {
+      height: 48px;
+      width: 48px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+    }
+
+    p.descricao {
+      margin-top: 4px;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    select {
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    button {
+      margin-top: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: #1976d2;
+      color: #fff;
+    }
+
+    button:hover {
+      background: #115293;
+    }
+
+    #resultado {
+      margin-top: 20px;
+    }
+
+    .resultado-item {
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .resultado-item strong {
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .status-compativel {
+      background: #e8f5e9;
+      border-left: 4px solid #2e7d32;
+    }
+
+    .status-incompativel {
+      background: #ffebee;
+      border-left: 4px solid #c62828;
+    }
+
+    .status-variavel {
+      background: #fffde7;
+      border-left: 4px solid #f9a825;
+    }
+
+    .status-desconhecido {
+      background: #eeeeee;
+      border-left: 4px solid #757575;
+    }
+
+    .disclaimer {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="app-header">
+      <!-- LOGO DO APP (opcional, mas legal) -->
+      <img src="icon-192.png" alt="Logo Compat Y">
+      <div>
+        <h1>Compatibilidade em Via Y (Protótipo)</h1>
+        <p class="descricao">
+          Selecione até 5 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
+          ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
+        </p>
+
+    <div class="form-grid">
+      <label>
+        Medicamento 1
+        <select class="med-select">
+          <option value="">-- Selecione --</option>
+        </select>
+      </label>
+
+      <label>
+        Medicamento 2
+        <select class="med-select">
+          <option value="">-- Selecione --</option>
+        </select>
+      </label>
+
+      <label>
+        Medicamento 3
+        <select class="med-select">
+          <option value="">-- Selecione --</option>
+        </select>
+      </label>
+
+      <label>
+        Medicamento 4
+        <select class="med-select">
+          <option value="">-- Selecione --</option>
+        </select>
+      </label>
+
+      <label>
+        Medicamento 5
+        <select class="med-select">
+          <option value="">-- Selecione --</option>
+        </select>
+      </label>
+    </div>
+
+    <button type="button" id="btn-verificar">Verificar compatibilidade</button>
+
+    <div id="resultado"></div>
+
+    <p class="disclaimer">
+      Este protótipo ainda é experimental. Os exemplos de Incompatibilidade/ Compatibilidade devem ser confirmados em protocolos institucionais, trissel/Micromedex/Lexicomp, bula e com a farmácia clínica.
+    </p>
+  </div>
+
+  <script>
+   // Lista de medicamentos (você pode adaptar para a realidade da sua UTI/serviço)
+    // Lista de medicamentos (ordenada alfabeticamente por nome)
+const medicamentos = [
+  { id: "acetilcisteina", nome: "Acetilcisteína" },
+  { id: "aciclovir", nome: "Aciclovir" },
+  { id: "acido_tranexamico", nome: "Ácido Tranexâmico" },
+  { id: "adrenalina", nome: "Adrenalina" },
+  { id: "albufina_cloridrato", nome: "Albufina Cloridrato" },
+  { id: "albumina", nome: "Albumina" },
+  { id: "albumina_humana_20", nome: "Albumina Humana 20%" },
+  { id: "alteplase", nome: "Alteplase" },
+  { id: "amicacina", nome: "Amicacina" },
+  { id: "aminofilina", nome: "Aminofilina" },
+  { id: "amiodarona", nome: "Amiodarona" },
+  { id: "amoxicilina_clavulanato", nome: "Amoxicilina + Clavulanato" },
+  { id: "ampicilina", nome: "Ampicilina" },
+  { id: "ampicilina_sulbactam", nome: "Ampicilina + Sulbactam" },
+  { id: "anfotericina_b_lipossomica", nome: "Anfotericina B lipossômica" },
+  { id: "anidulafungina", nome: "Anidulafungina" },
+  { id: "atracurio", nome: "Atracúrio" },
+  { id: "atropina", nome: "Atropina" },
+  { id: "azitromicina", nome: "Azitromicina" },
+  { id: "aztreonam", nome: "Aztreonam" },
+  { id: "benzilpenicilina_benzatina", nome: "Benzilpenicilina Benzatina" },
+  { id: "betametasona_depo_fosfato", nome: "Betametasona (dipropionato + fosfato dissódico)" },
+  { id: "bicarbonato_sodio", nome: "Bicarbonato de Sódio" },
+  { id: "bromoprida", nome: "Bromoprida" },
+  { id: "caspofungina", nome: "Caspofungina" },
+  { id: "cefalotina", nome: "Cefalotina" },
+  { id: "cefazolina", nome: "Cefazolina" },
+  { id: "cefepima", nome: "Cefepima" },
+  { id: "cefotaxima", nome: "Cefotaxima" },
+  { id: "cefoxitina", nome: "Cefoxitina" },
+  { id: "ceftazidima", nome: "Ceftazidima" },
+  { id: "ceftriaxona", nome: "Ceftriaxona" },
+  { id: "cetamina", nome: "Cetamina" },
+  { id: "ciclofosfamida", nome: "Ciclofosfamida" },
+  { id: "ciprofloxacina", nome: "Ciprofloxacina" },
+  { id: "clindamicina", nome: "Clindamicina" },
+  { id: "clonidina", nome: "Clonidina" },
+  { id: "cloranfenicol", nome: "Cloranfenicol" },
+  { id: "cloreto_potassio", nome: "Cloreto de Potássio" },
+  { id: "dantroleno", nome: "Dantroleno" },
+  { id: "deslanosideo", nome: "Deslanosídeo" },
+  { id: "dexametasona", nome: "Dexametasona" },
+  { id: "dexmedetomidina", nome: "Dexmedetomidina" },
+  { id: "diclofenaco", nome: "Diclofenaco" },
+  { id: "diazepam", nome: "Diazepam" },
+  { id: "digoxina", nome: "Digoxina" },
+  { id: "dobutamina", nome: "Dobutamina" },
+  { id: "dopamina", nome: "Dopamina" },
+  { id: "droperidol", nome: "Droperidol" },
+  { id: "esmolol", nome: "Esmolol" },
+  { id: "etomidato", nome: "Etomidato" },
+  { id: "fenitoina", nome: "Fenitoína" },
+  { id: "fenobarbital", nome: "Fenobarbital" },
+  { id: "fentanil", nome: "Fentanil" },
+  { id: "fluconazol", nome: "Fluconazol" },
+  { id: "fosfato_monopotassico", nome: "Fosfato monopotássico" },
+  { id: "furosemida", nome: "Furosemida" },
+  { id: "ganciclovir", nome: "Ganciclovir" },
+  { id: "gentamicina", nome: "Gentamicina" },
+  { id: "gluconato_calcio", nome: "Gluconato de Cálcio" },
+  { id: "heparina", nome: "Heparina" },
+  { id: "hidralazina", nome: "Hidralazina" },
+  { id: "hidrocortisona", nome: "Hidrocortisona" },
+  { id: "imipenem", nome: "Imipenem" },
+  { id: "imipenem_cilastatina", nome: "Imipenem + Cilastatina" },
+  { id: "imunoglobulina_humana", nome: "Imunoglobulina Humana" },
+  { id: "insulina", nome: "Insulina" },
+  { id: "insulina_regular", nome: "Insulina Regular" },
+  { id: "levofloxacino", nome: "Levofloxacino" },
+  { id: "lidocaina", nome: "Lidocaína" },
+  { id: "linezolide", nome: "Linezolida" },
+  { id: "manitol", nome: "Manitol" },
+  { id: "meropenem", nome: "Meropenem" },
+  { id: "mesna", nome: "Mesna" },
+  { id: "metilprednisolona", nome: "Metilprednisolona" },
+  { id: "metoclopramida", nome: "Metoclopramida" },
+  { id: "metoprolol", nome: "Metoprolol" },
+  { id: "metronidazol", nome: "Metronidazol" },
+  { id: "micafungina", nome: "Micafungina" },
+  { id: "midazolam", nome: "Midazolam" },
+  { id: "morfina", nome: "Morfina" },
+  { id: "multivitaminas", nome: "Multivitaminas" },
+  { id: "nalbufina", nome: "Nalbufina" },
+  { id: "naloxona", nome: "Naloxona" },
+  { id: "neostigmina", nome: "Neostigmina" },
+  { id: "nitroglicerina", nome: "Nitroglicerina" },
+  { id: "nitroprussiato", nome: "Nitroprussiato de Sódio" },
+  { id: "noradrenalina", nome: "Noradrenalina" },
+  { id: "octreotido", nome: "Octreotido" },
+  { id: "octreotidosetrona", nome: "Octreotidosetrona" },
+  { id: "omeprazol", nome: "Omeprazol" },
+  { id: "ondansetron", nome: "Ondansetron" },
+  { id: "oxacilina", nome: "Oxacilina" },
+  { id: "pancuronio", nome: "Pancurônio" },
+  { id: "penicilina_cristalina_potassica", nome: "Penicilina Cristalina Potássica" },
+  { id: "penicilina_g", nome: "Penicilina G Potássica" },
+  { id: "petidina", nome: "Petidina" },
+  { id: "piperacilina_tazobactam", nome: "Piperacilina + Tazobactam" },
+  { id: "polimixina_b", nome: "Polimixina B" },
+  { id: "propofol", nome: "Propofol" },
+  { id: "ranitidina", nome: "Ranitidina" },
+  { id: "remifentanil", nome: "Remifentanil" },
+  { id: "ringer_lactato", nome: "Ringer Lactato" },
+  { id: "salbutamol", nome: "Salbutamol" },
+  { id: "smz_tmp", nome: "Sulfametoxazol + Trimetoprima" },
+  { id: "sulfametoxazol_tazobactam", nome: "Sulfametoxazol + Tazobactam" },
+  { id: "sulfato_magnesio", nome: "Sulfato de Magnésio" },
+  { id: "suxametonio", nome: "Suxametônio" },
+  { id: "tacrolimus", nome: "Tacrolímus" },
+  { id: "teicoplanina", nome: "Teicoplanina" },
+  { id: "terbutalina", nome: "Terbutalina" },
+  { id: "tiamina", nome: "Tiamina" },
+  { id: "tigeciclina", nome: "Tigeciclina" },
+  { id: "tiopental", nome: "Tiopental" },
+  { id: "tramadol", nome: "Tramadol" },
+  { id: "valproato", nome: "Valproato de Sódio" },
+  { id: "vancomicina", nome: "Vancomicina" },
+  { id: "vasopressina", nome: "Vasopressina" },
+  { id: "voriconazol", nome: "Voriconazol" }
+];
+    const compatibilidadePorDroga = {  
+      "Aciclovir": {
+        compativel: [
+          "Amicacina",
+          "Aminofilina",
+          "Ampicilina",
+          "Anfotericina B lipossômica Lipossomica",
+          "Atracurio",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metronidazol",
+          "Nitroglicerina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Caspofungina",
+          "gentamicina",
+          "Meropenem",
+          "Morfina",
+          "Ondansetron"
+        ],
+        incompativel: [
+          "Cefepima",
+          "Cetamina",
+          "Ciprofloxacino",
+          "Diazepam",
+          "Dobutamina",
+          "Dopamina",
+          "Esmolol",
+          "Fenitoína",
+          "Fosfato monopotássico",
+          "Lidocaína",
+          "Midazolam",
+          "Nitroprussiato de sódio",
+          "Piperacilina-tazobactam"
+        ]
+      },
+
+      "Adrenalina": { 
+        compativel: [],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Albumina Humana 20%": {
+        compativel: [
+          "Cetamina",
+          "Ringer Lactato"
+        ],
+        variavel: [],
+        incompativel: [
+          "Micafungina",
+          "Midazolam",
+          "Vancomicina"
+        ]
+      },
+
+      "Amicacina": {
+        compativel: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "amiodarona",
+          "Atracurio",
+          "Bicarbonato de Sódio",
+          "Caspofungina",
+          "Cefazolina",
+          "Cefepima",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Cetamina",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dobutamina",
+          "Dopamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Ampicilina",
+          "Insulina"
+        ],
+        incompativel: [
+          "Anfotericina B lipossômica Lipossomica",
+          "Azitromicina",
+          "Diazepam",
+          "Fenitoína",
+          "Ganciclovir",
+          "Heparina",
+          "Propofol",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Aminofilina": {
+        compativel: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Anfotericina B lipossômica Lipossomica",
+          "Azitromicina",
+          "Bicarbonato de Sódio",
+          "Caspofungina",
+          "Cefazolina",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Digoxina",
+          "Dopamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metronidazol",
+          "Micafungina",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Cetamina",
+          "Imipenem"
+        ],
+        incompativel: [
+          "amiodarona",
+          "Ampicilina",
+          "Atracurio",
+          "Ciprofloxacino",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Ganciclovir",
+          "Midazolam",
+          "Noradrenalina",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina"
+        ]
+      },
+
+      "amioDAROna": {
+        compativel: [
+          "Amicacina",
+          "amiodarona",
+          "Amoxicilina-Clavulanato",
+          "Anfotericina B lipossômica Lipossomica",
+          "Atracurio",
+          "Caspofungina",
+          "Ceftriaxona",
+          "Cetamina",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Dopamina",
+          "Esmolol",
+          "Fluconazol",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Lidocaína",
+          "Linezolide",
+          "Metilprednisolona",
+          "metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Cefazolina",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "Fentanil",
+          "Furosemida",
+          "Insulina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Sulfato de Magnésio"
+        ],
+        incompativel: [
+          "Aminofilina",
+          "Azitromicina",
+          "Bicarbonato de Sódio",
+          "Ceftazidima",
+          "Fosfato monopotássico",
+          "Heparina",
+          "Imipenem",
+          "Micafungina",
+          "Piperacilina-tazobactam",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Tiopental"
+        ]
+      },
+
+      "Amoxicilina-Clavulanato": {
+        compativel: [
+          "Propofol",
+          "Vancomicina"
+        ],
+        variavel: [
+          "Midazolam"
+        ],
+        incompativel: [
+          "amiodarona",
+          "Ringer Lactato"
+        ]
+      },
+
+      "Ampicilina": {
+        compativel: [
+          "Aciclovir",
+          "Azitromicina",
+          "Linezolide",
+          "metronidazol",
+          "Octreotido",
+          "Propofol",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Amicacina",
+          "Atracurio",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Manitol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Aminofilina",
+          "Anfotericina B lipossômica Lipossomica",
+          "Caspofungina",
+          "Cetamina",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Fluconazol",
+          "Ganciclovir",
+          "Midazolam",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Anfotericina B lipossômica Lipossomica": {
+        compativel: [
+          "Aciclovir",
+          "Aminofilina",
+          "amioDAROna",
+          "Anfotericina B lipossômica Lipossomica",
+          "Atracurio",
+          "Azitromicina",
+          "Cefazolina",
+          "Cefepima",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Dexametasona",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "Ganciclovir",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Tiopental"
+        ],
+        variavel: [
+          "Tigeciclina"
+        ],
+        incompativel: [
+          "Amicacina",
+          "Ampicilina",
+          "Bicarbonato de Sódio",
+          "Caspofungina",
+          "Ciprofloxacino",
+          "Diazepam",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fenitoína",
+          "Fluconazol",
+          "Fosfato monopotássico",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Imipenem",
+          "Meropenem",
+          "metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Noradrenalina",
+          "Ondansetron",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Vancomicina",
+          "Voriconazol"
+        ]
+      },
+
+      "Atracurio": {
+        compativel: [
+          "Azitromicina",
+          "Caspofungina",
+          "Cefazolina",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fentanil",
+          "Fluconazol",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina"
+        ],
+        variavel: [
+          "Heparina",
+          "Insulina",
+          "Nitroprussiato de sódio",
+          "Propofol",
+          "Sulfametoxazol-trimetoprim"
+        ],
+        incompativel: [
+          "Bicarbonato de Sódio",
+          "Ceftazidima",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Furosemida",
+          "Ganciclovir",
+          "Ringer Lactato",
+          "Tiopental"
+        ]
+      },
+
+      "Azitromicina": {
+        compativel: [
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Cefoxitina",
+          "Dexametasona",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fluconazol",
+          "Fosfato monopotássico",
+          "Ganciclovir",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Ondansetron",
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina"
+        ],
+        variavel: [
+          "Caspofungina",
+          "Cefotaxima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Imipenem",
+          "Morfina",
+          "Piperacilina-tazobactam"
+        ],
+        incompativel: [
+          "Diazepam",
+          "Fenitoína",
+          "Midazolam",
+          "Tiopental"
+        ]
+      },
+
+      "Bicarbonato de Sódio": {
+        compativel: [
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Ciprofloxacino"
+        ],
+        incompativel: [
+          "Caspofungina",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Cetamina",
+          "Diazepam",
+          "Dobutamina",
+          "DOPamina",
+          "Fenitoína",
+          "Ganciclovir",
+          "Gluconato de Cálcio",
+          "Imipenem",
+          "Midazolam",
+          "Noradrenalina",
+          "Ondansetron",
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "Caspofungina": {
+        compativel: [
+          "Ciprofloxacino",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fentanil",
+          "Fluconazol",
+          "Ganciclovir",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "metRONIDAZol"
+        ],
+        incompativel: [
+          "Cefazolina",
+          "Cefepima",
+          "Cefotaxima",
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Dexametasona",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Fosfato monopotássico",
+          "Furosemida",
+          "Heparina",
+          "Lidocaína",
+          "Metilprednisolona",
+          "Nitroprussiato de sódio",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Cefazolina": {
+        compativel: [
+          "Cefoxitina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Cetamina",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Sulfato de Magnésio",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Cefotaxima",
+          "Diazepam",
+          "Dobutamina",
+          "DOPamina",
+          "Fenitoína",
+          "Ganciclovir",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Cefepima": {
+        compativel: [
+          "Cetamina",
+          "Dexametasona",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Linezolide",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Octreotido",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim",
+          "Tigeciclina"
+        ],
+        variavel: [
+          "Dobutamina",
+          "DOPamina",
+          "Morfina",
+          "Propofol",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Ciprofloxacino",
+          "Diazepam",
+          "Fenitoína",
+          "Ganciclovir",
+          "Manitol",
+          "Midazolam",
+          "Ondansetron",
+          "Sulfato de Magnésio",
+          "Voriconazol"
+        ]
+      },
+
+      "Cefotaxima": {
+        compativel: [
+          "Cefoxitina",
+          "Ceftriaxona",
+          "Cetamina",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "DOPamina",
+          "Esmolol",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Fluconazol",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Ceftazidima",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Fenobarbital",
+          "Ganciclovir",
+          "Metilprednisolona",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Cefoxitina": {
+        compativel: [
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "DOPamina",
+          "Esmolol",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Fenobarbital",
+          "Ganciclovir",
+          "Insulina",
+          "Metilprednisolona",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Ceftazidima": {
+        compativel: [
+          "Ceftriaxona",
+          "Cetamina",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Dobutamina",
+          "Fluconazol",
+          "Ondansetron",
+          "Propofol",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Diazepam",
+          "Fenitoína",
+          "Ganciclovir",
+          "Midazolam",
+          "Nitroprussiato de sódio",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Ceftriaxona": {
+        compativel: [
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Ranitidina",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Fluconazol",
+          "Ondansetron",
+          "Propofol",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Clindamicina",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Ganciclovir",
+          "Gluconato de Cálcio",
+          "Imipenem",
+          "Ringer Lactato",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio"
+        ]
+      },
+
+      "Cetamina": {
+        compativel: [
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "DOPamina",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Vancomicina"
+        ],
+        variavel: [
+          "Dexametasona",
+          "Metilprednisolona",
+          "Nitroglicerina",
+          "Salbutamol"
+        ],
+        incompativel: [
+          "Fenitoína",
+          "Fosfato monopotássico",
+          "Furosemida",
+          "Heparina",
+          "Insulina",
+          "Meropenem",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Ciprofloxacino": {
+        compativel: [
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "DOPamina",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Lidocaína",
+          "Linezolide",
+          "metRONIDAZol",
+          "Midazolam",
+          "Octreotido",
+          "Ondansetron",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Dexametasona",
+          "Fenitoína",
+          "Fosfato monopotássico",
+          "Furosemida",
+          "Heparina",
+          "Hidrocortisona",
+          "Metilprednisolona",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Sulfato de Magnésio"
+        ]
+      },
+
+      "Clindamicina": {
+        compativel: [
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Fluconazol",
+          "Midazolam"
+        ],
+        incompativel: [
+          "Diazepam",
+          "Fenitoína",
+          "Ganciclovir",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Cloreto de Potássio": {
+        compativel: [
+          "Dexametasona",
+          "Dobutamina",
+          "DOPamina",
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Ganciclovir",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Digoxina",
+          "Metilprednisolona"
+        ],
+        incompativel: [
+          "Diazepam",
+          "Fenitoína",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Dexametasona": {
+        compativel: [
+          "DOPamina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Ganciclovir",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Diazepam",
+          "Dobutamina",
+          "Esmolol",
+          "Fenitoína",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Midazolam",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio"
+        ]
+      },
+
+      "Diazepam": {
+        compativel: [
+          "Piperacilina-tazobactam"
+        ],
+        variavel: [
+          "Dobutamina",
+          "Fentanil",
+          "Morfina",
+          "Ondansetron"
+        ],
+        incompativel: [
+          "DOPamina",
+          "Esmolol",
+          "Fenitoína",
+          "Fenobarbital",
+          "Fluconazol",
+          "Furosemida",
+          "Ganciclovir",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ]
+      },
+
+      "Digoxina": {
+        compativel: [
+          "Esmolol",
+          "Furosemida",
+          "Lidocaína",
+          "Midazolam",
+          "Ranitidina"
+        ],
+        variavel: [
+          "Insulina",
+          "Morfina"
+        ],
+        incompativel: [
+          "Dobutamina",
+          "Propofol"
+        ]
+      },
+
+      "Dobutamina": {
+        compativel: [
+          "DOPamina",
+          "Esmolol",
+          "Fentanil",
+          "Fluconazol",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Furosemida",
+          "Heparina",
+          "Imipenem",
+          "Insulina",
+          "Midazolam",
+          "Nitroprussiato de sódio",
+          "Propofol"
+        ],
+        incompativel: [
+          "Fenitoína",
+          "Fenobarbital",
+          "Ganciclovir",
+          "Hidrocortisona",
+          "Micafungina",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "DOPamina": {
+        compativel: [
+          "Esmolol",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Furosemida",
+          "Insulina",
+          "Propofol"
+        ],
+        incompativel: [
+          "Fenitoína",
+          "Ganciclovir",
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "Esmolol": {
+        compativel: [
+          "Fentanil",
+          "Fluconazol",
+          "Fosfato monopotássico",
+          "gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Fenitoína",
+          "Hidrocortisona",
+          "Metilprednisolona",
+          "Sulfametoxazol-trimetoprim"
+        ],
+        incompativel: [
+          "Fenobarbital",
+          "Furosemida",
+          "Ganciclovir"
+        ]
+      },
+
+      "Fenitoina": {
+        compativel: [],
+        variavel: [
+          "Fluconazol"
+        ],
+        incompativel: [
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "Ganciclovir",
+          "geNTAMICina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Valproato de sódio",
+          "Vancomicina",
+          "Voriconazol"
+        ]
+      },
+
+      "Fenobarbital": {
+        compativel: [
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Ganciclovir",
+          "geNTAMICina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Imipenem"
+        ],
+        incompativel: [
+          "Lidocaína",
+          "Midazolam",
+          "Noradrenalina",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Fentanil": {
+        compativel: [
+          "Fluconazol",
+          "Furosemida",
+          "Ganciclovir",
+          "geNTAMICina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Fluconazol": {
+        compativel: [
+          "Ganciclovir",
+          "geNTAMICina",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Furosemida",
+          "Gluconato de Cálcio",
+          "Imipenem"
+        ],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Fosfato monopotássico": {
+        compativel: [
+          "Linezolide",
+          "metRONIDAZol",
+          "Micafungina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Ondansetron",
+          "Piperacilina-tazobactam",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Furosemida": {
+        compativel: [
+          "Ganciclovir",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Micafungina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Heparina",
+          "Insulina",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Sulfato de Magnésio",
+          "Tiopental"
+        ],
+        incompativel: [
+          "geNTAMICina",
+          "Midazolam",
+          "Ondansetron",
+          "Sulfametoxazol-trimetoprim",
+          "Vancomicina"
+        ]
+      },
+
+      "Ganciclovir": {
+        compativel: [
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina",
+          "Linezolide",
+          "Manitol",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Propofol"
+        ],
+        incompativel: [
+          "geNTAMICina",
+          "Imipenem",
+          "Lidocaína",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Noradrenalina",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Vancomicina"
+        ]
+      },
+
+      "geNTAMICina": {
+        compativel: [
+          "Gluconato de Cálcio",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Hidrocortisona",
+          "Insulina",
+          "Piperacilina-tazobactam"
+        ],
+        incompativel: [
+          "Heparina",
+          "Propofol",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Gluconato de Cálcio": {
+        compativel: [
+          "Heparina",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Hidrocortisona",
+          "Imipenem",
+          "Meropenem"
+        ],
+        incompativel: [
+          "Metilprednisolona",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Heparina": {
+        compativel: [
+          "Hidrocortisona",
+          "Imipenem",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Insulina",
+          "Metilprednisolona"
+        ],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim",
+          "Tramadol",
+          "Valproato de sódio",
+          "Vancomicina"
+        ]
+      },
+
+      "Hidrocortisona": {
+        compativel: [
+          "Imipenem",
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Metilprednisolona",
+          "Midazolam",
+          "Sulfato de Magnésio",
+          "Tiopental",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Imipenem": {
+        compativel: [
+          "Insulina",
+          "Lidocaína",
+          "Linezolide",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Midazolam",
+          "Nitroprussiato de sódio",
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Manitol",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Insulina": {
+        compativel: [
+          "Lidocaína",
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Propofol",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Midazolam",
+          "Morfina",
+          "Noradrenalina",
+          "Ondansetron",
+          "Ranitidina"
+        ],
+        incompativel: [
+          "Micafungina",
+          "Piperacilina-tazobactam",
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Lidocaína": {
+        compativel: [
+          "Linezolide",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Micafungina",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Propofol"
+        ],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "Linezolide": {
+        compativel: [
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Tiopental"
+        ]
+      },
+
+      "Manitol": {
+        compativel: [
+          "Metilprednisolona",
+          "metRONIDAZol",
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Meropenem": {
+        compativel: [
+          "metRONIDAZol",
+          "Morfina",
+          "Noradrenalina",
+          "Octreotido",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Ondansetron",
+          "Propofol"
+        ],
+        incompativel: []
+      },
+
+      "Metilprednisolona": {
+        compativel: [
+          "metRONIDAZol",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Midazolam",
+          "Ondansetron",
+          "Ringer Lactato",
+          "Tigeciclina"
+        ],
+        incompativel: [
+          "Propofol",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tacrolímus",
+          "Vancomicina"
+        ]
+      },
+
+      "metRONIDAZol": {
+        compativel: [
+          "Midazolam",
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Propofol"
+        ]
+      },
+
+      "Micafungina": {
+        compativel: [
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Sulfato de Magnésio"
+        ],
+        variavel: [],
+        incompativel: [
+          "Midazolam",
+          "Morfina",
+          "Octreotido",
+          "Ondansetron"
+        ]
+      },
+
+      "Midazolam": {
+        compativel: [
+          "Morfina",
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tramadol",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Propofol"
+        ],
+        incompativel: [
+          "Omeprazol",
+          "Piperacilina-tazobactam",
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental",
+          "Valproato de sódio"
+        ]
+      },
+
+      "Morfina": {
+        compativel: [
+          "Nitroglicerina",
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Propofol",
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ],
+        incompativel: []
+      },
+
+      "Nitroglicerina": {
+        compativel: [
+          "Nitroprussiato de sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Propofol"
+        ],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Nitroprussiato de sódio": {
+        compativel: [
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim",
+          "Voriconazol"
+        ]
+      },
+
+      "Noradrenalina": {
+        compativel: [
+          "Octreotido",
+          "Ondansetron",
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "Octreotido": {
+        compativel: [
+          "Ondansetron",
+          "Piperacilina-tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Omeprazol": {
+        compativel: [],
+        variavel: [],
+        incompativel: [
+          "Tacrolímus",
+          "Tigeciclina",
+          "Vancomicina"
+        ]
+      },
+
+      "Ondansetron": {
+        compativel: [
+          "Penicilina G Potássica",
+          "Piperacilina-tazobactam",
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim",
+          "Tiopental"
+        ]
+      },
+
+      "Penicilina G Potássica": {
+        compativel: [
+          "Ranitidina",
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Vancomicina"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Piperacilina-tazobactam": {
+        compativel: [
+          "Ranitidina",
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Vancomicina"
+        ],
+        incompativel: [
+          "Tiopental"
+        ]
+      },
+
+      "Propofol": {
+        compativel: [
+          "Ranitidina",
+          "Tigeciclina"
+        ],
+        variavel: [
+          "Sulfametoxazol-trimetoprim",
+          "Sulfato de Magnésio",
+          "Tiopental",
+          "Vancomicina"
+        ],
+        incompativel: []
+      },
+
+      "Ranitidina": {
+        compativel: [
+          "Ringer Lactato",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Tiopental",
+          "Vancomicina"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Ringer Lactato": {
+        compativel: [
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: [
+          "Sulfametoxazol-trimetoprim"
+        ]
+      },
+
+      "Salbutamol": {
+        compativel: [],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Sulfametoxazol-trimetoprim": {
+        compativel: [
+          "Tigeciclina",
+          "Voriconazol"
+        ],
+        variavel: [
+          "Sulfato de Magnésio"
+        ],
+        incompativel: [
+          "Vancomicina"
+        ]
+      },
+
+      "Sulfato de Magnésio": {
+        compativel: [
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Tacrolímus": {
+        compativel: [
+          "Tigeciclina",
+          "Vancomicina",
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Tigeciclina": {
+        compativel: [
+          "Tiopental",
+          "Vancomicina"
+        ],
+        variavel: [
+          "Voriconazol"
+        ],
+        incompativel: []
+      },
+
+      "Tiopental": {
+        compativel: [],
+        variavel: [],
+        incompativel: [
+          "Voriconazol"
+        ]
+      },
+
+      "Tramadol": {
+        compativel: [],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Valproato de sódio": {
+        compativel: [],
+        variavel: [],
+        incompativel: []
+      },
+
+      "Vancomicina": {
+        compativel: [
+          "Voriconazol"
+        ],
+        variavel: [],
+        incompativel: []
+      },
+
+      "AMPICILINA + SULBACTAM 1G + 0,5G FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Anidulafungina",
+          "Azitromicina",
+          "Cefepima",
+          "Ciclofosfamida",
+          "Dexmedetomidina",
+          "Levofloxacino",
+          "Linezolida",
+          "Meropenem",
+          "Mesna",
+          "Metronidazol",
+          "Octreotido",
+          "Pancurônio",
+          "RemiFentanil",
+          "Tigeciclina"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Ácido Tranexâmico",
+          "Amicacina",
+          "Amiodarona",
+          "Anfotericina B lipossômica",
+          "Ciprofloxacino",
+          "Dantroleno",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Gentamicina",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Metilprednisolona",
+          "Midazolam",
+          "Ondansetron",
+          "Propofol",
+          "Sulfametoxazol + Trimetoprima",
+          "Vancomicina"
+        ]
+      },
+
+      "ANFOTERICINA B LIPOSSÔMICA 50MG FRASCO-AMPOLA (pH= 7,2–8,0)": {
+        ph: "7,2–8,0",
+        compativeis: [
+          "Amiodarona",
+          "Octreotido",
+          "Petidina"
+        ],
+        incompativeis: [
+          "Acetilcisteína",
+          "Aciclovir",
+          "Amicacina",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefepima",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dantroleno",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Diazepam",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fenitoína",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotidosetrona",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Propofol",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ]
+      },
+
+      "ANIDULAFUNGINA 100MG FRASCO-AMPOLA (pH=4,0–6,0)": {
+        ph: "4,0–6,0",
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Atracúrio",
+          "Azitromicina",
+          "Aztreonam",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Suxametônio",
+          "Vancomicina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Bicarbonato de Sódio",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Nalbufina",
+          "Sulfato de Magnésio"
+        ]
+      },
+
+      "ATROPINA SULFATO 0,25MG/ML AMPOLA 1ML (pH=3,0–6,5)": {
+        ph: "3,0–6,5",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Atracúrio",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Etomidato",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Lidocaína",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Ondansetron",
+          "Oxacilina",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Polimixina B",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Propofol",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "AZTREONAM 1G FRASCO-AMPOLA (pH=4,5–7,5)": {
+        ph: "4,5–7,5",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Propofol",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Anfotericina B lipossômica",
+          "Azitromicina",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Metronidazol",
+          "Vancomicina"
+        ]
+      },
+
+      "BENZILPENICILINA BENZATINA 1.200.000UI FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [],
+        incompativeis: []
+      },
+
+      "BROMOPRIDA 5MG/ML AMPOLA 2ML": {
+        ph: null,
+        compativeis: [],
+        incompativeis: []
+      },
+
+      "CEFALOTINA SÓDICA 1G FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [],
+        incompativeis: [
+          "Amicacina",
+          "Dopamina",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina"
+        ]
+      },
+
+      "CICLOFOSFAMIDA 1G FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Diazepam",
+          "Fenitoína",
+          "Propofol"
+        ]
+      },
+
+      "Clonidina Cloridrato 0,15mg/mL Amp. 1mL (pH=4,0–7,0)": {
+        ph: "4,0–7,0",
+        compativeis: [
+          "Aminofilina",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fentanil",
+          "Furosemida",
+          "Heparina",
+          "Insulina Regular",
+          "Morfina",
+          "Nitroglicerina",
+          "Noradrenalina",
+          "Propofol",
+          "Sulfato de Magnésio"
+        ],
+        incompativeis: [
+          "Amiodarona"
+        ]
+      },
+
+      "CLORANFENICOL 1G FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Furosemida",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Morfina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Piperacilina + Tazobactam",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Suxametônio",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Amiodarona",
+          "Anfotericina B lipossômica",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Dantroleno",
+          "Diazepam",
+          "Dobutamina",
+          "Dopamina",
+          "Fenitoína",
+          "Fluconazol",
+          "Midazolam",
+          "Nalbufina",
+          "Ondansetron",
+          "Sulfametoxazol + Trimetoprima",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina"
+        ]
+      },
+
+      "DANTROLENO SÓDICO 20MG FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir"
+        ],
+        incompativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anfotericina B lipossômica",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Insulina Regular",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Diazepam",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fenitoína",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ]
+      },
+
+      "DESLANOSÍDEO 0,2MG/ML AMPOLA 2ML": {
+        ph: null,
+        compativeis: [
+          "Cloreto de Potássio",
+          "Heparina",
+          "Hidrocortisona"
+        ],
+        incompativeis: []
+      },
+
+      " Dexmedetomidina 100µg/mL Frasco 2mL (pH=4,5–7,0)": {
+        ph: "4,5–7,0",
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Atracúrio",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Etomidato",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Noradrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Propofol",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Diazepam",
+          "Fenitoína"
+        ]
+      },
+
+      "DICLOFENACO SAL SÓDICO 25MG/ML AMPOLA 3ML": {
+        ph: null,
+        compativeis: [],
+        incompativeis: [
+          "Atracúrio",
+          "Midazolam",
+          "Morfina",
+          "Tramadol"
+        ]
+      },
+
+      "DIPROPIONATO DE BETAMETASONA + FOSFATO DISSÓDICO DE BETAMETASONA 5MG + 2MG AMPOLA 1ML": {
+        ph: null,
+        compativeis: [
+          "Cloreto de Potássio",
+          "Heparina",
+          "Hidrocortisona"
+        ],
+        incompativeis: []
+      },
+
+      "DROPERIDOL 2,5MG/ML AMPOLA 1ML (pH=3,0–3,8)": {
+        ph: "3,0–3,8",
+        compativeis: [
+          "Aciclovir",
+          "Amiodarona",
+          "Anidulafungina",
+          "Azitromicina",
+          "Aztreonam",
+          "Ciclofosfamida",
+          "Cloreto de Potássio",
+          "Dexmedetomidina",
+          "Dopamina",
+          "Fluconazol",
+          "Hidrocortisona",
+          "Levofloxacino",
+          "Linezolida",
+          "Mesna",
+          "Metoclopramida",
+          "Metronidazol",
+          "Naloxona",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Petidina",
+          "RemiFentanil",
+          "Tigeciclina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Cefepima",
+          "Fenobarbital",
+          "Furosemida",
+          "Heparina",
+          "Piperacilina + Tazobactam",
+          "Propofol"
+        ]
+      },
+
+      "ETOMIDATO 2MG/ML AMPOLA 10ML": {
+        ph: null,
+        compativeis: [
+          "Atracúrio",
+          "Atropina",
+          "Dexmedetomidina",
+          "Fentanil",
+          "Lidocaína",
+          "Midazolam",
+          "Morfina",
+          "Pancurônio",
+          "Suxametônio"
+        ],
+        incompativeis: []
+      },
+
+      "HIDRALAZINA 20MG/ML AMPOLA 1ML": {
+        ph: null,
+        compativeis: [
+          "Amiodarona",
+          "Anidulafungina",
+          "Ciclofosfamida",
+          "Linezolida",
+          "Mesna",
+          "Metronidazol",
+          "Octreotido",
+          "Pancurônio"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Ampicilina + Sulbactam",
+          "Anfotericina B lipossômica",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Meropenem",
+          "Metilprednisolona",
+          "Nitroprussiato de Sódio",
+          "Oxacilina",
+          "Piperacilina + Sulbactam",
+          "Propofol",
+          "Sulfametoxazol + Trimetoprima",
+          "Tigeciclina"
+        ]
+      },
+
+      "IMUNOGLOBULINA HUMANA 5G PÓ PARA SOLUÇÃO INJETÁVEL FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Fluconazol"
+        ],
+        incompativeis: []
+      },
+
+      "LEVOFLOXACINO 5MG/ML BOLSA 100ML (pH=4,3–5,3)": {
+        ph: "4,3–5,3",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Atracúrio",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Imipenem + Cilastatina",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Nalbufina",
+          "Naloxona",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Hidrocortisona",
+          "Pancurônio",
+          "Petidina",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Suxametônio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Amiodarona",
+          "Anfotericina B lipossômica",
+          "Azitromicina",
+          "Cefazolina",
+          "Diazepam",
+          "Fenitoína",
+          "Furosemida",
+          "Heparina",
+          "Insulina Regular",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "Piperacilina + Tazobactam",
+          "Propofol"
+        ]
+      },
+
+      "MESNA 100 MG/ML AMPOLA 4ML (pH= 7,5–8,5)": {
+        ph: "7,5–8,5",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Atracúrio",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidralazina",
+          "Suxametônio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Anfotericina B lipossômica",
+          "Cefepima",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Nitroprussiato de Sódio"
+        ]
+      },
+
+      "METOCLOPRAMIDA CLORIDRATO 5MG/ML AMPOLA 2ML (pH= 3–6,5)": {
+        ph: "3–6,5",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Lidocaína",
+          "Linezolida",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciprofloxacino",
+          "Ciclofosfamida",
+          "Cloranfenicol",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Tramadol",
+          "Vancomicina",
+          "Vasopressina",
+          "Levofloxacino"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Anfotericina B lipossômica",
+          "Cefepima",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Furosemida",
+          "Propofol",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "METOPROLOL 1 MG/ML AMPOLA 5ML (pH= 5,0–8,0)": {
+        ph: "5,0–8,0",
+        compativeis: [
+          "Aciclovir",
+          "Albumina Humana 20% Humana",
+          "Alteplase",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Cefepima",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Lidocaína",
+          "Nitroglicerina",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "MULTIVITAMINAS (VITAMINA A, B1, B2, B3, B6, B12, C, D3, E, BIOTINA)": {
+        ph: null,
+        compativeis: [],
+        incompativeis: []
+      },
+
+      "ALBUFINA CLORIDRATO 10MG/ML AMPOLA 1ML (pH= 3,0–4,5)": {
+        ph: "3,0–4,5",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Polimixina B",
+          "Propofol",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Anidulafungina",
+          "Bicarbonato de Sódio",
+          "Cefepima",
+          "Cloranfenicol",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Furosemida",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Metilprednisolona",
+          "Piperacilina + Tazobactam",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "NALOXONA CLORIDRATO 0,4MG/ML AMPOLA 1ML (pH= 3,0–4,0)": {
+        ph: "3,0–4,0",
+        compativeis: [
+          "Acetilcisteína",
+          "Amicacina",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina",
+          "Imipenem + Cilastatina"
+        ],
+        incompativeis: [
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Nitroglicerina",
+          "Propofol"
+        ]
+      },
+
+      "NEOSTIGMINA METILSSULFATO 0,5MG/ML AMPOLA 1ML": {
+        ph: null,
+        compativeis: [
+          "Cloreto de Potássio",
+          "Heparina",
+          "Hidrocortisona"
+        ],
+        incompativeis: []
+      },
+
+      "OXACILINA 500 MG FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Aminofilina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dopamina",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Manitol",
+          "Metoclopramida",
+          "Metoprolol",
+          "Midazolam",
+          "Morfina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Ondansetron",
+          "Penicilina Cristalina Potássica",
+          "Ranitidina",
+          "Tiamina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Amicacina",
+          "Anfotericina B lipossômica",
+          "Bicarbonato de Sódio",
+          "Ciprofloxacino",
+          "Dantroleno",
+          "Diazepam",
+          "Dobutamina",
+          "Fenitoína",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Hidralazina",
+          "Polimixina B",
+          "Sulfametoxazol + Trimetoprima",
+          "Suxametônio",
+          "Vancomicina"
+        ]
+      },
+
+      "PANCURÔNIO BROMETO 2MG/ML AMPOLA 2ML": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Hidralazina",
+          "Hidrocortisona",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Etomidato",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Furosemida",
+          "Propofol"
+        ]
+      },
+
+      "PETIDINA CLORIDRATO 50MG/ML AMPOLA 2ML (pH= 3,5–6,0)": {
+        ph: "3,5–6,0",
+        compativeis: [
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Anfotericina B lipossômica",
+          "Anidulafungina",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Insulina Regular",
+          "Metoclopramida",
+          "Metoprolol",
+          "Midazolam",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Penicilina Cristalina Potássica",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Aciclovir",
+          "Bicarbonato de Sódio",
+          "Cefepima",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Furosemida",
+          "Heparina",
+          "Imipenem + Cilastatina",
+          "Morfina",
+          "Propofol"
+        ]
+      },
+
+      "POLIMIXINA B SULFATO 500.000UI FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "Dopamina",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Imipenem + Cilastatina",
+          "Lidocaína",
+          "Linezolida",
+          "Petidina",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Heparina",
+          "Insulina Regular",
+          "Oxacilina",
+          "Piperacilina + Tazobactam",
+          "Sulfametoxazol + Tazobactam"
+        ]
+      },
+
+      "REMIFENTANIL 2 MG PÓ LIOFILIZADO FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Ampicilina",
+          "Ampicilina + Sulbactam",
+          "Anidulafungina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Insulina Regular",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Nitroglicerina",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Pancurônio",
+          "Petidina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Piperacilina + Tazobactam",
+          "Ranitidina",
+          "Sulfametoxazol + Trimetoprima",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Diazepam",
+          "Furosemida",
+          "Propofol"
+        ]
+      },
+
+      "SUXAMETÔNIO CLORETO 100MG FRASCO-AMPOLA (pH= 3,5–4,5)": {
+        ph: "3,5–4,5",
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Heparina",
+          "Hidrocortisona",
+          "Aminofilina",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Cefazolina",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potassio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Etomidato",
+          "Fentanil",
+          "Fluconazol",
+          "Furosemida",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Imipenem + Cilastatina",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Mesna",
+          "Metoclopramida",
+          "Metoprolol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Tigeciclina",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Bicarbonato de Sódio",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Oxacilina",
+          "Propofol",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "TEICOPLANINA 400 MG FRASCO-AMPOLA": {
+        ph: null,
+        compativeis: [
+          "Heparina",
+          "Linezolida"
+        ],
+        incompativeis: [
+          "Amicacina",
+          "Ceftazidima",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Gentamicina"
+        ]
+      },
+
+      "TERBUTALINA SULFATO 0,5MG/ML AMPOLA 1ML": {
+        ph: null,
+        compativeis: [
+          "Amiodarona",
+          "Cloreto de Potássio",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Heparina",
+          "Insulina Regular",
+          "Nitroglicerina",
+          "NorAdrenalina",
+          "Sulfato de Magnésio",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Bicarbonato de Sódio",
+          "Gluconato de Cálcio"
+        ]
+      },
+
+      "TIAMINA 100 MG/ML AMPOLA 1ML (pH= 2,5–4,5)": {
+        ph: "2,5–4,5",
+        compativeis: [
+          "Amicacina",
+          "Atracúrio",
+          "Atropina",
+          "Aztreonam",
+          "Cefazolina",
+          "Ceftriaxona",
+          "Clindamicina",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dobutamina",
+          "Dopamina",
+          "Adrenalina",
+          "Fentanil",
+          "Gentamicina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Insulina Regular",
+          "Lidocaína",
+          "Manitol",
+          "Metoclopramida",
+          "Metoprolol",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Oxacilina",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Polimixina B",
+          "Ranitidina",
+          "Sulfato de Magnésio",
+          "Vancomicina",
+          "Vasopressina"
+        ],
+        incompativeis: [
+          "Aminofilina",
+          "Anfotericina B lipossômica",
+          "Bicarbonato de Sódio",
+          "Ceftazidima",
+          "Cloranfenicol",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Fenobarbital",
+          "Furosemida",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Metilprednisolona",
+          "Sulfametoxazol + Trimetoprima"
+        ]
+      },
+
+      "VASOPRESSINA 20 UI/ML AMPOLA 1ML": {
+        ph: null,
+        compativeis: [
+          "Aciclovir",
+          "Amicacina",
+          "Aminofilina",
+          "Amiodarona",
+          "Anidulafungina",
+          "Atracúrio",
+          "Atropina",
+          "Azitromicina",
+          "Aztreonam",
+          "Bicarbonato de Sódio",
+          "Cefazolina",
+          "Cefepima",
+          "Ceftazidima",
+          "Ceftriaxona",
+          "Ciclofosfamida",
+          "Ciprofloxacino",
+          "Clindamicina",
+          "Cloranfenicol",
+          "Cloreto de Potássio",
+          "Dexametasona",
+          "Dexmedetomidina",
+          "Dobutamina",
+          "Dopamina",
+          "Droperidol",
+          "Adrenalina",
+          "Fenobarbital",
+          "Fentanil",
+          "Fluconazol",
+          "Gentamicina",
+          "Levofloxacino",
+          "Lidocaína",
+          "Linezolida",
+          "Manitol",
+          "Meropenem",
+          "Mesna",
+          "Metilprednisolona",
+          "Metoclopramida",
+          "Metoprolol",
+          "Metronidazol",
+          "Midazolam",
+          "Morfina",
+          "Nalbufina",
+          "Naloxona",
+          "Nitroglicerina",
+          "Nitroprussiato de Sódio",
+          "NorAdrenalina",
+          "Octreotido",
+          "Ondansetron",
+          "Oxacilina",
+          "Penicilina Cristalina Potássica",
+          "Petidina",
+          "Piperacilina + Tazobactam",
+          "Polimixina B",
+          "Ranitidina",
+          "RemiFentanil",
+          "Sulfato de Magnésio",
+          "Suxametônio",
+          "Terbutalina",
+          "Gluconato de Cálcio",
+          "Heparina",
+          "Hidrocortisona",
+          "Imipenem + Cilastatina",
+          "Tiamina",
+          "Tigeciclina",
+          "Vancomicina"
+        ],
+        incompativeis: [
+          "Anfotericina B lipossômica",
+          "Dantroleno",
+          "Diazepam",
+          "Fenitoína",
+          "Furosemida"
+        ]
+      }
+    };
+
+    // ==========================
+    // FUNÇÕES DE NORMALIZAÇÃO
+    // ==========================
+
+    function normaliza(nome) {
+      return nome
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // tira acentos
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    // Padroniza nome para exibição: primeira letra de cada palavra maiúscula
+    function padronizarNome(nome) {
+      return nome
+        .toLowerCase()
+        .split(" ")
+        .map(parte => parte ? parte.charAt(0).toUpperCase() + parte.slice(1) : parte)
+        .join(" ");
+    }
+
+    // Coleta todos os nomes de medicamentos da base (chaves + listas internas)
+    function coletarTodosMedicamentos() {
+      const mapaNomes = new Map();
+
+      const adicionarNome = (nomeBruto) => {
+        if (!nomeBruto) return;
+        const chaveNorm = normaliza(nomeBruto);
+        if (!chaveNorm) return;
+        if (!mapaNomes.has(chaveNorm)) {
+          mapaNomes.set(chaveNorm, padronizarNome(nomeBruto));
+        }
+      };
+
+      for (const chave in compatibilidadePorDroga) {
+        const info = compatibilidadePorDroga[chave];
+        adicionarNome(chave);
+
+        if (info) {
+          const listas = [];
+          if (Array.isArray(info.compativel)) listas.push(info.compativel);
+          if (Array.isArray(info.incompativel)) listas.push(info.incompativel);
+          if (Array.isArray(info.variavel)) listas.push(info.variavel);
+
+          // também aceita compativeis/incompativeis das novas entradas
+          if (Array.isArray(info.compativeis)) listas.push(info.compativeis);
+          if (Array.isArray(info.incompativeis)) listas.push(info.incompativeis);
+          if (Array.isArray(info.variaveis)) listas.push(info.variaveis);
+
+          listas.flat().forEach(adicionarNome);
+        }
+      }
+
+      const arr = Array.from(mapaNomes.entries())
+        .map(([idNorm, nome]) => ({ id: idNorm, nome }))
+        .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+      return arr;
+    }
+
+    const todosNomesMedicamentos = medicamentos.map(m => m.nome);
+
+    // ==========================
+    // LÓGICA DE COMPATIBILIDADE
+    // ==========================
+    function buscarCompatibilidade(nomeA, nomeB) {
+      const aNorm = normaliza(nomeA);
+      const bNorm = normaliza(nomeB);
+
+      function procuraEmDroga(chaveDroga, outroNomeNorm) {
+        const info = compatibilidadePorDroga[chaveDroga];
+        if (!info) return null;
+
+        // aceita ambos os formatos: compativel/compativelES, incompativel/incompativelES
+        const listaCompativel   = info.compativel   || info.compativeis   || [];
+        const listaIncompativel = info.incompativel || info.incompativeis || [];
+        const listaVariavel     = info.variavel     || info.variaveis     || [];
+
+        const em = (lista) =>
+          Array.isArray(lista) && lista.some(x => normaliza(x) === outroNomeNorm);
+
+        if (em(listaCompativel))   return "compativel";
+        if (em(listaIncompativel)) return "incompativel";
+        if (em(listaVariavel))     return "variavel";
+        return null;
+      }
+
+      // 1) tenta a partir da droga A
+      for (const chave in compatibilidadePorDroga) {
+        if (normaliza(chave) === aNorm) {
+          const status = procuraEmDroga(chave, bNorm);
+          if (status) return { status, origem: chave };
+        }
+      }
+
+      // 2) tenta a partir da droga B
+      for (const chave in compatibilidadePorDroga) {
+        if (normaliza(chave) === bNorm) {
+          const status = procuraEmDroga(chave, aNorm);
+          if (status) return { status, origem: chave };
+        }
+      }
+
+      // 3) “não identificado” se os dois existem na lista, mas não estão em nenhuma das três categorias
+      const aExiste = todosNomesMedicamentos.some(n => normaliza(n) === aNorm);
+      const bExiste = todosNomesMedicamentos.some(n => normaliza(n) === bNorm);
+
+      if (aExiste && bExiste) {
+        return { status: "nao_identificado", origem: null };
+      }
+
+      // pelo menos um nem está cadastrado
+      return null;
+    }
+
+    // ==========================
+    // UI
+    // ==========================
+
+    function popularSelects() {
+      const selects = document.querySelectorAll(".med-select");
+      selects.forEach(select => {
+        medicamentos.forEach(med => {
+          const opt = document.createElement("option");
+          opt.value = med.id;  // usamos o nome normalizado como id
+          opt.textContent = med.nome; // nome com só a primeira letra de cada palavra maiúscula
+          select.appendChild(opt);
+        });
+      });
+    }
+
+    function obterNomeMedicamento(id) {
+      const med = medicamentos.find(m => m.id === id);
+      return med ? med.nome : id;
+    }
+
+    function verificarCompatibilidade() {
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
+
+      const selects = Array.from(document.querySelectorAll(".med-select"));
+      const selecionados = selects
+        .map(s => s.value)
+        .filter(v => v); // remove vazios
+
+      const unicos = [...new Set(selecionados)];
+
+      if (unicos.length < 2) {
+        resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";
+        return;
+      }
+
+      for (let i = 0; i < unicos.length; i++) {
+        for (let j = i + 1; j < unicos.length; j++) {
+          const idA = unicos[i];
+          const idB = unicos[j];
+          const nomeA = obterNomeMedicamento(idA);
+          const nomeB = obterNomeMedicamento(idB);
+
+          const resultado = buscarCompatibilidade(nomeA, nomeB);
+
+          const bloco = document.createElement("div");
+          bloco.classList.add("resultado-item");
+
+          const titulo = document.createElement("strong");
+          titulo.textContent = `${nomeA} + ${nomeB}`;
+          bloco.appendChild(titulo);
+
+          const texto = document.createElement("div");
+
+          if (!resultado) {
+            // pelo menos um medicamento não está cadastrado
+            bloco.classList.add("status-desconhecido");
+            texto.textContent =
+              "Combinação não encontrada na base ou medicamento não cadastrado. Confirmar em fontes oficiais.";
+          } else {
+            const { status } = resultado;
+
+            if (status === "compativel") {
+              bloco.classList.add("status-compativel");
+              texto.textContent = "Provavelmente compatível em via Y. Conferir sempre protocolo institucional.";
+            } else if (status === "incompativel") {
+              bloco.classList.add("status-incompativel");
+              texto.textContent = "Provavelmente incompatível em via Y. Preferir via exclusiva ou outra estratégia.";
+            } else if (status === "variavel") {
+              bloco.classList.add("status-variavel");
+              texto.textContent = "Compatibilidade variável/controversa. Verificar fonte atualizada e protocolo local.";
+            } else if (status === "nao_identificado") {
+              bloco.classList.add("status-desconhecido");
+              texto.textContent =
+                "Ambos os medicamentos estão na base, mas sem dados de compatibilidade entre si.";
+            }
+          }
+
+          bloco.appendChild(texto);
+          resultadoDiv.appendChild(bloco);
+        }
+      }
+
+      const rodape = document.createElement("p");
+      rodape.classList.add("disclaimer");
+      rodape.textContent =
+        "Ferramenta experimental para treinamento. Não utilizar para decisões clínicas reais.";
+      resultadoDiv.appendChild(rodape);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      popularSelects();
+      document.getElementById("btn-verificar")
+        .addEventListener("click", verificarCompatibilidade);
+    });
+  </script>
+</body>
+</htmL>
