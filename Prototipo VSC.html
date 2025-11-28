@@ -148,44 +148,85 @@
     }
 
     /* ===== Estados de compatibilidade ===== */
+/* COMPATÍVEL – verde pastel com efeito 3D e brilho no topo */
+.status-compativel {
+  position: relative;
+  background: linear-gradient(to bottom, #E9F7EC, #D3EFD9); /* verde pastel suave */
+  border-left: 4px solid #2E7D32;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
 
-    /* Compatível – usa azul clarinho da sua paleta */
-    .status-compativel {
-      background: #B6E3FF;
-      border-left: 4px solid #3092FB;
-    }
+.status-compativel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+  pointer-events: none;
+}
 
-    /* Incompatível – mantenho vermelho para segurança visual */
-    .status-incompativel {
-      background: #FFEBEE;
-      border-left: 4px solid #C62828;
-      color: #3B0A0A;
-    }
+/* INCOMPATÍVEL – vermelho pastel com efeito 3D e brilho no topo */
+.status-incompativel {
+  position: relative;
+  background: linear-gradient(to bottom, #FDE7EA, #F8CDD3); /* vermelho rosado pastel */
+  border-left: 4px solid #C62828;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  color: #4A1010;
+}
 
-    /* Compatibilidade variável – tom amarelado neutro */
-    .status-variavel {
-      background: #FFF8E1;
-      border-left: 4px solid #F9A825;
-    }
+.status-incompativel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), transparent);
+  pointer-events: none;
+}
 
-    /* Desconhecido – cinza da sua paleta */
-    .status-desconhecido {
-      background: #D9D9D9;
-      border-left: 4px solid #757575;
-    }
+/* VARIÁVEL – amarelo pastel com efeito 3D e brilho no topo */
+.status-variavel {
+  position: relative;
+  background: linear-gradient(to bottom, #FFF9E3, #FFEEC0); /* amarelo pastel */
+  border-left: 4px solid #F9A825;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
 
-    .disclaimer {
-      margin-top: 16px;
-      font-size: 0.8rem;
-      color: #36577E;
-    }
+.status-variavel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), transparent);
+  pointer-events: none;
+}
+
+/* Você pode manter o "desconhecido" mais neutro */
+.status-desconhecido {
+  background: #eeeeee;
+  border-left: 4px solid #757575;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
   </style>
 </head>
 <body>
   <div class="container">
     <header class="topo">
       <img src="logo.png" alt="Logo do aplicativo">
-      <h1>CompY – Compatibilidade de Medicamentos</h1>
+      <h1>Compatibilidade de Medicamentos</h1>
     </header>
 
     <div class="app">
@@ -249,7 +290,6 @@ const medicamentos = [
   { id: "acido_tranexamico", nome: "Ácido Tranexâmico" },
   { id: "adrenalina", nome: "Adrenalina" },
   { id: "albufina_cloridrato", nome: "Albufina Cloridrato" },
-  { id: "albumina", nome: "Albumina" },
   { id: "albumina_humana_20", nome: "Albumina Humana 20%" },
   { id: "alteplase", nome: "Alteplase" },
   { id: "amicacina", nome: "Amicacina" },
@@ -311,7 +351,7 @@ const medicamentos = [
   { id: "imipenem_cilastatina", nome: "Imipenem + Cilastatina" },
   { id: "imunoglobulina_humana", nome: "Imunoglobulina Humana" },
   { id: "insulina", nome: "Insulina" },
-  { id: "insulina_regular", nome: "Insulina Regular" },
+  { id: "insulina_regular", nome: "Insulina" },
   { id: "levofloxacino", nome: "Levofloxacino" },
   { id: "lidocaina", nome: "Lidocaína" },
   { id: "linezolide", nome: "Linezolida" },
@@ -2841,7 +2881,7 @@ const medicamentos = [
           "Hidralazina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -2912,7 +2952,7 @@ const medicamentos = [
           "Heparina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Lidocaína",
           "Manitol",
           "Meropenem",
@@ -2981,7 +3021,7 @@ const medicamentos = [
           "Heparina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -3068,7 +3108,7 @@ const medicamentos = [
           "Cefepima",
           "Ceftazidima",
           "Ceftriaxona",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -3142,7 +3182,7 @@ const medicamentos = [
           "Fentanil",
           "Furosemida",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Morfina",
           "Nitroglicerina",
           "Noradrenalina",
@@ -3198,7 +3238,7 @@ const medicamentos = [
           "Ranitidina",
           "Sulfato de Magnésio",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Suxametônio",
           "Vasopressina"
         ],
@@ -3241,7 +3281,7 @@ const medicamentos = [
           "Aztreonam",
           "Bicarbonato de Sódio",
           "Cefazolina",
-          "Insulina Regular",
+          "Insulina",
           "Lidocaína",
           "Linezolida",
           "Manitol",
@@ -3319,7 +3359,7 @@ const medicamentos = [
           "Anidulafungina",
           "Atracúrio",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -3564,7 +3604,7 @@ const medicamentos = [
           "Fenitoína",
           "Furosemida",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Nitroglicerina",
           "Nitroprussiato de Sódio",
           "Piperacilina + Tazobactam",
@@ -3605,7 +3645,7 @@ const medicamentos = [
           "Furosemida",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -3687,7 +3727,7 @@ const medicamentos = [
           "Heparina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Manitol",
           "Meropenem",
           "Mesna",
@@ -3737,7 +3777,7 @@ const medicamentos = [
         ph: "5,0–8,0",
         compativeis: [
           "Aciclovir",
-          "Albumina Humana 20% Humana",
+          "Albumina Humana 20%",
           "Alteplase",
           "Amicacina",
           "Aminofilina",
@@ -3766,7 +3806,7 @@ const medicamentos = [
           "Furosemida",
           "Gentamicina",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Linezolida",
           "Manitol",
@@ -3844,7 +3884,7 @@ const medicamentos = [
           "Gentamicina",
           "Gluconato de Cálcio",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -3927,7 +3967,7 @@ const medicamentos = [
           "Gluconato de Cálcio",
           "Heparina",
           "Hidrocortisona",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -4003,7 +4043,7 @@ const medicamentos = [
           "Heparina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Manitol",
@@ -4078,7 +4118,7 @@ const medicamentos = [
           "Gluconato de Cálcio",
           "Heparina",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -4151,7 +4191,7 @@ const medicamentos = [
           "Fluconazol",
           "Gentamicina",
           "Gluconato de Cálcio",
-          "Insulina Regular",
+          "Insulina",
           "Metoclopramida",
           "Metoprolol",
           "Midazolam",
@@ -4248,7 +4288,7 @@ const medicamentos = [
           "Diazepam",
           "Fenitoína",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Oxacilina",
           "Piperacilina + Tazobactam",
           "Sulfametoxazol + Tazobactam"
@@ -4282,7 +4322,7 @@ const medicamentos = [
           "Heparina",
           "Hidrocortisona",
           "Imipenem + Cilastatina",
-          "Insulina Regular",
+          "Insulina",
           "Levofloxacino",
           "Lidocaína",
           "Linezolida",
@@ -4417,7 +4457,7 @@ const medicamentos = [
           "Dopamina",
           "Adrenalina",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Nitroglicerina",
           "NorAdrenalina",
           "Sulfato de Magnésio",
@@ -4448,7 +4488,7 @@ const medicamentos = [
           "Gentamicina",
           "Gluconato de Cálcio",
           "Heparina",
-          "Insulina Regular",
+          "Insulina",
           "Lidocaína",
           "Manitol",
           "Metoclopramida",
