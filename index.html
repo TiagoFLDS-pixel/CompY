@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
   <title>Compatibilidade em Via Y - Protótipo</title>
@@ -219,7 +219,12 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-
+.disclaimer {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #36577E;
+  line-height: 1.4;
+}
   </style>
 </head>
 <body>
@@ -5619,108 +5624,179 @@ const medicamentos = [
         .trim();
     }
 
-    // Padroniza nome para exibição: primeira letra de cada palavra maiúscula
-    function padronizarNome(nome) {
-      return nome
-        .toLowerCase()
-        .split(" ")
-        .map(parte => parte ? parte.charAt(0).toUpperCase() + parte.slice(1) : parte)
-        .join(" ");
+function formaCanonica(valor) {
+  return normaliza(String(valor))
+    .replace(/[()%+,\.-]/g, " ")
+    .replace(/\b(de|do|da|dos|das)\b/g, " ")
+    .replace(/\s+/g, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+const medsById = new Map(medicamentos.map(m => [m.id, m]));
+const medsByCanon = new Map();
+
+for (const med of medicamentos) {
+  medsByCanon.set(formaCanonica(med.id), med.id);
+  medsByCanon.set(formaCanonica(med.nome), med.id);
+}
+
+const aliases = {
+  "naloxona": "naloxona_cloridrato",
+  "fentanil_citrato": "fentanilo_citrato",
+  "noradrenalina_bitartarato": "noradrenalina_bitartrato",
+  "albumina_humana_20": "albumina_humana",
+  "valproato": "acido_valproico"
+};
+
+function valorParaId(valor) {
+  if (!valor) return null;
+  if (medsById.has(valor)) return valor;
+
+  const canon = formaCanonica(valor);
+
+  if (aliases[canon]) return aliases[canon];
+  if (medsByCanon.has(canon)) return medsByCanon.get(canon);
+
+  return null;
+}
+
+function obterLista(info, singular, plural) {
+  if (Array.isArray(info[singular])) return info[singular];
+  if (Array.isArray(info[plural])) return info[plural];
+  return [];
+}
+
+function encontrarChavePorId(id) {
+  for (const chave of Object.keys(compatibilidadePorDroga)) {
+    if (valorParaId(chave) === id) return chave;
+  }
+  return null;
+}
+
+function listaContemId(lista, idProcurado) {
+  return lista.some(item => valorParaId(item) === idProcurado);
+}
+
+function buscarCompatibilidade(idA, idB) {
+  const chaveA = encontrarChavePorId(idA);
+
+  if (chaveA) {
+    const info = compatibilidadePorDroga[chaveA];
+
+    if (listaContemId(obterLista(info, "compativel", "compativeis"), idB)) {
+      return { status: "compativel", origem: chaveA };
+    }
+    if (listaContemId(obterLista(info, "incompativel", "incompativeis"), idB)) {
+      return { status: "incompativel", origem: chaveA };
+    }
+    if (listaContemId(obterLista(info, "variavel", "variaveis"), idB)) {
+      return { status: "variavel", origem: chaveA };
+    }
+  }
+
+  const chaveB = encontrarChavePorId(idB);
+
+  if (chaveB) {
+    const info = compatibilidadePorDroga[chaveB];
+
+    if (listaContemId(obterLista(info, "compativel", "compativeis"), idA)) {
+      return { status: "compativel", origem: chaveB };
+    }
+    if (listaContemId(obterLista(info, "incompativel", "incompativeis"), idA)) {
+      return { status: "incompativel", origem: chaveB };
+    }
+    if (listaContemId(obterLista(info, "variavel", "variaveis"), idA)) {
+      return { status: "variavel", origem: chaveB };
+    }
+  }
+
+  if (medsById.has(idA) && medsById.has(idB)) {
+    return { status: "nao_identificado", origem: null };
+  }
+
+  return null;
+}
+
+function validarBase() {
+  const chavesSemMatch = [];
+  const refsInvalidas = [];
+  const medsSemBloco = [];
+  const conflitos = [];
+  const pares = new Map();
+
+  for (const chave of Object.keys(compatibilidadePorDroga)) {
+    const idChave = valorParaId(chave);
+
+    if (!idChave) {
+      chavesSemMatch.push(chave);
     }
 
-    // Coleta todos os nomes de medicamentos da base (chaves + listas internas)
-    function coletarTodosMedicamentos() {
-      const mapaNomes = new Map();
+    const info = compatibilidadePorDroga[chave];
 
-      const adicionarNome = (nomeBruto) => {
-        if (!nomeBruto) return;
-        const chaveNorm = normaliza(nomeBruto);
-        if (!chaveNorm) return;
-        if (!mapaNomes.has(chaveNorm)) {
-          mapaNomes.set(chaveNorm, padronizarNome(nomeBruto));
+    const grupos = {
+      compativel: obterLista(info, "compativel", "compativeis"),
+      incompativel: obterLista(info, "incompativel", "incompativeis"),
+      variavel: obterLista(info, "variavel", "variaveis")
+    };
+
+    for (const [status, lista] of Object.entries(grupos)) {
+      for (const item of lista) {
+        const idItem = valorParaId(item);
+
+        if (!idItem) {
+          refsInvalidas.push({
+            origem: chave,
+            status,
+            referencia: item
+          });
+          continue;
         }
-      };
 
-      for (const chave in compatibilidadePorDroga) {
-        const info = compatibilidadePorDroga[chave];
-        adicionarNome(chave);
+        if (idChave) {
+          const chavePar = [idChave, idItem].sort().join(" | ");
 
-        if (info) {
-          const listas = [];
-          if (Array.isArray(info.compativel)) listas.push(info.compativel);
-          if (Array.isArray(info.incompativel)) listas.push(info.incompativel);
-          if (Array.isArray(info.variavel)) listas.push(info.variavel);
+          if (!pares.has(chavePar)) {
+            pares.set(chavePar, []);
+          }
 
-          // também aceita compativeis/incompativeis das novas entradas
-          if (Array.isArray(info.compativeis)) listas.push(info.compativeis);
-          if (Array.isArray(info.incompativeis)) listas.push(info.incompativeis);
-          if (Array.isArray(info.variaveis)) listas.push(info.variaveis);
-
-          listas.flat().forEach(adicionarNome);
+          pares.get(chavePar).push({
+            origem: chave,
+            status
+          });
         }
       }
-
-      const arr = Array.from(mapaNomes.entries())
-        .map(([idNorm, nome]) => ({ id: idNorm, nome }))
-        .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
-
-      return arr;
     }
+  }
 
-    const todosNomesMedicamentos = medicamentos.map(m => m.nome);
+  for (const med of medicamentos) {
+    const temBloco = Object.keys(compatibilidadePorDroga).some(
+      chave => valorParaId(chave) === med.id
+    );
 
-    // ==========================
-    // LÓGICA DE COMPATIBILIDADE
-    // ==========================
-    function buscarCompatibilidade(nomeA, nomeB) {
-      const aNorm = normaliza(nomeA);
-      const bNorm = normaliza(nomeB);
-
-      function procuraEmDroga(chaveDroga, outroNomeNorm) {
-        const info = compatibilidadePorDroga[chaveDroga];
-        if (!info) return null;
-
-        // aceita ambos os formatos: compativel/compativelES, incompativel/incompativelES
-        const listaCompativel   = info.compativel   || info.compativeis   || [];
-        const listaIncompativel = info.incompativel || info.incompativeis || [];
-        const listaVariavel     = info.variavel     || info.variaveis     || [];
-
-        const em = (lista) =>
-          Array.isArray(lista) && lista.some(x => normaliza(x) === outroNomeNorm);
-
-        if (em(listaCompativel))   return "compativel";
-        if (em(listaIncompativel)) return "incompativel";
-        if (em(listaVariavel))     return "variavel";
-        return null;
-      }
-
-      // 1) tenta a partir da droga A
-      for (const chave in compatibilidadePorDroga) {
-        if (normaliza(chave) === aNorm) {
-          const status = procuraEmDroga(chave, bNorm);
-          if (status) return { status, origem: chave };
-        }
-      }
-
-      // 2) tenta a partir da droga B
-      for (const chave in compatibilidadePorDroga) {
-        if (normaliza(chave) === bNorm) {
-          const status = procuraEmDroga(chave, aNorm);
-          if (status) return { status, origem: chave };
-        }
-      }
-
-      // 3) “não identificado” se os dois existem na lista, mas não estão em nenhuma das três categorias
-      const aExiste = todosNomesMedicamentos.some(n => normaliza(n) === aNorm);
-      const bExiste = todosNomesMedicamentos.some(n => normaliza(n) === bNorm);
-
-      if (aExiste && bExiste) {
-        return { status: "nao_identificado", origem: null };
-      }
-
-      // pelo menos um nem está cadastrado
-      return null;
+    if (!temBloco) {
+      medsSemBloco.push(med);
     }
+  }
+
+  for (const [par, entradas] of pares.entries()) {
+    const statuses = [...new Set(entradas.map(e => e.status))];
+
+    if (statuses.length > 1) {
+      conflitos.push({
+        par,
+        entradas
+      });
+    }
+  }
+
+  console.group("Validação da base de compatibilidade");
+  console.log("Chaves sem correspondência no array medicamentos:", chavesSemMatch);
+  console.log("Referências inválidas dentro das listas:", refsInvalidas);
+  console.log("Medicamentos sem bloco próprio:", medsSemBloco);
+  console.log("Pares com conflito de status:", conflitos);
+  console.groupEnd();
+}
 
     // ==========================
     // UI
@@ -5731,7 +5807,7 @@ const medicamentos = [
       selects.forEach(select => {
         medicamentos.forEach(med => {
           const opt = document.createElement("option");
-          opt.value = med.id;  // usamos o nome normalizado como id
+          opt.value = med.id;  // usamos o id interno do medicamento
           opt.textContent = med.nome; // nome com só a primeira letra de cada palavra maiúscula
           select.appendChild(opt);
         });
@@ -5766,7 +5842,7 @@ const medicamentos = [
           const nomeA = obterNomeMedicamento(idA);
           const nomeB = obterNomeMedicamento(idB);
 
-          const resultado = buscarCompatibilidade(nomeA, nomeB);
+          const resultado = buscarCompatibilidade(idA, idB);
 
           const bloco = document.createElement("div");
           bloco.classList.add("resultado-item");
@@ -5815,9 +5891,10 @@ const medicamentos = [
 
     document.addEventListener("DOMContentLoaded", () => {
       popularSelects();
+      validarBase();
       document.getElementById("btn-verificar")
         .addEventListener("click", verificarCompatibilidade);
     });
   </script>
 </body>
-</htmL>
+</html>
