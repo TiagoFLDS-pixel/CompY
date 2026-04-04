@@ -225,6 +225,43 @@
   color: #36577E;
   line-height: 1.4;
 }
+    .alerta-bolus {
+  margin-bottom: 16px;
+  background: #FFF0F6;
+  border: 2px solid #E0115F;
+  border-left: 6px solid #E0115F;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(224, 17, 95, 0.12);
+  color: #7A0B3A;
+}
+
+.alerta-bolus-titulo {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #E0115F;
+  margin-bottom: 8px;
+}
+
+.alerta-bolus-intro {
+  margin: 0 0 10px 0;
+  line-height: 1.45;
+  color: #7A0B3A;
+}
+
+.alerta-bolus-lista {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.alerta-bolus-lista li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.alerta-bolus-lista strong {
+  color: #A10C45;
+}
   </style>
 </head>
 <body>
@@ -295,7 +332,7 @@ const medicamentos = [
 { id: "acido_ascorbico", nome: "Ácido Ascórbico" },
 { id: "acido_tranexamico", nome: "Ácido Tranexâmico" },
 { id: "acido_valproico", nome: "Ácido Valpróico" },
-{ id: "albumina_humana", nome: "Albumina Humana" },
+{ id: "albumina_humana", nome: "Albumina Humana 20%" },
 { id: "alfentanil_cloridrato", nome: "Alfentanil (Cloridrato)" },
 { id: "alteplase", nome: "Alteplase" },
 { id: "amicacina_sulfato", nome: "Amicacina (sulfato)" },
@@ -336,7 +373,6 @@ const medicamentos = [
 { id: "cloreto_calcio", nome: "Cloreto de Cálcio" },
 { id: "cloreto_potassio", nome: "Cloreto de Potássio" },
 { id: "clorotiazida_sodica", nome: "Clorotiazida (Sódica)" },
-{ id: "co_trimoxazol", nome: "Co-trimoxazol" },
 { id: "dantroleno_sodico", nome: "Dantroleno (Sódico)" },
 { id: "daptomicina", nome: "Daptomicina" },
 { id: "dexametasona_fosfato_sodico", nome: "Dexametasona (Fosfato sódico)" },
@@ -344,6 +380,7 @@ const medicamentos = [
 { id: "diazepam", nome: "Diazepam" },
 { id: "diclofenac", nome: "Diclofenac" },
 { id: "digoxina", nome: "Digoxina" },
+{ id: "dinitrato_isossorbida", nome: "Dinitrato de Isossorbida" },
 { id: "dobutamina_cloridrato", nome: "Dobutamina (Cloridrato)" },
 { id: "dopamina_cloridrato", nome: "Dopamina (Cloridrato)" },
 { id: "droperidol", nome: "Droperidol" },
@@ -384,7 +421,8 @@ const medicamentos = [
 { id: "nalbufina_cloridrato", nome: "Nalbufina (Cloridrato)" },
 { id: "naloxona_cloridrato", nome: "Naloxona (Cloridrato)" },
 { id: "nitroglicerina", nome: "Nitroglicerina" },
-{ id: "noradrenalina_bitartrato", nome: "Noradrenalina (Bitartrato)" },
+{ id: "nitroprussiato_sodio", nome: "Nitroprussiato de Sódio" },
+{ id: "noradrenalina_bitartarato", nome: "Noradrenalina (Bitartarato)" },
 { id: "octreotido_acetato", nome: "Octreótido (Acetato)" },
 { id: "omeprazol_sodico", nome: "Omeprazol (Sódico)" },
 { id: "ondansetron_cloridrato", nome: "Ondansetron (Cloridrato)" },
@@ -401,6 +439,7 @@ const medicamentos = [
 { id: "rocuronio_brometo", nome: "Rocurónio (Brometo)" },
 { id: "salbutamol_sulfato", nome: "Salbutamol (Sulfato)" },
 { id: "sufentanil_citrato", nome: "Sufentanil (Citrato)" },
+{ id: "sulfametoxazol_trimetoprim", nome: "Sulfametoxazol + Trimetoprim" },
 { id: "sulfato_magnesio", nome: "Sulfato de Magnésio" },
 { id: "suxametonio_cloreto", nome: "Suxametónio (Cloreto)" },
 { id: "tacrolimus", nome: "Tacrolimus" },
@@ -432,7 +471,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "cloreto_calcio",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "diazepam",
       "digoxina",
@@ -451,7 +490,7 @@ const medicamentos = [
       "midazolam_cloridrato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
       "rocuronio_brometo",
@@ -489,7 +528,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "cloranfenicol_succinato_sodico",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "droperidol",
       "fentanilo_citrato",
@@ -752,7 +791,7 @@ const medicamentos = [
       "mesna",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "penicilina_g_potassica",
       "petidina_cloridrato",
@@ -789,6 +828,7 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
+      "nitroprussiato_sodio",
       "paracetamol",
       "penicilina_g_potassica",
       "salbutamol_sulfato",
@@ -804,7 +844,7 @@ const medicamentos = [
       "furosemida",
       "insulina",
       "midazolam_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "sulfato_magnesio"
     ],
     "incompativel": [
@@ -860,7 +900,7 @@ const medicamentos = [
       "cefuroxima_sodica",
       "cloreto_calcio",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "diazepam",
       "digoxina",
@@ -882,7 +922,7 @@ const medicamentos = [
       "micafungina",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "paracetamol",
       "piperacilina_sodica_tazobactam",
@@ -1023,7 +1063,7 @@ const medicamentos = [
       "anidulafungina",
       "cefoxitina_sodica",
       "clindamicina_fosfato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "fentanilo_citrato",
       "furosemida",
@@ -1099,7 +1139,7 @@ const medicamentos = [
   "Angiotensina II": {
     "compativel": [
       "dopamina_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "vasopressina"
     ],
     "variavel": [],
@@ -1124,7 +1164,7 @@ const medicamentos = [
       "ciprofloxacina_lactato",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "digoxina",
       "dobutamina_cloridrato",
@@ -1163,7 +1203,7 @@ const medicamentos = [
       "cefazolina_sodica",
       "cefuroxima_sodica",
       "ciprofloxacina_lactato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
@@ -1176,6 +1216,7 @@ const medicamentos = [
       "midazolam_cloridrato",
       "morfina_sulfato",
       "nitroglicerina",
+      "nitroprussiato_sodio",
       "vancomicina_cloridrato"
     ],
     "variavel": [
@@ -1271,7 +1312,7 @@ const medicamentos = [
       "ciprofloxacina_lactato",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "daptomicina",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
@@ -1379,7 +1420,7 @@ const medicamentos = [
       "ceftazidima",
       "cetamina_cloridrato",
       "clindamicina_fosfato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
       "fosfato_potassio",
@@ -1389,7 +1430,7 @@ const medicamentos = [
       "labetalol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "petidina_cloridrato",
       "piperacilina_sodica",
@@ -1443,7 +1484,7 @@ const medicamentos = [
       "midazolam_cloridrato",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "petidina_cloridrato",
       "sulfato_magnesio",
@@ -1466,7 +1507,7 @@ const medicamentos = [
       "ceftolozano_tazobactam",
       "ceftriaxona_dissodica",
       "clindamicina_fosfato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "fosfato_potassio",
       "furosemida",
       "heparina_sodica",
@@ -1521,7 +1562,7 @@ const medicamentos = [
       "amicacina_sulfato",
       "anfotericina_b_complexo_sulfato_colesterilico",
       "caspofungina_acetato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "gentamicina_sulfato",
       "gluconato_calcio",
       "naloxona_cloridrato",
@@ -1539,6 +1580,7 @@ const medicamentos = [
       "cloreto_potassio",
       "daptomicina",
       "dexmedetomidina",
+      "dinitrato_isossorbida",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
       "esmolol_cloridrato",
@@ -1666,6 +1708,7 @@ const medicamentos = [
       "cloreto_potassio",
       "daptomicina",
       "dexmedetomidina",
+      "dinitrato_isossorbida",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
       "esmolol_cloridrato",
@@ -1768,7 +1811,8 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "ondansetron_cloridrato",
       "penicilina_g_potassica",
@@ -1915,7 +1959,7 @@ const medicamentos = [
       "midazolam_cloridrato",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -1939,7 +1983,7 @@ const medicamentos = [
       "amoxicilina_sodica_clavulanato",
       "ampicilina_sodica",
       "bicarbonato_sodio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "diazepam",
       "fenitoina_sodica",
       "fenobarbital_sodico",
@@ -1996,7 +2040,7 @@ const medicamentos = [
       "metronidazol",
       "midazolam_cloridrato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "pancuronio_brometo",
       "paracetamol",
       "propofol",
@@ -2113,7 +2157,7 @@ const medicamentos = [
       "midazolam_cloridrato",
       "morfina_sulfato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "petidina_cloridrato",
       "propofol",
       "sulfato_magnesio",
@@ -2246,11 +2290,11 @@ const medicamentos = [
     "variavel": [],
     "incompativel": [
       "amicacina_sulfato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "vancomicina_cloridrato"
     ]
   },
-  "Co-trimoxazol": {
+  "Sulfametoxazol + Trimetoprim": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -2393,7 +2437,7 @@ const medicamentos = [
       "ciprofloxacina_lactato",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "digoxina",
       "dobutamina_cloridrato",
@@ -2422,7 +2466,8 @@ const medicamentos = [
       "morfina_sulfato",
       "nalbufina_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -2531,6 +2576,17 @@ const medicamentos = [
       "fluconazol"
     ]
   },
+  "Dinitrato de Isossorbida": {
+    "compativel": [
+      "cefepime_dicloridrato",
+      "ceftazidima",
+      "furosemida",
+      "insulina",
+      "vancomicina_cloridrato"
+    ],
+    "variavel": [],
+    "incompativel": []
+  },
   "Dobutamina (Cloridrato)": {
     "compativel": [
       "acido_valproico",
@@ -2559,7 +2615,8 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "pancuronio_brometo",
       "paracetamol",
       "petidina_cloridrato",
@@ -2638,7 +2695,8 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -2703,6 +2761,11 @@ const medicamentos = [
       "tiopental_sodico"
     ]
   },
+  "Epoetina alfa": {
+    "compativel": [],
+    "variavel": [],
+    "incompativel": []
+  },
   "Esmolol (Cloridrato)": {
     "compativel": [
       "albumina_humana",
@@ -2721,7 +2784,7 @@ const medicamentos = [
       "cloranfenicol_succinato_sodico",
       "cloreto_calcio",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "dopamina_cloridrato",
       "fenitoina_sodica",
@@ -2741,7 +2804,8 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "pancuronio_brometo",
       "paracetamol",
       "penicilina_g_potassica",
@@ -2811,7 +2875,7 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "petidina_cloridrato",
       "propofol",
@@ -2840,7 +2904,7 @@ const medicamentos = [
       "cetamina_cloridrato",
       "clindamicina_fosfato",
       "droperidol",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "petidina_cloridrato",
       "suxametonio_cloreto"
     ]
@@ -2888,7 +2952,7 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "propofol",
@@ -2921,7 +2985,7 @@ const medicamentos = [
       "ceftolozano_tazobactam",
       "ciclofosfamida",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "droperidol",
       "fluconazol",
@@ -3051,7 +3115,7 @@ const medicamentos = [
       "ceftriaxona_dissodica",
       "cefuroxima_sodica",
       "cloranfenicol_succinato_sodico",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "diazepam",
       "digoxina",
       "furosemida",
@@ -3116,6 +3180,7 @@ const medicamentos = [
       "dexmedetomidina",
       "diclofenac",
       "digoxina",
+      "dinitrato_isossorbida",
       "fentanilo_citrato",
       "flucloxacilina_sodica",
       "gluconato_calcio",
@@ -3128,7 +3193,7 @@ const medicamentos = [
       "metoprolol_tartarato",
       "micafungina",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "omeprazol_sodico",
       "paracetamol",
       "piperacilina_sodica_tazobactam",
@@ -3193,6 +3258,13 @@ const medicamentos = [
       "ceftazidima",
       "ondansetron_cloridrato",
       "piperacilina_sodica_tazobactam"
+    ]
+  },
+  "Gelatina": {
+    "compativel": [],
+    "variavel": [],
+    "incompativel": [
+      "vancomicina_cloridrato"
     ]
   },
   "Gentamicina (Sulfato)": {
@@ -3321,7 +3393,7 @@ const medicamentos = [
       "heparina_sodica",
       "metoprolol_tartarato",
       "morfina_sulfato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "sufentanil_citrato",
       "terbutalina_sulfato",
       "tigeciclina",
@@ -3343,7 +3415,7 @@ const medicamentos = [
       "metoclopramida_cloridrato",
       "midazolam_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "paracetamol",
       "propofol",
@@ -3354,7 +3426,8 @@ const medicamentos = [
     ],
     "variavel": [
       "heparina_sodica",
-      "morfina_sulfato"
+      "morfina_sulfato",
+      "nitroprussiato_sodio"
     ],
     "incompativel": [
       "acido_valproico",
@@ -3407,7 +3480,8 @@ const medicamentos = [
       "metronidazol",
       "micafungina",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -3449,7 +3523,7 @@ const medicamentos = [
       "anfotericina_b_complexo_sulfato_colesterilico",
       "caspofungina_acetato",
       "cetamina_cloridrato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "diazepam",
       "fenitoina_sodica",
       "filgrastim",
@@ -3510,7 +3584,7 @@ const medicamentos = [
       "metronidazol",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -3586,6 +3660,7 @@ const medicamentos = [
       "cloreto_calcio",
       "cloreto_potassio",
       "diclofenac",
+      "dinitrato_isossorbida",
       "esmolol_cloridrato",
       "fosfato_potassio",
       "furosemida",
@@ -3599,6 +3674,7 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
+      "nitroprussiato_sodio",
       "paracetamol",
       "petidina_cloridrato",
       "piperacilina_sodica_tazobactam",
@@ -3614,13 +3690,13 @@ const medicamentos = [
       "amiodarona_cloridrato",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "remifentanil_cloridrato"
     ],
     "incompativel": [
       "acetilcisteina",
       "cetamina_cloridrato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "labetalol_cloridrato",
       "levofloxacina",
       "micafungina",
@@ -3644,7 +3720,7 @@ const medicamentos = [
       "clonidina_cloridrato",
       "cloranfenicol_succinato_sodico",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
@@ -3661,7 +3737,8 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "penicilina_g_potassica",
       "petidina_cloridrato",
@@ -3691,7 +3768,7 @@ const medicamentos = [
       "cefazolina_sodica",
       "cefotaxima_sodica",
       "dexmedetomidina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "propofol",
       "vancomicina_cloridrato",
       "vasopressina"
@@ -3737,7 +3814,7 @@ const medicamentos = [
       "metronidazol",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "pancuronio_brometo",
       "penicilina_g_sodica",
       "sulfato_magnesio",
@@ -3751,7 +3828,8 @@ const medicamentos = [
       "heparina_sodica",
       "insulina",
       "micafungina",
-      "nitroglicerina"
+      "nitroglicerina",
+      "nitroprussiato_sodio"
     ]
   },
   "Linezolida": {
@@ -3820,7 +3898,7 @@ const medicamentos = [
     ],
     "variavel": [
       "ceftriaxona_dissodica",
-      "co_trimoxazol"
+      "sulfametoxazol_trimetoprim"
     ],
     "incompativel": [
       "anfotericina_b",
@@ -3884,7 +3962,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "cloreto_calcio",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
       "digoxina",
@@ -3908,7 +3986,7 @@ const medicamentos = [
       "metronidazol",
       "morfina_sulfato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "penicilina_g_sodica",
       "piperacilina_sodica",
@@ -4022,7 +4100,8 @@ const medicamentos = [
       "levofloxacina",
       "meropenem",
       "morfina_sulfato",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "petidina_cloridrato"
     ],
@@ -4107,7 +4186,8 @@ const medicamentos = [
       "heparina_sodica",
       "mesna",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "sulfato_magnesio",
       "tacrolimus",
@@ -4170,7 +4250,8 @@ const medicamentos = [
       "nalbufina_cloridrato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -4203,7 +4284,7 @@ const medicamentos = [
       "bicarbonato_sodio",
       "cefepime_dicloridrato",
       "ceftazidima",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "diclofenac",
       "flucloxacilina_sodica",
       "meropenem",
@@ -4235,7 +4316,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "clonidina_cloridrato",
       "cloranfenicol_succinato_sodico",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
       "diazepam",
@@ -4260,7 +4341,8 @@ const medicamentos = [
       "midazolam_cloridrato",
       "naloxona_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
       "paracetamol",
@@ -4345,7 +4427,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "cloreto_calcio",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "digoxina",
       "dobutamina_cloridrato",
@@ -4373,7 +4455,8 @@ const medicamentos = [
       "metronidazol",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "ondansetron_cloridrato",
       "pancuronio_brometo",
@@ -4427,7 +4510,7 @@ const medicamentos = [
       "micafungina",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "pancuronio_brometo",
       "propofol",
       "remifentanil_cloridrato",
@@ -4451,7 +4534,37 @@ const medicamentos = [
       "salbutamol_sulfato"
     ]
   },
-  "Noradrenalina (Bitartrato)": {
+  "Nitroprussiato de Sódio": {
+    "compativel": [
+      "amiodarona_cloridrato",
+      "atracurio_besilato",
+      "ceftolozano_tazobactam",
+      "dexmedetomidina",
+      "dobutamina_cloridrato",
+      "dopamina_cloridrato",
+      "esmolol_cloridrato",
+      "heparina_sodica",
+      "insulina",
+      "labetalol_cloridrato",
+      "metoprolol_tartarato",
+      "micafungina",
+      "midazolam_cloridrato",
+      "morfina_sulfato",
+      "naloxona_cloridrato",
+      "pancuronio_brometo",
+      "propofol",
+      "salbutamol_sulfato",
+      "tacrolimus"
+    ],
+    "variavel": [
+      "haloperidol_lactato"
+    ],
+    "incompativel": [
+      "levofloxacina",
+      "tiopental_sodico"
+    ]
+  },
+  "Noradrenalina (Bitartarato)": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -4602,7 +4715,7 @@ const medicamentos = [
       "cefuroxima_sodica",
       "cetamina_cloridrato",
       "ciprofloxacina_lactato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
@@ -4617,6 +4730,7 @@ const medicamentos = [
       "morfina_sulfato",
       "naloxona_cloridrato",
       "nitroglicerina",
+      "nitroprussiato_sodio",
       "vancomicina_cloridrato"
     ],
     "variavel": [
@@ -4650,7 +4764,7 @@ const medicamentos = [
       "ciprofloxacina_lactato",
       "clindamicina_fosfato",
       "cloreto_calcio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
       "dobutamina_cloridrato",
@@ -4676,7 +4790,7 @@ const medicamentos = [
       "morfina_sulfato",
       "nalbufina_cloridrato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "ondansetron_cloridrato",
       "petidina_cloridrato",
@@ -4764,7 +4878,7 @@ const medicamentos = [
       "clonidina_cloridrato",
       "cloranfenicol_succinato_sodico",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
       "digoxina",
@@ -4863,7 +4977,7 @@ const medicamentos = [
       "ciclofosfamida",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "dexmedetomidina",
       "dopamina_cloridrato",
@@ -4965,7 +5079,8 @@ const medicamentos = [
       "manitol",
       "nalbufina_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "petidina_cloridrato",
       "piperacilina_sodica",
@@ -5024,7 +5139,7 @@ const medicamentos = [
       "ciprofloxacina_lactato",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "digoxina",
       "dobutamina_cloridrato",
@@ -5049,7 +5164,7 @@ const medicamentos = [
       "morfina_sulfato",
       "nalbufina_cloridrato",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "ondansetron_cloridrato",
       "paracetamol",
       "petidina_cloridrato",
@@ -5090,7 +5205,7 @@ const medicamentos = [
       "amoxicilina_sodica",
       "anfotericina_b",
       "cefazolina_sodica",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "diazepam",
       "furosemida",
@@ -5127,7 +5242,8 @@ const medicamentos = [
       "metronidazol",
       "midazolam_cloridrato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "rocuronio_brometo",
       "sulfato_magnesio"
     ],
@@ -5146,7 +5262,7 @@ const medicamentos = [
       "ceftazidima",
       "clindamicina_fosfato",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "diazepam",
       "fenitoina_sodica",
       "fosfato_potassio",
@@ -5178,7 +5294,7 @@ const medicamentos = [
       "meropenem",
       "midazolam_cloridrato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "paracetamol",
       "propofol",
       "remifentanil_cloridrato",
@@ -5208,7 +5324,7 @@ const medicamentos = [
       "clonidina_cloridrato",
       "cloranfenicol_succinato_sodico",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "esmolol_cloridrato",
       "gentamicina_sulfato",
@@ -5252,7 +5368,7 @@ const medicamentos = [
       "dobutamina_cloridrato",
       "furosemida",
       "metoprolol_tartarato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "polimixina_b",
       "tiopental_sodico"
     ]
@@ -5286,7 +5402,7 @@ const medicamentos = [
       "clindamicina_fosfato",
       "cloranfenicol_succinato_sodico",
       "cloreto_potassio",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexametasona_fosfato_sodico",
       "digoxina",
       "dobutamina_cloridrato",
@@ -5306,6 +5422,7 @@ const medicamentos = [
       "micafungina",
       "morfina_sulfato",
       "nitroglicerina",
+      "nitroprussiato_sodio",
       "penicilina_g_potassica",
       "piperacilina_sodica",
       "vancomicina_cloridrato"
@@ -5369,7 +5486,7 @@ const medicamentos = [
       "gentamicina_sulfato",
       "haloperidol_lactato",
       "metoclopramida_cloridrato",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "piperacilina_sodica_tazobactam",
       "propofol"
     ],
@@ -5388,7 +5505,7 @@ const medicamentos = [
       "acido_valproico",
       "alfentanil_cloridrato",
       "atropina_sulfato",
-      "co_trimoxazol",
+      "sulfametoxazol_trimetoprim",
       "dexmedetomidina",
       "diclofenac",
       "insulina",
@@ -5445,7 +5562,8 @@ const medicamentos = [
       "metronidazol",
       "midazolam_cloridrato",
       "naloxona_cloridrato",
-      "noradrenalina_bitartrato",
+      "nitroprussiato_sodio",
+      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "pancuronio_brometo",
       "petidina_cloridrato",
@@ -5494,6 +5612,7 @@ const medicamentos = [
       "cetamina_cloridrato",
       "ciprofloxacina_lactato",
       "dexmedetomidina",
+      "dinitrato_isossorbida",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
       "esmolol_cloridrato",
@@ -5549,6 +5668,7 @@ const medicamentos = [
       "fenitoina_sodica",
       "flucloxacilina_sodica",
       "furosemida",
+      "gelatina",
       "hidrocortisona_succinato_sodico",
       "omeprazol_sodico",
       "penicilina_g_potassica",
@@ -5581,7 +5701,7 @@ const medicamentos = [
       "metronidazol",
       "micafungina",
       "nitroglicerina",
-      "noradrenalina_bitartrato",
+      "noradrenalina_bitartarato",
       "piperacilina_sodica_tazobactam",
       "voriconazol"
     ],
@@ -5626,7 +5746,7 @@ const medicamentos = [
 
 function formaCanonica(valor) {
   return normaliza(String(valor))
-    .replace(/[()%+,\.-]/g, " ")
+    .replace(/[()%+,\./-]/g, " ")
     .replace(/\b(de|do|da|dos|das)\b/g, " ")
     .replace(/\s+/g, "_")
     .replace(/_+/g, "_")
@@ -5644,9 +5764,30 @@ for (const med of medicamentos) {
 const aliases = {
   "naloxona": "naloxona_cloridrato",
   "fentanil_citrato": "fentanilo_citrato",
-  "noradrenalina_bitartarato": "noradrenalina_bitartrato",
+  "noradrenalina_bitartarato": "noradrenalina_bitartarato",
   "albumina_humana_20": "albumina_humana",
   "valproato": "acido_valproico"
+};
+    const alertasBolus = {
+  "noradrenalina_bitartarato": "Risco de bólus inadvertido com hipertensão marcada, bradicardia reflexa e instabilidade hemodinâmica. Idealmente usar via dedicada.",
+  "dobutamina_cloridrato": "Risco de alteração hemodinâmica aguda, taquicardia e arritmias se ocorrer bólus inadvertido.",
+  "dopamina_cloridrato": "Risco de taquicardia, arritmias e instabilidade hemodinâmica com bólus inadvertido.",
+  "vasopressina": "Risco de vasoconstrição/instabilidade hemodinâmica com bólus inadvertido. Idealmente usar via dedicada.",
+  "dexmedetomidina": "Pode causar hipotensão e bradicardia. Atenção a flushes, manipulação da linha e administração inadvertida em bólus.",
+  "nitroglicerina": "Risco de hipotensão marcada com bólus inadvertido.",
+  "cloreto_calcio": "Medicamento de alto risco por via intravenosa. Um bólus inadvertido pode provocar efeitos cardiovasculares importantes.",
+  "gluconato_calcio": "Medicamento de alto risco por via intravenosa. Um bólus inadvertido pode provocar efeitos cardiovasculares importantes.",
+  "cloreto_potassio": "Risco de arritmias graves e paragem cardiorrespiratória se ocorrer bólus inadvertido.",
+  "digoxina": "Risco de toxicidade cardíaca e arritmias se houver administração inadequada ou demasiado rápida.",
+  "labetalol_cloridrato": "Risco de hipotensão e bradicardia com bólus inadvertido.",
+  "insulina": "Risco de hipoglicemia com bólus inadvertido. Confirmar contexto clínico, monitorização e coexistência de glicose quando aplicável.",
+  "morfina_sulfato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
+  "fentanilo_citrato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
+  "sufentanil_citrato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
+  "midazolam_cloridrato": "Risco de sedação excessiva e depressão respiratória, sobretudo se a via aérea não estiver protegida.",
+  "cetamina_cloridrato": "Risco de depressão respiratória se administração rápida e de instabilidade hemodinâmica com bólus inadvertido.",
+  "propofol": "Risco de sedação profunda, apneia/depressão respiratória e hipotensão com bólus inadvertido."
+  "nitroprussiato_sodio": "Risco de hipotensão marcada com bólus inadvertido."
 };
 
 function valorParaId(valor) {
@@ -5808,17 +5949,54 @@ function validarBase() {
         medicamentos.forEach(med => {
           const opt = document.createElement("option");
           opt.value = med.id;  // usamos o id interno do medicamento
-          opt.textContent = med.nome; // nome com só a primeira letra de cada palavra maiúscula
+          opt.textContent = med.nome; // nome de exibição do medicamento
           select.appendChild(opt);
         });
       });
     }
 
     function obterNomeMedicamento(id) {
-      const med = medicamentos.find(m => m.id === id);
-      return med ? med.nome : id;
-    }
+  const med = medsById.get(id);
+  return med ? med.nome : id;
+}
+function criarAvisoBolus(idsSelecionados) {
+  const idsComAviso = [...new Set(idsSelecionados)].filter(id => alertasBolus[id]);
 
+  if (idsComAviso.length === 0) {
+    return null;
+  }
+
+  const caixa = document.createElement("div");
+  caixa.classList.add("alerta-bolus");
+
+  const titulo = document.createElement("div");
+  titulo.classList.add("alerta-bolus-titulo");
+  titulo.textContent = "⚠️ Atenção: risco de bólus inadvertido nesta via";
+  caixa.appendChild(titulo);
+
+  const intro = document.createElement("p");
+  intro.classList.add("alerta-bolus-intro");
+  intro.textContent = "Quando estes medicamentos partilham a via, um flush, reabertura da linha ou outra manipulação pode administrar um bólus não intencional.";
+  caixa.appendChild(intro);
+
+  const lista = document.createElement("ul");
+  lista.classList.add("alerta-bolus-lista");
+
+  idsComAviso.forEach(id => {
+    const item = document.createElement("li");
+
+    const nome = document.createElement("strong");
+    nome.textContent = `${obterNomeMedicamento(id)}: `;
+    item.appendChild(nome);
+
+    item.appendChild(document.createTextNode(alertasBolus[id]));
+    lista.appendChild(item);
+  });
+
+  caixa.appendChild(lista);
+
+  return caixa;
+}
     function verificarCompatibilidade() {
       const resultadoDiv = document.getElementById("resultado");
       resultadoDiv.innerHTML = "";
@@ -5831,11 +6009,16 @@ function validarBase() {
       const unicos = [...new Set(selecionados)];
 
       if (unicos.length < 2) {
-        resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";
-        return;
-      }
+  resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";
+  return;
+}
 
-      for (let i = 0; i < unicos.length; i++) {
+const avisoBolus = criarAvisoBolus(unicos);
+if (avisoBolus) {
+  resultadoDiv.appendChild(avisoBolus);
+}
+
+for (let i = 0; i < unicos.length; i++) {
         for (let j = i + 1; j < unicos.length; j++) {
           const idA = unicos[i];
           const idB = unicos[j];
@@ -5854,10 +6037,9 @@ function validarBase() {
           const texto = document.createElement("div");
 
           if (!resultado) {
-            // pelo menos um medicamento não está cadastrado
             bloco.classList.add("status-desconhecido");
             texto.textContent =
-              "Combinação não encontrada na base ou medicamento não cadastrado. Confirmar em fontes oficiais.";
+               "Não foi possível interpretar esta combinação na base atual. Confirmar em fontes oficiais."
           } else {
             const { status } = resultado;
 
@@ -5891,7 +6073,7 @@ function validarBase() {
 
     document.addEventListener("DOMContentLoaded", () => {
       popularSelects();
-      validarBase();
+      validarBase(); // usar apenas durante testes//
       document.getElementById("btn-verificar")
         .addEventListener("click", verificarCompatibilidade);
     });
