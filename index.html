@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>Compatibilidade em Via Y - Protótipo</title>
-
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVP5EMMV4B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TVP5EMMV4B');
+  </script>
   <!-- Cor da barra do navegador / app -->
   <meta name="theme-color" content="#3092FB">
 
@@ -5786,7 +5793,7 @@ const aliases = {
   "sufentanil_citrato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
   "midazolam_cloridrato": "Risco de sedação excessiva e depressão respiratória, sobretudo se a via aérea não estiver protegida.",
   "cetamina_cloridrato": "Risco de depressão respiratória se administração rápida e de instabilidade hemodinâmica com bólus inadvertido.",
-  "propofol": "Risco de sedação profunda, apneia/depressão respiratória e hipotensão com bólus inadvertido."
+  "propofol": "Risco de sedação profunda, apneia/depressão respiratória e hipotensão com bólus inadvertido.",
   "nitroprussiato_sodio": "Risco de hipotensão marcada com bólus inadvertido."
 };
 
@@ -6007,6 +6014,11 @@ function criarAvisoBolus(idsSelecionados) {
         .filter(v => v); // remove vazios
 
       const unicos = [...new Set(selecionados)];
+      if (typeof gtag === "function") {
+       gtag("event", "verificar_compatibilidade", {
+          medicamentos_selecionados: unicos.length
+    });
+  }
 
       if (unicos.length < 2) {
   resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";
