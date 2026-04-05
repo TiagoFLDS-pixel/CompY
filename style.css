@@ -1,0 +1,249 @@
+<style>
+    /* ===== Fundo geral e fonte ===== */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #063F82, #3092FB);
+      color: #ffffff;
+    }
+
+    /* ===== Container central ===== */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* ===== Topo com logo e título ===== */
+    header.topo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      background: rgba(6, 63, 130, 0.85); /* #063F82 com transparência */
+      backdrop-filter: blur(4px);
+      border-radius: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 24px;
+    }
+
+    header.topo img {
+      height: 64px;
+      border-radius: 12px;
+    }
+
+    header.topo h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    /* ===== Cartão branco do app ===== */
+    .app {
+      margin-top: 16px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      border: 1px solid #D9D9D9;
+      color: #063F82; /* texto principal dentro do cartão */
+    }
+
+    .app h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: #063F82;
+    }
+
+    p.descricao {
+      margin-top: 4px;
+      color: #36577E; /* variação mais suave do azul escuro */
+      font-size: 0.95rem;
+    }
+
+    /* ===== Grid dos selects ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      color: #063F82;
+    }
+
+    select {
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #D9D9D9;
+      font-size: 0.9rem;
+      color: #063F82;
+      background-color: #FFFFFF;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #3092FB;
+      box-shadow: 0 0 0 2px rgba(48,146,251,0.2);
+    }
+
+    /* ===== Botão principal ===== */
+    button {
+      margin-top: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: #3092FB;
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background: #063F82;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #resultado {
+      margin-top: 20px;
+    }
+
+    .resultado-item {
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #063F82;
+    }
+
+    .resultado-item strong {
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    /* ===== Estados de compatibilidade ===== */
+/* COMPATÍVEL – verde pastel com efeito 3D e brilho no topo */
+.status-compativel {
+  position: relative;
+  background: linear-gradient(to bottom, #E9F7EC, #D3EFD9); /* verde pastel suave */
+  border-left: 4px solid #2E7D32;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.status-compativel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+  pointer-events: none;
+}
+
+/* INCOMPATÍVEL – vermelho pastel com efeito 3D e brilho no topo */
+.status-incompativel {
+  position: relative;
+  background: linear-gradient(to bottom, #FDE7EA, #F8CDD3); /* vermelho rosado pastel */
+  border-left: 4px solid #C62828;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  color: #4A1010;
+}
+
+.status-incompativel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), transparent);
+  pointer-events: none;
+}
+
+/* VARIÁVEL – amarelo pastel com efeito 3D e brilho no topo */
+.status-variavel {
+  position: relative;
+  background: linear-gradient(to bottom, #FFF9E3, #FFEEC0); /* amarelo pastel */
+  border-left: 4px solid #F9A825;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.status-variavel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), transparent);
+  pointer-events: none;
+}
+
+/* Você pode manter o "desconhecido" mais neutro */
+.status-desconhecido {
+  background: #eeeeee;
+  border-left: 4px solid #757575;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.disclaimer {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #36577E;
+  line-height: 1.4;
+}
+    .alerta-bolus {
+  margin-bottom: 16px;
+  background: #FFF0F6;
+  border: 2px solid #E0115F;
+  border-left: 6px solid #E0115F;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(224, 17, 95, 0.12);
+  color: #7A0B3A;
+}
+
+.alerta-bolus-titulo {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #E0115F;
+  margin-bottom: 8px;
+}
+
+.alerta-bolus-intro {
+  margin: 0 0 10px 0;
+  line-height: 1.45;
+  color: #7A0B3A;
+}
+
+.alerta-bolus-lista {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.alerta-bolus-lista li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.alerta-bolus-lista strong {
+  color: #A10C45;
+}
