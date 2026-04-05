@@ -126,7 +126,7 @@ const MEDICAMENTOS = [
 { id: "vasopressina", nome: "Vasopressina" },
 { id: "voriconazol", nome: "Voriconazol" },
 ];
-    const COMPATIBILIDADES = {
+    const COMPATIBILIDADE_POR_DROGA = {
   "Acetilcisteína": {
     "compativel": [
       "amicacina_sulfato",
