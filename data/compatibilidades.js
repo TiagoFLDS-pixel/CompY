@@ -1,5 +1,5 @@
 // ficheiro de dados de compatibilidade
-const medicamentos = [
+const MEDICAMENTOS = [
 { id: "acetilcisteina", nome: "Acetilcisteína" },
 { id: "aciclovir_sodico", nome: "Aciclovir (Sódico)" },
 { id: "acido_ascorbico", nome: "Ácido Ascórbico" },
@@ -126,7 +126,7 @@ const medicamentos = [
 { id: "vasopressina", nome: "Vasopressina" },
 { id: "voriconazol", nome: "Voriconazol" },
 ];
-    const compatibilidadePorDroga = {
+    const COMPATIBILIDADES = {
   "Acetilcisteína": {
     "compativel": [
       "amicacina_sulfato",
