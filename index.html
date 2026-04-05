@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
+  <title>Compatibilidade em Via Y</title>
   <meta charset="UTF-8" />
-  <title>Compatibilidade em Via Y - Protótipo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVP5EMMV4B"></script>
   <script>
@@ -11,6 +13,7 @@
     gtag('js', new Date());
     gtag('config', 'G-TVP5EMMV4B');
   </script>
+
   <!-- Cor da barra do navegador / app -->
   <meta name="theme-color" content="#3092FB">
 
@@ -20,10 +23,10 @@
   <!-- Manifesto para virar app no Android -->
   <link rel="manifest" href="manifest.json">
 
-  <style src="style.css">  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <header class="topo">
       <img src="logo.png" alt="Logo do aplicativo">
       <h1>Compatibilidade de Medicamentos</h1>
@@ -39,35 +42,35 @@
       <div class="form-grid">
         <label>
           Medicamento 1
-          <select class="med-select">
+          <select class="med-select" name="med1">
             <option value="">-- Selecione --</option>
           </select>
         </label>
 
         <label>
           Medicamento 2
-          <select class="med-select">
+          <select class="med-select" name="med2">
             <option value="">-- Selecione --</option>
           </select>
         </label>
 
         <label>
           Medicamento 3
-          <select class="med-select">
+          <select class="med-select" name="med3">
             <option value="">-- Selecione --</option>
           </select>
         </label>
 
         <label>
           Medicamento 4
-          <select class="med-select">
+          <select class="med-select" name="med4">
             <option value="">-- Selecione --</option>
           </select>
         </label>
 
         <label>
           Medicamento 5
-          <select class="med-select">
+          <select class="med-select" name="med5">
             <option value="">-- Selecione --</option>
           </select>
         </label>
@@ -81,7 +84,7 @@
         Este protótipo ainda é experimental. Os exemplos de Incompatibilidade/Compatibilidade devem ser confirmados em protocolos institucionais, Trissel/Micromedex/Lexicomp, bula e com a farmácia clínica.
       </p>
     </div>
-  </div>
+  </main>
 
   <script src="app.js"></script>
 </body>
