@@ -5,7 +5,7 @@ const MEDICAMENTOS = [
 { id: "acido_ascorbico", nome: "Ácido Ascórbico" },
 { id: "acido_tranexamico", nome: "Ácido Tranexâmico" },
 { id: "acido_valproico", nome: "Ácido Valpróico" },
-{ id: "albumina_humana", nome: "Albumina Humana 20%" },
+{ id: "albumina_humana_20", nome: "Albumina Humana 20%" },
 { id: "alfentanil_cloridrato", nome: "Alfentanil (Cloridrato)" },
 { id: "alteplase", nome: "Alteplase" },
 { id: "amicacina_sulfato", nome: "Amicacina (sulfato)" },
@@ -127,7 +127,7 @@ const MEDICAMENTOS = [
 { id: "voriconazol", nome: "Voriconazol" },
 ];
     const COMPATIBILIDADE_POR_DROGA = {
-  "Acetilcisteína": {
+  "acetilcisteina": {
     "compativel": [
       "amicacina_sulfato",
       "amiodarona_cloridrato",
@@ -186,7 +186,7 @@ const MEDICAMENTOS = [
       "metronidazol"
     ]
   },
-  "Aciclovir (Sódico)": {
+  "aciclovir_sodico": {
     "compativel": [
       "amicacina_sulfato",
       "ampicilina_sodica",
@@ -247,7 +247,7 @@ const MEDICAMENTOS = [
       "tramadol_cloridrato"
     ]
   },
-  "Ácido Ascórbico": {
+  "acido_ascorbico": {
     "compativel": [
       "propofol"
     ],
@@ -261,7 +261,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Ácido Tranexâmico": {
+  "acido_tranexamico": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "dexmedetomidina",
@@ -270,7 +270,7 @@ const MEDICAMENTOS = [
     "variavel": [],
     "incompativel": []
   },
-  "Ácido Valpróico": {
+  "acido_valproico": {
     "compativel": [
       "atracurio_besilato",
       "cefepime_dicloridrato",
@@ -295,7 +295,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Albumina Humana": {
+  "albumina_humana_20": {
     "compativel": [
       "dexmedetomidina",
       "esmolol_cloridrato",
@@ -313,7 +313,7 @@ const MEDICAMENTOS = [
       "midazolam_cloridrato"
     ]
   },
-  "Alfentanil (Cloridrato)": {
+  "alfentanil_cloridrato": {
     "compativel": [
       "cefazolina_sodica",
       "cefuroxima_sodica",
@@ -332,7 +332,7 @@ const MEDICAMENTOS = [
       "anfotericina_b_complexo_sulfato_colesterilico"
     ]
   },
-  "Alteplase": {
+  "alteplase": {
     "compativel": [
       "metoprolol_tartarato",
       "nitroglicerina"
@@ -345,7 +345,7 @@ const MEDICAMENTOS = [
       "morfina_sulfato"
     ]
   },
-  "Amicacina (sulfato)": {
+  "amicacina_sulfato": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -415,7 +415,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Aminofilina": {
+  "aminofilina": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "anfotericina_b_complexo_sulfato_colesterilico",
@@ -471,7 +471,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Amiodarona (Cloridrato)": {
+  "amiodarona_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "amicacina_sulfato",
@@ -537,7 +537,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Amoxicilina (Sódica)": {
+  "amoxicilina_sodica": {
     "compativel": [
       "heparina_sodica",
       "insulina",
@@ -556,7 +556,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Amoxicilina (Sódica) + Clavulanato": {
+  "amoxicilina_sodica_clavulanato": {
     "compativel": [
       "acetilcisteina",
       "acido_tranexamico",
@@ -619,7 +619,7 @@ const MEDICAMENTOS = [
     ],
     "incompativel": [
       "aciclovir_sodico",
-      "albumina_humana",
+      "albumina_humana_20",
       "amiodarona_cloridrato",
       "cetamina_cloridrato",
       "clindamicina_fosfato",
@@ -633,7 +633,7 @@ const MEDICAMENTOS = [
       "ondansetron_cloridrato"
     ]
   },
-  "Ampicilina (Sódica)": {
+  "ampicilina_sodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -681,7 +681,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Anfotericina B": {
+  "anfotericina_b": {
     "compativel": [
       "amiodarona_cloridrato",
       "ceftazidima",
@@ -719,7 +719,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Anfotericina B (Complexo lipídico)": {
+  "anfotericina_b_complexo_lipidico)": {
     "compativel": [],
     "variavel": [],
     "incompativel": [
@@ -729,7 +729,7 @@ const MEDICAMENTOS = [
       "tigeciclina"
     ]
   },
-  "Anfotericina B (Complexo sulfato colesterílico)": {
+  "anfotericina_b_complexo_sulfato_colesterilico)": {
     "compativel": [
       "aciclovir_sodico",
       "aminofilina",
@@ -794,7 +794,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Anfotericina B (Lipossómica)": {
+  "anfotericina_b_lipossomica": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "anidulafungina",
@@ -809,7 +809,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Angiotensina II": {
+  "angiotensina_ii": {
     "compativel": [
       "dopamina_cloridrato",
       "noradrenalina_bitartarato",
@@ -818,7 +818,7 @@ const MEDICAMENTOS = [
     "variavel": [],
     "incompativel": []
   },
-  "Anidulafungina": {
+  "anidulafungina": {
     "compativel": [
       "aciclovir_sodico",
       "amicacina_sulfato",
@@ -868,7 +868,7 @@ const MEDICAMENTOS = [
       "bicarbonato_sodio"
     ]
   },
-  "Atracúrio (Besilato)": {
+  "atracurio_besilato": {
     "compativel": [
       "acido_valproico",
       "aminofilina",
@@ -903,7 +903,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Atropina (Sulfato)": {
+  "atropina_sulfato": {
     "compativel": [
       "acetilcisteina",
       "amiodarona_cloridrato",
@@ -932,7 +932,7 @@ const MEDICAMENTOS = [
       "gluconato_calcio"
     ]
   },
-  "Azitromicina": {
+  "azitromicina": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -966,7 +966,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Aztreonam": {
+  "aztreonam": {
     "compativel": [
       "aminofilina",
       "ampicilina_sodica",
@@ -1030,7 +1030,7 @@ const MEDICAMENTOS = [
       "metronidazol"
     ]
   },
-  "Betametasona (Fosfato sódico)": {
+  "betametasona_fosfato_sodico": {
     "compativel": [
       "cloreto_potassio",
       "heparina_sodica",
@@ -1042,7 +1042,7 @@ const MEDICAMENTOS = [
       "sulfato_magnesio"
     ]
   },
-  "Bicarbonato de Sódio": {
+  "bicarbonato_sodio": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1114,7 +1114,7 @@ const MEDICAMENTOS = [
       "voriconazol"
     ]
   },
-  "Buprenorfina (Cloridrato)": {
+  "buprenorfina_cloridrato": {
     "compativel": [
       "aztreonam",
       "filgrastim",
@@ -1130,7 +1130,7 @@ const MEDICAMENTOS = [
       "furosemida"
     ]
   },
-  "Caspofungina (Acetato)": {
+  "caspofungina_acetato": {
     "compativel": [
       "acetilcisteina",
       "amicacina_sulfato",
@@ -1189,7 +1189,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cefazolina (Sódica)": {
+  "cefazolina_sodica": {
     "compativel": [
       "aciclovir_sodico",
       "alfentanil_cloridrato",
@@ -1243,7 +1243,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cefepime (Dicloridrato)": {
+  "cefepime_dicloridrato": {
     "compativel": [
       "acido_valproico",
       "anidulafungina",
@@ -1286,7 +1286,7 @@ const MEDICAMENTOS = [
       "propofol"
     ]
   },
-  "Cefotaxima (Sódica)": {
+  "cefotaxima_sodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1331,7 +1331,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cefoxitina (Sódica)": {
+  "cefoxitina_sodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1366,7 +1366,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Ceftazidima": {
+  "ceftazidima": {
     "compativel": [
       "acido_valproico",
       "amoxicilina_sodica_clavulanato",
@@ -1428,7 +1428,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Ceftazidima + Avibactam": {
+  "ceftazidima_avibactam": {
     "compativel": [
       "aztreonam"
     ],
@@ -1440,7 +1440,7 @@ const MEDICAMENTOS = [
       "gentamicina_sulfato"
     ]
   },
-  "Ceftolozano + Tazobactam": {
+  "ceftolozano_tazobactam": {
     "compativel": [
       "amiodarona_cloridrato",
       "anidulafungina",
@@ -1503,7 +1503,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ],
     "incompativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "anfotericina_b",
       "anfotericina_b_complexo_lipidico",
       "anfotericina_b_lipossomica",
@@ -1512,7 +1512,7 @@ const MEDICAMENTOS = [
       "propofol"
     ]
   },
-  "Ceftriaxona (Dissódica)": {
+  "ceftriaxona_dissodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1556,7 +1556,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cefuroxima (Sódica)": {
+  "cefuroxima_sodica": {
     "compativel": [
       "aciclovir_sodico",
       "alfentanil_cloridrato",
@@ -1604,7 +1604,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cetamina (Cloridrato)": {
+  "cetamina_cloridrato": {
     "compativel": [
       "amicacina_sulfato",
       "amiodarona_cloridrato",
@@ -1669,7 +1669,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Ciclofosfamida": {
+  "ciclofosfamida": {
     "compativel": [
       "anidulafungina",
       "aztreonam",
@@ -1686,7 +1686,7 @@ const MEDICAMENTOS = [
       "anfotericina_b_complexo_sulfato_colesterilico"
     ]
   },
-  "Ciprofloxacina (Lactato)": {
+  "ciprofloxacina_lactato": {
     "compativel": [
       "acetilcisteina",
       "amiodarona_cloridrato",
@@ -1752,7 +1752,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Clindamicina (Fosfato)": {
+  "clindamicina_fosfato": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1812,7 +1812,7 @@ const MEDICAMENTOS = [
       "tramadol_cloridrato"
     ]
   },
-  "Clonidina (Cloridrato)": {
+  "clonidina_cloridrato": {
     "compativel": [
       "acido_valproico",
       "aminofilina",
@@ -1842,7 +1842,7 @@ const MEDICAMENTOS = [
       "sufentanil_citrato"
     ]
   },
-  "Cloranfenicol (Succinato sódico)": {
+  "cloranfenicol_succinato_sodico)": {
     "compativel": [
       "aciclovir_sodico",
       "esmolol_cloridrato",
@@ -1860,7 +1860,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Cloreto de Cálcio": {
+  "cloreto_calcio": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -1889,7 +1889,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Cloreto de Potássio": {
+  "cloreto_potassio": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -1956,7 +1956,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Clorotiazida (Sódica)": {
+  "clorotiazida_sodica": {
     "compativel": [
       "furosemida"
     ],
@@ -1967,7 +1967,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Sulfametoxazol + Trimetoprim": {
+  "sulfametoxazol_trimetoprim": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -2008,12 +2008,12 @@ const MEDICAMENTOS = [
       "salbutamol_sulfato"
     ]
   },
-  "Dantroleno (Sódico)": {
+  "dantroleno_sodico": {
     "compativel": [],
     "variavel": [],
     "incompativel": []
   },
-  "Daptomicina": {
+  "daptomicina": {
     "compativel": [
       "aztreonam",
       "bicarbonato_sodio",
@@ -2032,7 +2032,7 @@ const MEDICAMENTOS = [
     "variavel": [],
     "incompativel": []
   },
-  "Dexametasona (Fosfato sódico)": {
+  "dexametasona_fosfato_sodico": {
     "compativel": [
       "aciclovir_sodico",
       "acido_valproico",
@@ -2081,12 +2081,12 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Dexmedetomidina": {
+  "dexmedetomidina": {
     "compativel": [
       "acetilcisteina",
       "acido_tranexamico",
       "acido_valproico",
-      "albumina_humana",
+      "albumina_humana_20",
       "alfentanil_cloridrato",
       "amicacina_sulfato",
       "aminofilina",
@@ -2166,7 +2166,7 @@ const MEDICAMENTOS = [
       "micafungina"
     ]
   },
-  "Diazepam": {
+  "diazepam": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -2202,7 +2202,7 @@ const MEDICAMENTOS = [
       "tramadol_cloridrato"
     ]
   },
-  "Diclofenac": {
+  "diclofenac": {
     "compativel": [
       "clonidina_cloridrato",
       "furosemida",
@@ -2249,7 +2249,7 @@ const MEDICAMENTOS = [
       "fluconazol"
     ]
   },
-  "Dinitrato de Isossorbida": {
+  "dinitrato_isossorbida": {
     "compativel": [
       "cefepime_dicloridrato",
       "ceftazidima",
@@ -2260,7 +2260,7 @@ const MEDICAMENTOS = [
     "variavel": [],
     "incompativel": []
   },
-  "Dobutamina (Cloridrato)": {
+  "dobutamina_cloridrato": {
     "compativel": [
       "acido_valproico",
       "anidulafungina",
@@ -2330,7 +2330,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Dopamina (Cloridrato)": {
+  "dopamina_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "acido_valproico",
@@ -2401,7 +2401,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Droperidol": {
+  "droperidol": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -2434,14 +2434,9 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Epoetina alfa": {
-    "compativel": [],
-    "variavel": [],
-    "incompativel": []
-  },
-  "Esmolol (Cloridrato)": {
+  "esmolol_cloridrato": {
     "compativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "amicacina_sulfato",
       "aminofilina",
       "amiodarona_cloridrato",
@@ -2500,7 +2495,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Etomidato": {
+  "etomidato": {
     "compativel": [
       "alfentanil_cloridrato",
       "atracurio_besilato",
@@ -2519,7 +2514,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Fenitoína (Sódica)": {
+  "fenitoina_sodica": {
     "compativel": [
       "esmolol_cloridrato",
       "fluconazol",
@@ -2558,7 +2553,7 @@ const MEDICAMENTOS = [
       "vasopressina"
     ]
   },
-  "Fenobarbital (Sódico)": {
+  "fenobarbital_sodico": {
     "compativel": [
       "fentanilo_citrato",
       "levofloxacina",
@@ -2582,7 +2577,7 @@ const MEDICAMENTOS = [
       "suxametonio_cloreto"
     ]
   },
-  "Fentanilo (Citrato)": {
+  "fentanilo_citrato": {
     "compativel": [
       "aciclovir_sodico",
       "amoxicilina_sodica_clavulanato",
@@ -2645,7 +2640,7 @@ const MEDICAMENTOS = [
       "fenitoina_sodica"
     ]
   },
-  "Filgrastim": {
+  "filgrastim": {
     "compativel": [
       "aciclovir_sodico",
       "amicacina_sulfato",
@@ -2693,12 +2688,12 @@ const MEDICAMENTOS = [
       "piperacilina_sodica"
     ]
   },
-  "Fitomenadiona": {
+  "fitomenadiona": {
     "compativel": [],
     "variavel": [],
     "incompativel": []
   },
-  "Flucloxacilina (Sódica)": {
+  "flucloxacilina_sodica": {
     "compativel": [
       "aminofilina",
       "ampicilina_sodica",
@@ -2726,7 +2721,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Fluconazol": {
+  "fluconazol": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -2798,7 +2793,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Fosfato de Potássio": {
+  "fosfato_potassio": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "ceftolozano_tazobactam",
@@ -2831,7 +2826,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Furosemida": {
+  "furosemida": {
     "compativel": [
       "acetilcisteina",
       "aminofilina",
@@ -2912,7 +2907,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Ganciclovir (Sódico)": {
+  "ganciclovir_sodico": {
     "compativel": [
       "anfotericina_b_complexo_sulfato_colesterilico",
       "anidulafungina",
@@ -2933,14 +2928,8 @@ const MEDICAMENTOS = [
       "piperacilina_sodica_tazobactam"
     ]
   },
-  "Gelatina": {
-    "compativel": [],
-    "variavel": [],
-    "incompativel": [
-      "vancomicina_cloridrato"
-    ]
-  },
-  "Gentamicina (Sulfato)": {
+
+  "gentamicina_sulfato": {
     "compativel": [
       "acetilcisteina",
       "amiodarona_cloridrato",
@@ -3013,7 +3002,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Gluconato de Cálcio": {
+  "gluconato_calcio": {
     "compativel": [
       "acetilcisteina",
       "amiodarona_cloridrato",
@@ -3073,7 +3062,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Haloperidol (Lactato)": {
+  "haloperidol_lactato": {
     "compativel": [
       "amiodarona_cloridrato",
       "aztreonam",
@@ -3114,7 +3103,7 @@ const MEDICAMENTOS = [
       "piperacilina_sodica_tazobactam"
     ]
   },
-  "Heparina (Sódica)": {
+  "heparina_sodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -3208,7 +3197,7 @@ const MEDICAMENTOS = [
       "polimixina_b"
     ]
   },
-  "Hidralazina (Cloridrato)": {
+  "hidralazina_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "caspofungina_acetato",
@@ -3225,11 +3214,11 @@ const MEDICAMENTOS = [
       "propofol"
     ]
   },
-  "Hidrocortisona (Succinato sódico)": {
+  "hidrocortisona_succinato_sodico": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
-      "albumina_humana",
+      "albumina_humana_20",
       "amiodarona_cloridrato",
       "anfotericina_b_complexo_sulfato_colesterilico",
       "anidulafungina",
@@ -3284,7 +3273,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Imipenem + Cilastatina (Sódica)": {
+  "imipenem_cilastatina_sodica": {
     "compativel": [
       "aciclovir_sodico",
       "anidulafungina",
@@ -3316,7 +3305,7 @@ const MEDICAMENTOS = [
       "petidina_cloridrato"
     ]
   },
-  "Insulina": {
+  "insulina": {
     "compativel": [
       "amoxicilina_sodica",
       "amoxicilina_sodica_clavulanato",
@@ -3377,7 +3366,7 @@ const MEDICAMENTOS = [
       "salbutamol_sulfato"
     ]
   },
-  "Labetalol (Cloridrato)": {
+  "labetalol_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "amicacina_sulfato",
@@ -3424,7 +3413,7 @@ const MEDICAMENTOS = [
       "heparina_sodica"
     ],
     "incompativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "anfotericina_b_complexo_sulfato_colesterilico",
       "bicarbonato_sodio",
       "cefepime_dicloridrato",
@@ -3436,7 +3425,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Levetiracetam": {
+  "levetiracetam": {
     "compativel": [
       "cefazolina_sodica",
       "cefotaxima_sodica",
@@ -3455,7 +3444,7 @@ const MEDICAMENTOS = [
       "heparina_sodica"
     ]
   },
-  "Levofloxacina": {
+  "levofloxacina": {
     "compativel": [
       "amicacina_sulfato",
       "aminofilina",
@@ -3505,7 +3494,7 @@ const MEDICAMENTOS = [
       "nitroprussiato_sodio"
     ]
   },
-  "Linezolida": {
+  "linezolida": {
     "compativel": [
       "aciclovir_sodico",
       "alfentanil_cloridrato",
@@ -3579,7 +3568,7 @@ const MEDICAMENTOS = [
       "fenitoina_sodica"
     ]
   },
-  "Manitol": {
+  "manitol": {
     "compativel": [
       "acetilcisteina",
       "acido_valproico",
@@ -3610,7 +3599,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Meropenem": {
+  "meropenem": {
     "compativel": [
       "acetilcisteina",
       "acido_valproico",
@@ -3690,7 +3679,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Mesna": {
+  "mesna": {
     "compativel": [
       "aztreonam",
       "bicarbonato_sodio",
@@ -3708,7 +3697,7 @@ const MEDICAMENTOS = [
       "anfotericina_b_complexo_sulfato_colesterilico"
     ]
   },
-  "Metilprednisolona (Acetato)": {
+  "metilprednisolona_acetato": {
     "compativel": [
       "cetamina_cloridrato",
       "naloxona_cloridrato",
@@ -3719,7 +3708,7 @@ const MEDICAMENTOS = [
       "amoxicilina_sodica_clavulanato"
     ]
   },
-  "Metoclopramida (Cloridrato)": {
+  "metoclopramida_cloridrato": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "aztreonam",
@@ -3761,9 +3750,9 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Metoprolol (Tartarato)": {
+  "metoprolol_tartarato": {
     "compativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "alteplase",
       "amiodarona_cloridrato",
       "cefepime_dicloridrato",
@@ -3786,7 +3775,7 @@ const MEDICAMENTOS = [
       "sulfato_magnesio"
     ]
   },
-  "Metronidazol": {
+  "metronidazol": {
     "compativel": [
       "aciclovir_sodico",
       "amicacina_sulfato",
@@ -3843,7 +3832,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Micafungina": {
+  "micafungina": {
     "compativel": [
       "aminofilina",
       "amoxicilina_sodica_clavulanato",
@@ -3868,7 +3857,7 @@ const MEDICAMENTOS = [
     ],
     "variavel": [],
     "incompativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "amiodarona_cloridrato",
       "dexmedetomidina",
       "dobutamina_cloridrato",
@@ -3884,7 +3873,7 @@ const MEDICAMENTOS = [
       "rocuronio_brometo"
     ]
   },
-  "Midazolam (Cloridrato)": {
+  "midazolam_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "amicacina_sulfato",
@@ -3949,7 +3938,7 @@ const MEDICAMENTOS = [
     ],
     "incompativel": [
       "acido_valproico",
-      "albumina_humana",
+      "albumina_humana_20",
       "amoxicilina_sodica",
       "amoxicilina_sodica_clavulanato",
       "ampicilina_sodica",
@@ -3966,7 +3955,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Morfina (Sulfato)": {
+  "morfina_sulfato": {
     "compativel": [
       "alfentanil_cloridrato",
       "amicacina_sulfato",
@@ -4049,7 +4038,7 @@ const MEDICAMENTOS = [
       "tigeciclina"
     ]
   },
-  "Nalbufina (Cloridrato)": {
+  "nalbufina_cloridrato": {
     "compativel": [
       "aciclovir_sodico",
       "amicacina_sulfato",
@@ -4077,7 +4066,7 @@ const MEDICAMENTOS = [
       "piperacilina_sodica_tazobactam"
     ]
   },
-  "Naloxona (Cloridrato)": {
+  "naloxona_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "acido_valproico",
@@ -4158,7 +4147,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Nitroglicerina": {
+  "nitroglicerina": {
     "compativel": [
       "acetilcisteina",
       "alteplase",
@@ -4207,7 +4196,7 @@ const MEDICAMENTOS = [
       "salbutamol_sulfato"
     ]
   },
-  "Nitroprussiato de Sódio": {
+  "nitroprussiato_sodio": {
     "compativel": [
       "amiodarona_cloridrato",
       "atracurio_besilato",
@@ -4237,7 +4226,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Noradrenalina (Bitartarato)": {
+  "noradrenalina_bitartarato": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -4289,7 +4278,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Octreótido (Acetato)": {
+  "octreotido_acetato": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "ceftolozano_tazobactam",
@@ -4303,7 +4292,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Omeprazol (Sódico)": {
+  "omeprazol_sodico": {
     "compativel": [
       "furosemida"
     ],
@@ -4316,7 +4305,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Ondansetron (Cloridrato)": {
+  "ondansetron_cloridrato": {
     "compativel": [
       "alfentanil_cloridrato",
       "amicacina_sulfato",
@@ -4381,7 +4370,7 @@ const MEDICAMENTOS = [
       "piperacilina_sodica"
     ]
   },
-  "Pancurónio (Brometo)": {
+  "pancuronio_brometo": {
     "compativel": [
       "aminofilina",
       "cefazolina_sodica",
@@ -4416,9 +4405,9 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Paracetamol": {
+  "paracetamol": {
     "compativel": [
-      "albumina_humana",
+      "albumina_humana_20",
       "amicacina_sulfato",
       "aminofilina",
       "amiodarona_cloridrato",
@@ -4491,7 +4480,7 @@ const MEDICAMENTOS = [
       "propofol"
     ]
   },
-  "Penicilina G (Potássica)": {
+  "penicilina_g_potassica": {
     "compativel": [
       "aciclovir_sodico",
       "amiodarona_cloridrato",
@@ -4517,7 +4506,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Penicilina G (Sódica)": {
+  "penicilina_g_sodica": {
     "compativel": [
       "dexmedetomidina",
       "levofloxacina",
@@ -4533,7 +4522,7 @@ const MEDICAMENTOS = [
       "heparina_sodica"
     ]
   },
-  "Petidina (Cloridrato)": {
+  "petidina_cloridrato": {
     "compativel": [
       "amicacina_sulfato",
       "anidulafungina",
@@ -4597,7 +4586,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Piperacilina (Sódica)": {
+  "piperacilina_sodica": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
@@ -4637,7 +4626,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Piperacilina (Sódica) + Tazobactam": {
+  "piperacilina_sodica_tazobactam": {
     "compativel": [
       "acetilcisteina",
       "aminofilina",
@@ -4700,7 +4689,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Polimixina B": {
+  "Polimixina_b": {
     "compativel": [
       "esmolol_cloridrato"
     ],
@@ -4711,7 +4700,7 @@ const MEDICAMENTOS = [
       "sulfato_magnesio"
     ]
   },
-  "Propofol": {
+  "propofol": {
     "compativel": [
       "aciclovir_sodico",
       "acido_ascorbico",
@@ -4793,7 +4782,7 @@ const MEDICAMENTOS = [
       "paracetamol"
     ]
   },
-  "Remifentanil (Cloridrato)": {
+  "remifentanil_cloridrato": {
     "compativel": [
       "aciclovir_sodico",
       "alfentanil_cloridrato",
@@ -4860,7 +4849,7 @@ const MEDICAMENTOS = [
       "anfotericina_b_complexo_sulfato_colesterilico"
     ]
   },
-  "Rocurónio (Brometo)": {
+  "rocuronio_brometo": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -4889,7 +4878,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Salbutamol (Sulfato)": {
+  "salbutamol_sulfato": {
     "compativel": [
       "amiodarona_cloridrato",
       "amoxicilina_sodica_clavulanato",
@@ -4949,7 +4938,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Sufentanil (Citrato)": {
+  "sufentanil_citrato": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "anfotericina_b_complexo_sulfato_colesterilico",
@@ -4980,7 +4969,7 @@ const MEDICAMENTOS = [
       "gluconato_calcio"
     ]
   },
-  "Sulfato de Magnésio": {
+  "sulfato_magnesio": {
     "compativel": [
       "aciclovir_sodico",
       "acido_valproico",
@@ -5046,7 +5035,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Suxametónio (Cloreto)": {
+  "suxametonio_cloreto": {
     "compativel": [
       "dexmedetomidina",
       "etomidato",
@@ -5059,7 +5048,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Tacrolimus": {
+  "tacrolimus": {
     "compativel": [
       "aminofilina",
       "ampicilina_sodica",
@@ -5107,7 +5096,7 @@ const MEDICAMENTOS = [
     ],
     "incompativel": []
   },
-  "Teicoplanina": {
+  "teicoplanina": {
     "compativel": [
       "heparina_sodica"
     ],
@@ -5119,7 +5108,7 @@ const MEDICAMENTOS = [
       "gentamicina_sulfato"
     ]
   },
-  "Terbutalina (Sulfato)": {
+  "terbutalina_sulfato": {
     "compativel": [
       "insulina"
     ],
@@ -5128,7 +5117,7 @@ const MEDICAMENTOS = [
       "gluconato_calcio"
     ]
   },
-  "Tiamina (Cloridrato)": {
+  "tiamina_cloridrato": {
     "compativel": [
       "amiodarona_cloridrato",
       "amoxicilina_sodica_clavulanato",
@@ -5149,7 +5138,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Tigeciclina": {
+  "tigeciclina": {
     "compativel": [
       "amicacina_sulfato",
       "ceftolozano_tazobactam",
@@ -5173,7 +5162,7 @@ const MEDICAMENTOS = [
       "omeprazol_sodico"
     ]
   },
-  "Tiopental (Sódico)": {
+  "tiopental_sodico": {
     "compativel": [
       "acido_valproico",
       "alfentanil_cloridrato",
@@ -5249,7 +5238,7 @@ const MEDICAMENTOS = [
       "vancomicina_cloridrato"
     ]
   },
-  "Tramadol (Cloridrato)": {
+  "tramadol_cloridrato": {
     "compativel": [
       "bicarbonato_sodio",
       "cetamina_cloridrato",
@@ -5270,11 +5259,11 @@ const MEDICAMENTOS = [
       "diclofenac"
     ]
   },
-  "Vancomicina (Cloridrato)": {
+  "vancomicina_cloridrato": {
     "compativel": [
       "acetilcisteina",
       "aciclovir_sodico",
-      "albumina_humana",
+      "albumina_humana_20",
       "amicacina_sulfato",
       "amiodarona_cloridrato",
       "amoxicilina_sodica_clavulanato",
@@ -5351,7 +5340,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Vasopressina": {
+  "vasopressina": {
     "compativel": [
       "amiodarona_cloridrato",
       "angiotensina_ii",
@@ -5385,7 +5374,7 @@ const MEDICAMENTOS = [
       "fenitoina_sodica"
     ]
   },
-  "Voriconazol": {
+  "voriconazol": {
     "compativel": [
       "amoxicilina_sodica_clavulanato",
       "anidulafungina",
