@@ -40,7 +40,6 @@ const aliases = {
   "naloxona": "naloxona_cloridrato",
   "fentanil_citrato": "fentanilo_citrato",
   "noradrenalina_bitartarato": "noradrenalina_bitartarato",
-  "albumina_humana_20": "albumina_humana",
   "valproato": "acido_valproico"
 };
 
