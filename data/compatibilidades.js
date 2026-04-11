@@ -719,7 +719,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "anfotericina_b_complexo_lipidico)": {
+  "anfotericina_b_complexo_lipidico": {
     "compativel": [],
     "variavel": [],
     "incompativel": [
@@ -729,7 +729,7 @@ const MEDICAMENTOS = [
       "tigeciclina"
     ]
   },
-  "anfotericina_b_complexo_sulfato_colesterilico)": {
+  "anfotericina_b_complexo_sulfato_colesterilico": {
     "compativel": [
       "aciclovir_sodico",
       "aminofilina",
@@ -1842,7 +1842,7 @@ const MEDICAMENTOS = [
       "sufentanil_citrato"
     ]
   },
-  "cloranfenicol_succinato_sodico)": {
+  "cloranfenicol_succinato_sodico": {
     "compativel": [
       "aciclovir_sodico",
       "esmolol_cloridrato",
@@ -2217,7 +2217,7 @@ const MEDICAMENTOS = [
       "tramadol_cloridrato"
     ]
   },
-  "Digoxina": {
+  "digoxina": {
     "compativel": [
       "acetilcisteina",
       "amoxicilina_sodica_clavulanato",
@@ -4689,7 +4689,7 @@ const MEDICAMENTOS = [
       "tiopental_sodico"
     ]
   },
-  "Polimixina_b": {
+  "polimixina_b": {
     "compativel": [
       "esmolol_cloridrato"
     ],
@@ -5330,7 +5330,6 @@ const MEDICAMENTOS = [
       "fenitoina_sodica",
       "flucloxacilina_sodica",
       "furosemida",
-      "gelatina",
       "hidrocortisona_succinato_sodico",
       "omeprazol_sodico",
       "penicilina_g_potassica",
