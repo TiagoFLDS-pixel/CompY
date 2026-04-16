@@ -351,3 +351,16 @@ function verificarCompatibilidade() {
     "Ferramenta experimental para treinamento. Não utilizar para decisões clínicas reais.";
   resultadoDiv.appendChild(rodape);
 }
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then(reg => {
+        console.log("Service Worker registado com sucesso:", reg.scope);
+      })
+      .catch(err => {
+        console.error("Erro ao registar Service Worker:", err);
+      });
+  });
+}
