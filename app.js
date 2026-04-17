@@ -359,8 +359,7 @@ if ("serviceWorker" in navigator) {
       .then(reg => {
         console.log("Service Worker registado com sucesso:", reg.scope);
       })
-      .catch(err => {
-        console.error("Erro ao registar Service Worker:", err);
+      .catch(err => {console.error("Erro ao registar Service Worker:", err);
       });
   });
 }
