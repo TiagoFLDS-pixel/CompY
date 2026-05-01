@@ -133,7 +133,60 @@ function buscarCompatibilidade(idA, idB) {
 
   return null;
 }
+async function buscarCompatibilidadeSupabase(idA, idB) {
+  if (!window.compYSupabase) {
+    throw new Error("Cliente Supabase não está disponível.");
+  }
 
+  const { data, error } = await window.compYSupabase.rpc("obter_compatibilidade", {
+    med_a: idA,
+    med_b: idB
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!Array.isArray(data) || data.length === 0) {
+    return {
+      status: "nao_identificado",
+      origem: "supabase",
+      fonte: null,
+      dataFonte: null,
+      observacoes: null
+    };
+  }
+
+  const item = data[0];
+
+  return {
+    status: item.classificacao,
+    origem: "supabase",
+    fonte: item.fonte,
+    dataFonte: item.data_fonte,
+    observacoes: item.observacoes,
+    validado: item.validado
+  };
+}
+
+async function buscarCompatibilidadeComFallback(idA, idB) {
+  try {
+    return await buscarCompatibilidadeSupabase(idA, idB);
+  } catch (erro) {
+    console.warn("Falha ao consultar Supabase. A usar base local como fallback.", erro);
+
+    const resultadoLocal = buscarCompatibilidade(idA, idB);
+
+    if (!resultadoLocal) {
+      return null;
+    }
+
+    return {
+      ...resultadoLocal,
+      origem: "json_local"
+    };
+  }
+}
 function validarBase() {
   const chavesSemMatch = [];
   const refsInvalidas = [];
@@ -275,7 +328,7 @@ function criarAvisoBolus(idsSelecionados) {
   return caixa;
 }
 
-function verificarCompatibilidade() {
+async function verificarCompatibilidade() {
   const resultadoDiv = document.getElementById("resultado");
   resultadoDiv.innerHTML = "";
 
@@ -306,7 +359,7 @@ function verificarCompatibilidade() {
       const nomeA = obterNomeMedicamento(idA);
       const nomeB = obterNomeMedicamento(idB);
 
-      const resultado = buscarCompatibilidade(idA, idB);
+const resultado = await buscarCompatibilidadeComFallback(idA, idB);
 
       const bloco = document.createElement("div");
       bloco.classList.add("resultado-item");
@@ -341,7 +394,28 @@ function verificarCompatibilidade() {
       }
 
       bloco.appendChild(texto);
-      resultadoDiv.appendChild(bloco);
+
+if (resultado && resultado.origem === "supabase") {
+  const fonte = document.createElement("small");
+  fonte.classList.add("resultado-fonte");
+
+  if (resultado.fonte) {
+    fonte.textContent = `Fonte: ${resultado.fonte}${resultado.dataFonte ? ` | Data: ${resultado.dataFonte}` : ""}`;
+  } else {
+    fonte.textContent = "Fonte: Supabase";
+  }
+
+  bloco.appendChild(fonte);
+}
+
+if (resultado && resultado.origem === "json_local") {
+  const fonte = document.createElement("small");
+  fonte.classList.add("resultado-fonte");
+  fonte.textContent = "Fonte: base local de fallback";
+  bloco.appendChild(fonte);
+}
+
+resultadoDiv.appendChild(bloco);
     }
   }
 
