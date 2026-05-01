@@ -48,7 +48,6 @@ const MEDICAMENTOS = [
 { id: "vancomicina_cloridrato", nome: "Vancomicina (Cloridrato)" },
 { id: "vasopressina", nome: "Vasopressina" }
 ];
-    const COMPATIBILIDADE_POR_DROGA = {
 const COMPATIBILIDADE_POR_DROGA = {
   "glucose_5": {
     compativel: [
