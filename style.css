@@ -130,6 +130,13 @@
       display: inline-block;
       margin-bottom: 2px;
     }
+    .resultado-fonte {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #334155;
+      opacity: 0.9;
+    }
 
     /* ===== Estados de compatibilidade ===== */
 /* COMPATÍVEL – verde pastel com efeito 3D e brilho no topo */
