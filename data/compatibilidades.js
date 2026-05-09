@@ -12,7 +12,6 @@ const MEDICAMENTOS = [
 { id: "cloreto_calcio", nome: "Cloreto de Cálcio" },
 { id: "cloreto_potassio", nome: "Cloreto de Potássio" },
 { id: "cloreto_sodio_0_9", nome: "Cloreto de Sódio 0,9%" },
-{ id: "dantroleno_sodico", nome: "Dantroleno (Sódico)" },
 { id: "dexmedetomidina", nome: "Dexmedetomidina" },
 { id: "dinitrato_isossorbida", nome: "Dinitrato de Isossorbida" },
 { id: "dobutamina_cloridrato", nome: "Dobutamina (Cloridrato)" },
