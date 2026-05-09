@@ -1,9 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
-  popularSelects();
+document.addEventListener("DOMContentLoaded", async () => {
+  const botao = document.getElementById("btn-verificar");
+
+  botao.disabled = true;
+  botao.textContent = "A carregar medicamentos...";
+
+  await popularSelects();
   validarBase();
-  document
-    .getElementById("btn-verificar")
-    .addEventListener("click", verificarCompatibilidade);
+
+  botao.addEventListener("click", verificarCompatibilidade);
+
+  botao.disabled = false;
+  botao.textContent = "Verificar compatibilidade";
 });
 
 // ==========================
@@ -37,11 +44,61 @@ for (const med of MEDICAMENTOS) {
 }
 
 const aliases = {
-  "naloxona": "naloxona_cloridrato",
-  "fentanil_citrato": "fentanilo_citrato",
-  "noradrenalina_bitartarato": "noradrenalina_bitartarato",
-  "valproato": "acido_valproico"
+  "noradrenalina": "noradrenalina_bitartarato",
+  "norepinephrine_bitartrate": "noradrenalina_bitartarato",
+  "epinephrine": "adrenalina",
+  "epinephrine_hydrochloride": "adrenalina",
+  "nitroprusside_sodium": "nitroprussiato_sodio",
+  "nitroprussiato": "nitroprussiato_sodio",
+  "isosorbide_dinitrate": "dinitrato_isossorbida"
 };
+async function carregarMedicamentosComFallback() {
+  try {
+    if (!window.compYSupabase) {
+      throw new Error("Cliente Supabase não está disponível.");
+    }
+
+    const { data, error } = await window.compYSupabase
+      .from("medicamentos")
+      .select("id, nome, tipo, ativo")
+      .eq("ativo", true)
+      .order("nome", { ascending: true });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error("Lista de medicamentos do Supabase vazia.");
+    }
+
+    return {
+      medicamentos: data,
+      origem: "supabase"
+    };
+  } catch (erro) {
+    console.warn(
+      "Falha ao carregar medicamentos do Supabase. A usar lista local como fallback.",
+      erro
+    );
+
+    return {
+      medicamentos: MEDICAMENTOS,
+      origem: "json_local"
+    };
+  }
+}
+
+function atualizarIndicesMedicamentos(listaMedicamentos) {
+  medsById.clear();
+  medsByCanon.clear();
+
+  for (const med of listaMedicamentos) {
+    medsById.set(med.id, med);
+    medsByCanon.set(formaCanonica(med.id), med.id);
+    medsByCanon.set(formaCanonica(med.nome), med.id);
+  }
+}
 
 const alertasBolus = {
   "noradrenalina_bitartarato": "Risco de bólus inadvertido com hipertensão marcada, bradicardia reflexa e instabilidade hemodinâmica. Idealmente usar via dedicada.",
@@ -271,17 +328,39 @@ function validarBase() {
 // UI
 // ==========================
 
-function popularSelects() {
+async function popularSelects() {
+  const { medicamentos, origem } = await carregarMedicamentosComFallback();
+
+  atualizarIndicesMedicamentos(medicamentos);
+
+  window.compYMedicamentosOrigem = origem;
+  window.compYMedicamentosAtivos = medicamentos;
+
   const selects = document.querySelectorAll(".med-select");
 
   selects.forEach(select => {
-    MEDICAMENTOS.forEach(med => {
+    const valorAtual = select.value;
+
+    select.innerHTML = "";
+
+    const optionInicial = document.createElement("option");
+    optionInicial.value = "";
+    optionInicial.textContent = "-- Selecione --";
+    select.appendChild(optionInicial);
+
+    medicamentos.forEach(med => {
       const option = document.createElement("option");
       option.value = med.id;
       option.textContent = med.nome;
       select.appendChild(option);
     });
+
+    if (valorAtual && medicamentos.some(med => med.id === valorAtual)) {
+      select.value = valorAtual;
+    }
   });
+
+  console.log(`Medicamentos carregados de: ${origem}`, medicamentos.length);
 }
 
 function obterNomeMedicamento(id) {
