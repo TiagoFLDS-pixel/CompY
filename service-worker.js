@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v3-nitroprussiato";
+const CACHE_NAME = "compy-v4-medicamentos-supabase";
 
 const URLS_TO_CACHE = [
   "./",
