@@ -30,6 +30,7 @@ const MEDICAMENTOS = [
 { id: "metotrexato_sodico", nome: "Metotrexato (Sódico)" },
 { id: "midazolam_cloridrato", nome: "Midazolam (Cloridrato)" },
 { id: "morfina_sulfato", nome: "Morfina (Sulfato)" },
+{ id: "nitroprussiato_sodio", nome: "Nitroprussiato de Sódio" },
 { id: "noradrenalina_bitartarato", nome: "Noradrenalina (Bitartarato)" },
 { id: "nutricao_parenterica_binaria", nome: "Nutrição Parentérica Binária" },
 { id: "nutricao_parenterica_com_lipidos", nome: "Nutrição Parentérica com Lípidos" },
@@ -383,11 +384,6 @@ const COMPATIBILIDADE_POR_DROGA = {
       "propofol",
       "bicarbonato_sodio"
     ],
-    incompativel: [],
-    variavel: []
-  },
-  "dantroleno_sodico": {
-    compativel: [],
     incompativel: [],
     variavel: []
   },
@@ -939,6 +935,29 @@ const COMPATIBILIDADE_POR_DROGA = {
       "propofol"
     ]
   },
+  "nitroprussiato_sodio": {
+  compativel: [
+    "glucose_5",
+    "nutricao_parenterica_com_lipidos",
+    "nutricao_parenterica_binaria",
+    "ringer_lactato",
+    "cloreto_sodio_0_9",
+    "amiodarona_cloridrato",
+    "dexmedetomidina",
+    "dobutamina_cloridrato",
+    "dopamina_cloridrato",
+    "esmolol_cloridrato",
+    "heparina_sodica",
+    "insulina",
+    "labetalol_cloridrato",
+    "midazolam_cloridrato",
+    "morfina_sulfato",
+    "propofol",
+    "tacrolimus"
+  ],
+  incompativel: [],
+  variavel: []
+},
   "noradrenalina_bitartarato": {
     compativel: [
       "glucose_5",
