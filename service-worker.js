@@ -1,11 +1,10 @@
-const CACHE_NAME = "compy-v5-sem-dados-ui";
+const CACHE_NAME = "compy-v6-seis-medicamentos-legenda";
 
 const URLS_TO_CACHE = [
   "./",
   "./index.html",
   "./style.css",
   "./app.js",
-  "./sem-dados-ui.js",
   "./config.supabase.js",
   "./manifest.webmanifest",
   "./logo.png",
