@@ -36,7 +36,7 @@
     <div class="app">
       <h2>Compatibilidade em Via Y (Protótipo)</h2>
       <p class="descricao">
-        Selecione até 5 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
+        Selecione até 6 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
         ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
       </p>
 
@@ -75,11 +75,25 @@
             <option value="">-- Selecione --</option>
           </select>
         </label>
+
+        <label>
+          Medicamento 6
+          <select class="med-select" name="med6">
+            <option value="">-- Selecione --</option>
+          </select>
+        </label>
       </div>
 
       <button type="button" id="btn-verificar">Verificar compatibilidade</button>
 
       <div id="resultado"></div>
+
+      <div class="legenda-status" aria-label="Legenda dos estados de compatibilidade">
+        <span class="legenda-item"><span class="legenda-cor legenda-compativel"></span> Compatível</span>
+        <span class="legenda-item"><span class="legenda-cor legenda-incompativel"></span> Incompatível</span>
+        <span class="legenda-item"><span class="legenda-cor legenda-variavel"></span> Variável</span>
+        <span class="legenda-item"><span class="legenda-cor legenda-sem-dados"></span> Sem dados / não registado</span>
+      </div>
 
       <p class="disclaimer">
         Este protótipo ainda é experimental. Os exemplos de Incompatibilidade/Compatibilidade devem ser confirmados em protocolos institucionais, Trissel/Micromedex/Lexicomp, bula e com a farmácia clínica.
@@ -92,6 +106,5 @@
 
 <script src="data/compatibilidades.js"></script>
 <script src="app.js"></script>
-<script src="sem-dados-ui.js"></script>
 </body>
 </html>
