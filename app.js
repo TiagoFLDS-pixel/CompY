@@ -466,10 +466,10 @@ const resultado = await buscarCompatibilidadeComFallback(idA, idB);
           bloco.classList.add("status-variavel");
           texto.textContent = "Compatibilidade variável/controversa. Verificar fonte atualizada e protocolo local.";
         } else if (status === "nao_identificado") {
-          bloco.classList.add("status-desconhecido");
-          texto.textContent =
-            "Ambos os medicamentos estão na base, mas sem dados de compatibilidade entre si.";
-        }
+  bloco.classList.add("status-desconhecido");
+  texto.textContent =
+    "Sem dados de compatibilidade registados na base atual. Não interpretar como compatível. Confirmar em fonte oficial atualizada e/ou com a farmácia clínica.";
+}
       }
 
       bloco.appendChild(texto);
