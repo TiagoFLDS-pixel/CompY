@@ -52,6 +52,23 @@ const aliases = {
   "nitroprussiato": "nitroprussiato_sodio",
   "isosorbide_dinitrate": "dinitrato_isossorbida"
 };
+
+function textoOrigemDados(resultado) {
+  if (resultado.origem === "json_local") {
+    if (resultado.status === "nao_identificado") {
+      return "Base consultada: fallback local | Sem registo na base validada para este par.";
+    }
+
+    return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: fallback local";
+  }
+
+  if (resultado.status === "nao_identificado") {
+    return "Base consultada: Supabase | Sem registo na base validada para este par.";
+  }
+
+  return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: Supabase";
+}
+
 async function carregarMedicamentosComFallback() {
   try {
     if (!window.compYSupabase) {
@@ -431,6 +448,8 @@ async function verificarCompatibilidade() {
     resultadoDiv.appendChild(avisoBolus);
   }
 
+  let fallbackLocalUsado = false;
+
   for (let i = 0; i < unicos.length; i++) {
     for (let j = i + 1; j < unicos.length; j++) {
       const idA = unicos[i];
@@ -439,6 +458,10 @@ async function verificarCompatibilidade() {
       const nomeB = obterNomeMedicamento(idB);
 
 const resultado = await buscarCompatibilidadeComFallback(idA, idB);
+
+      if (resultado && resultado.origem === "json_local") {
+        fallbackLocalUsado = true;
+      }
 
       const bloco = document.createElement("div");
       bloco.classList.add("resultado-item");
@@ -474,28 +497,23 @@ const resultado = await buscarCompatibilidadeComFallback(idA, idB);
 
       bloco.appendChild(texto);
 
-if (resultado && resultado.origem === "supabase") {
+if (resultado && (resultado.origem === "supabase" || resultado.origem === "json_local")) {
   const fonte = document.createElement("small");
   fonte.classList.add("resultado-fonte");
-
-  if (resultado.fonte) {
-    fonte.textContent = `Fonte: ${resultado.fonte}${resultado.dataFonte ? ` | Data: ${resultado.dataFonte}` : ""}`;
-  } else {
-    fonte.textContent = "Fonte: Supabase";
-  }
-
-  bloco.appendChild(fonte);
-}
-
-if (resultado && resultado.origem === "json_local") {
-  const fonte = document.createElement("small");
-  fonte.classList.add("resultado-fonte");
-  fonte.textContent = "Fonte: base local de fallback";
+  fonte.textContent = textoOrigemDados(resultado);
   bloco.appendChild(fonte);
 }
 
 resultadoDiv.appendChild(bloco);
     }
+  }
+
+  if (fallbackLocalUsado) {
+    const avisoFallback = document.createElement("p");
+    avisoFallback.classList.add("disclaimer");
+    avisoFallback.textContent =
+      "Supabase indisponível. Resultados calculados pela base local de segurança.";
+    resultadoDiv.appendChild(avisoFallback);
   }
 
   const rodape = document.createElement("p");
