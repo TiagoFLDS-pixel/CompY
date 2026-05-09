@@ -1,0 +1,8 @@
+medicamento_a_id,medicamento_a_nome,medicamento_b_id,medicamento_b_nome,classificacao_supabase,fonte_supabase,data_fonte_supabase,observacoes_supabase,acao_sugerida,comentario_revisao_clinica
+bicarbonato_sodio,Bicarbonato de Sódio,cloreto_calcio,Cloreto de Cálcio,incompativel,Stabilis,2026-04-27,Precipitação,adicionar_ao_fallback_snapshot,
+sulfato_magnesio,Sulfato de Magnésio,bicarbonato_sodio,Bicarbonato de Sódio,incompativel,Stabilis,2026-04-27,Instabilidade química.,adicionar_ao_fallback_snapshot,
+sulfato_magnesio,Sulfato de Magnésio,cloreto_calcio,Cloreto de Cálcio,incompativel,Stabilis,2026-04-27,Interação com iões divalentes,adicionar_ao_fallback_snapshot,
+sulfato_magnesio,Sulfato de Magnésio,fosfato_potassio,Fosfato de Potássio,variavel,Stabilis,2026-04-27,Dependente de concentração,adicionar_ao_fallback_snapshot,
+sulfato_magnesio,Sulfato de Magnésio,gluconato_calcio,Gluconato de Cálcio,incompativel,Stabilis,2026-04-27,Interação com iões divalentes,adicionar_ao_fallback_snapshot,
+octreotido_acetato,Octreótido (Acetato),omeprazol_sodico,Omeprazol (Sódico),compativel,Stabilis,2026-04-27,,adicionar_ao_fallback_snapshot,
+vasopressina,Vasopressina,vancomicina_cloridrato,Vancomicina (Cloridrato),compativel,Stabilis,2026-04-27,,adicionar_ao_fallback_snapshot,
