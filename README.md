@@ -46,12 +46,21 @@ Os dados de compatibilidade foram obtidos a partir da aplicação:
 
 A informação foi tratada, normalizada e estruturada para integração numa base de dados própria.
 
+Na CompY, o Stabilis é entendido como a fonte clínica/científica dos dados. O Supabase é apenas a base técnica principal consultada pela aplicação, não sendo apresentado como fonte clínica.
+
 ## Atualização da base de dados
 
 Atualmente, a base de dados é:
 
 - Atualizada manualmente
 - Sujeita a validação pela farmácia do IPO- Porto
+
+Base validada CompY:
+- Validação CompY: 09/05/2026
+- Medicamentos ativos: 47
+- Pares únicos de compatibilidade: 527
+- Base técnica principal: Supabase
+- Base técnica de segurança: fallback local em `data/compatibilidades.js`
 
 Evoluções futuras poderão incluir:
 - Integração com fontes externas
@@ -68,6 +77,12 @@ Evoluções futuras poderão incluir:
   - tempo de contacto
 
 **Recomenda-se sempre a confirmação em consulta farmacêutica.**
+
+## Ficha técnica
+
+A ficha técnica clínica e técnica da CompY está disponível em:
+
+- [docs/ficha-tecnica-compy.md](docs/ficha-tecnica-compy.md)
 
 
 ## Analytics e utilização
