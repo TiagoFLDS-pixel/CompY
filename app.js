@@ -261,6 +261,25 @@ async function buscarCompatibilidadeComFallback(idA, idB) {
     };
   }
 }
+
+async function registrarUtilizacaoAnonima(payload) {
+  try {
+    if (!window.compYSupabase) {
+      throw new Error("Cliente Supabase não está disponível.");
+    }
+
+    const { error } = await window.compYSupabase
+      .from("metricas_utilizacao")
+      .insert([payload]);
+
+    if (error) {
+      throw error;
+    }
+  } catch (erro) {
+    console.warn("Não foi possível registar a métrica anónima de utilização.", erro);
+  }
+}
+
 function validarBase() {
   const chavesSemMatch = [];
   const refsInvalidas = [];
@@ -432,12 +451,6 @@ async function verificarCompatibilidade() {
   const selecionados = selects.map(s => s.value).filter(v => v);
   const unicos = [...new Set(selecionados)];
 
-  if (typeof gtag === "function") {
-    gtag("event", "verificar_compatibilidade", {
-      medicamentos_selecionados: unicos.length
-    });
-  }
-
   if (unicos.length < 2) {
     resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";
     return;
@@ -449,15 +462,21 @@ async function verificarCompatibilidade() {
   }
 
   let fallbackLocalUsado = false;
+  let numeroPares = 0;
+  let temIncompatibilidade = false;
+  let temVariavel = false;
+  let temSemDados = false;
 
   for (let i = 0; i < unicos.length; i++) {
     for (let j = i + 1; j < unicos.length; j++) {
+      numeroPares++;
+
       const idA = unicos[i];
       const idB = unicos[j];
       const nomeA = obterNomeMedicamento(idA);
       const nomeB = obterNomeMedicamento(idB);
 
-const resultado = await buscarCompatibilidadeComFallback(idA, idB);
+      const resultado = await buscarCompatibilidadeComFallback(idA, idB);
 
       if (resultado && resultado.origem === "json_local") {
         fallbackLocalUsado = true;
@@ -474,6 +493,7 @@ const resultado = await buscarCompatibilidadeComFallback(idA, idB);
 
       if (!resultado) {
         bloco.classList.add("status-desconhecido");
+        temSemDados = true;
         texto.textContent =
           "Não foi possível interpretar esta combinação na base atual. Confirmar em fontes oficiais.";
       } else {
@@ -484,27 +504,30 @@ const resultado = await buscarCompatibilidadeComFallback(idA, idB);
           texto.textContent = "Provavelmente compatível em via Y. Conferir sempre protocolo institucional.";
         } else if (status === "incompativel") {
           bloco.classList.add("status-incompativel");
+          temIncompatibilidade = true;
           texto.textContent = "Provavelmente incompatível em via Y. Preferir via exclusiva ou outra estratégia.";
         } else if (status === "variavel") {
           bloco.classList.add("status-variavel");
+          temVariavel = true;
           texto.textContent = "Compatibilidade variável/controversa. Verificar fonte atualizada e protocolo local.";
         } else if (status === "nao_identificado") {
-  bloco.classList.add("status-desconhecido");
-  texto.textContent =
-    "Sem dados de compatibilidade registados na base atual. Não interpretar como compatível. Confirmar em fonte oficial atualizada e/ou com a farmácia clínica.";
-}
+          bloco.classList.add("status-desconhecido");
+          temSemDados = true;
+          texto.textContent =
+            "Sem dados de compatibilidade registados na base atual. Não interpretar como compatível. Confirmar em fonte oficial atualizada e/ou com a farmácia clínica.";
+        }
       }
 
       bloco.appendChild(texto);
 
-if (resultado && (resultado.origem === "supabase" || resultado.origem === "json_local")) {
-  const fonte = document.createElement("small");
-  fonte.classList.add("resultado-fonte");
-  fonte.textContent = textoOrigemDados(resultado);
-  bloco.appendChild(fonte);
-}
+      if (resultado && (resultado.origem === "supabase" || resultado.origem === "json_local")) {
+        const fonte = document.createElement("small");
+        fonte.classList.add("resultado-fonte");
+        fonte.textContent = textoOrigemDados(resultado);
+        bloco.appendChild(fonte);
+      }
 
-resultadoDiv.appendChild(bloco);
+      resultadoDiv.appendChild(bloco);
     }
   }
 
@@ -521,6 +544,16 @@ resultadoDiv.appendChild(bloco);
   rodape.textContent =
     "Ferramenta experimental para treinamento. Não utilizar para decisões clínicas reais.";
   resultadoDiv.appendChild(rodape);
+
+  registrarUtilizacaoAnonima({
+    numero_medicamentos: unicos.length,
+    numero_pares: numeroPares,
+    tem_incompatibilidade: temIncompatibilidade,
+    tem_variavel: temVariavel,
+    tem_sem_dados: temSemDados,
+    base_consultada: fallbackLocalUsado ? "fallback_local" : "supabase",
+    versao_base: "2026-05-09"
+  });
 }
 
 if ("serviceWorker" in navigator) {

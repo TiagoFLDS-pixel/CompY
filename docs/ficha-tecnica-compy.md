@@ -102,6 +102,16 @@ Ausência de registo não significa compatibilidade.
 
 A CompY encontra-se em fase de protótipo experimental. A sua utilização deve ser prudente e enquadrada como apoio à consulta, treino e melhoria progressiva da base de conhecimento.
 
+## Monitorização Agregada De Utilização
+
+A CompY pode registar eventos agregados e anónimos de utilização quando é feita uma verificação com pelo menos dois medicamentos selecionados.
+
+Esta monitorização tem como objetivo apoiar a avaliação de implementação e adesão durante o período experimental. A métrica representa o número de verificações realizadas, não o número de utilizadores únicos.
+
+São registados apenas dados agregados da consulta, como número de medicamentos selecionados, número de pares avaliados, presença de incompatibilidade, resultado variável, ausência de dados, base técnica consultada e versão da base.
+
+Não são guardados nomes de utilizadores, logins, IP, localização, user agent, cookies, identificadores de dispositivo, identificadores persistentes, profissão, serviço, medicamentos pesquisados ou pares exatos pesquisados.
+
 ## Segurança E Prudência Clínica
 
 Os resultados devem ser interpretados de forma conservadora. Em caso de dúvida, ausência de dados, resultados variáveis ou contexto clínico crítico, deve ser privilegiada a confirmação com a farmácia clínica e/ou fontes institucionais.
