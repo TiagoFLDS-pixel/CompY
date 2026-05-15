@@ -1,15 +1,19 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const botao = document.getElementById("btn-verificar");
+  const botaoLimpar = document.getElementById("btn-limpar");
 
   botao.disabled = true;
   botao.textContent = "A carregar medicamentos...";
+  botaoLimpar.disabled = true;
 
   await popularSelects();
   validarBase();
 
   botao.addEventListener("click", verificarCompatibilidade);
+  botaoLimpar.addEventListener("click", limparSelecao);
 
   botao.disabled = false;
+  botaoLimpar.disabled = false;
   botao.textContent = "Verificar compatibilidade";
 });
 
@@ -443,6 +447,15 @@ function criarAvisoBolus(idsSelecionados) {
   return caixa;
 }
 
+function limparSelecao() {
+  document.querySelectorAll(".med-select").forEach(select => {
+    select.value = "";
+  });
+
+  const resultadoDiv = document.getElementById("resultado");
+  resultadoDiv.innerHTML = "";
+}
+
 async function verificarCompatibilidade() {
   const resultadoDiv = document.getElementById("resultado");
   resultadoDiv.innerHTML = "";
@@ -450,6 +463,15 @@ async function verificarCompatibilidade() {
   const selects = Array.from(document.querySelectorAll(".med-select"));
   const selecionados = selects.map(s => s.value).filter(v => v);
   const unicos = [...new Set(selecionados)];
+
+  if (selecionados.length !== unicos.length) {
+    const avisoDuplicados = document.createElement("div");
+    avisoDuplicados.classList.add("aviso-selecao");
+    avisoDuplicados.textContent =
+      "Há medicamentos repetidos na seleção. Remova duplicados antes de verificar a compatibilidade.";
+    resultadoDiv.appendChild(avisoDuplicados);
+    return;
+  }
 
   if (unicos.length < 2) {
     resultadoDiv.textContent = "Selecione pelo menos dois medicamentos para avaliar a via Y.";

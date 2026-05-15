@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v9-metricas-utilizacao";
+const CACHE_NAME = "compy-v10-melhorias-operacionais";
 
 const URLS_TO_CACHE = [
   "./",

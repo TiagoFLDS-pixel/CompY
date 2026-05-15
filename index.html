@@ -30,6 +30,10 @@
         Selecione até 6 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
         ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
       </p>
+      <p class="meta-base">Base validada CompY: 09/05/2026</p>
+      <p class="instrucao-rapida">
+        Escolha 2 a 6 medicamentos da mesma via e carregue em "Verificar compatibilidade". Confirme sempre em protocolo local ou com a farmácia clínica.
+      </p>
 
       <div class="form-grid">
         <label>
@@ -75,7 +79,10 @@
         </label>
       </div>
 
-      <button type="button" id="btn-verificar">Verificar compatibilidade</button>
+      <div class="acoes-form">
+        <button type="button" id="btn-verificar">Verificar compatibilidade</button>
+        <button type="button" id="btn-limpar" class="btn-secundario">Limpar seleção</button>
+      </div>
 
       <div id="resultado"></div>
 
