@@ -121,27 +121,169 @@ function atualizarIndicesMedicamentos(listaMedicamentos) {
   }
 }
 
-const alertasBolus = {
-  "noradrenalina_bitartarato": "Risco de bólus inadvertido com hipertensão marcada, bradicardia reflexa e instabilidade hemodinâmica. Idealmente usar via dedicada.",
-  "dobutamina_cloridrato": "Risco de alteração hemodinâmica aguda, taquicardia e arritmias se ocorrer bólus inadvertido.",
-  "dopamina_cloridrato": "Risco de taquicardia, arritmias e instabilidade hemodinâmica com bólus inadvertido.",
-  "vasopressina": "Risco de vasoconstrição/instabilidade hemodinâmica com bólus inadvertido. Idealmente usar via dedicada.",
-  "dexmedetomidina": "Pode causar hipotensão e bradicardia. Atenção a flushes, manipulação da linha e administração inadvertida em bólus.",
-  "nitroglicerina": "Risco de hipotensão marcada com bólus inadvertido.",
-  "cloreto_calcio": "Medicamento de alto risco por via intravenosa. Um bólus inadvertido pode provocar efeitos cardiovasculares importantes.",
-  "gluconato_calcio": "Medicamento de alto risco por via intravenosa. Um bólus inadvertido pode provocar efeitos cardiovasculares importantes.",
-  "cloreto_potassio": "Risco de arritmias graves e paragem cardiorrespiratória se ocorrer bólus inadvertido.",
-  "digoxina": "Risco de toxicidade cardíaca e arritmias se houver administração inadequada ou demasiado rápida.",
-  "labetalol_cloridrato": "Risco de hipotensão e bradicardia com bólus inadvertido.",
-  "insulina": "Risco de hipoglicemia com bólus inadvertido. Confirmar contexto clínico, monitorização e coexistência de glicose quando aplicável.",
-  "morfina_sulfato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
-  "fentanilo_citrato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
-  "sufentanil_citrato": "Risco de depressão respiratória e sedação, sobretudo se a via aérea não estiver protegida.",
-  "midazolam_cloridrato": "Risco de sedação excessiva e depressão respiratória, sobretudo se a via aérea não estiver protegida.",
-  "cetamina_cloridrato": "Risco de depressão respiratória se administração rápida e de instabilidade hemodinâmica com bólus inadvertido.",
-  "propofol": "Risco de sedação profunda, apneia/depressão respiratória e hipotensão com bólus inadvertido.",
-  "nitroprussiato_sodio": "Risco de hipotensão marcada com bólus inadvertido."
+const ALERTAS_BOLUS_GRUPOS = {
+  vasoativo: {
+    nivel: "alto",
+    titulo: "Alto risco de bólus inadvertido",
+    mensagem:
+      "Medicamento com efeito hemodinâmico relevante. Administração rápida ou flush rápido de fármaco remanescente na linha pode causar alterações abruptas da pressão arterial, frequência cardíaca ou ritmo cardíaco.",
+    recomendacao:
+      "Respeitar velocidade/protocolo institucional, evitar flush rápido e monitorizar resposta hemodinâmica. Usar o conector mais proximal ao doente sempre que possível."
+  },
+
+  eletrolito_metabolico: {
+    nivel: "alto",
+    titulo: "Alto risco eletrolítico/metabólico",
+    mensagem:
+      "Administração rápida pode causar alterações eletrolíticas, metabólicas ou cardiovasculares relevantes, incluindo risco de arritmias ou instabilidade hemodinâmica.",
+    recomendacao:
+      "Confirmar concentração, diluição, via e velocidade antes da administração. Evitar bólus não protocolado e flush rápido subsequente."
+  },
+
+  potassio: {
+    nivel: "alto",
+    titulo: "Alto risco — potássio IV",
+    mensagem:
+      "Administração rápida de potássio pode causar arritmias graves e instabilidade hemodinâmica.",
+    recomendacao:
+      "Confirmar concentração, diluição, via e velocidade. Evitar administração em bólus não protocolado e flush rápido."
+  },
+
+  sedativo_analgesico_anestesico: {
+    nivel: "alto",
+    titulo: "Alto risco respiratório/neurológico",
+    mensagem:
+      "Administração rápida ou flush rápido pode causar sedação excessiva, depressão respiratória, hipotensão, bradicardia ou outros efeitos neurológicos/hemodinâmicos relevantes.",
+    recomendacao:
+      "Administrar apenas com monitorização adequada. Respeitar velocidade/protocolo institucional e evitar flush rápido subsequente."
+  },
+
+  bloqueador_neuromuscular: {
+    nivel: "alto",
+    titulo: "Alto risco — bloqueador neuromuscular",
+    mensagem:
+      "Administração inadvertida pode causar paralisia sem sedação e compromisso respiratório.",
+    recomendacao:
+      "Garantir indicação, suporte ventilatório, monitorização e dupla verificação conforme protocolo institucional."
+  },
+
+  antitrombotico_hemostatico: {
+    nivel: "alto",
+    titulo: "Alto risco hematológico",
+    mensagem:
+      "Administração incorreta, dose errada ou bólus inadvertido pode ter consequências clínicas relevantes, incluindo risco hemorrágico ou trombótico conforme o fármaco.",
+    recomendacao:
+      "Confirmar dose, via, velocidade, indicação e compatibilidade com a linha. Evitar flush rápido não controlado."
+  },
+
+  insulina: {
+    nivel: "alto",
+    titulo: "Alto risco — insulina IV",
+    mensagem:
+      "Administração rápida, dose incorreta ou flush inadvertido pode causar hipoglicemia grave.",
+    recomendacao:
+      "Confirmar dose, concentração, via, velocidade e monitorização glicémica conforme protocolo."
+  },
+
+  toxicidade_margem_terapeutica: {
+    nivel: "alto",
+    titulo: "Alto risco — toxicidade/margem terapêutica",
+    mensagem:
+      "Medicamento com risco relevante de toxicidade ou margem terapêutica estreita. Administração rápida ou flush não controlado pode aumentar o risco de exposição inadequada.",
+    recomendacao:
+      "Confirmar protocolo, concentração, via, tempo de administração, compatibilidade e necessidade de monitorização."
+  },
+
+  administracao_lenta: {
+    nivel: "moderado",
+    titulo: "Atenção à velocidade de administração",
+    mensagem:
+      "Administração rápida pode aumentar o risco de reação relacionada com a administração, desconforto, hipotensão, irritação local ou outros efeitos adversos.",
+    recomendacao:
+      "Confirmar velocidade recomendada/protocolo institucional. Evitar flush rápido se houver fármaco remanescente na linha."
+  },
+
+  nutricao_parenterica: {
+    nivel: "alto",
+    titulo: "Não administrar em bólus",
+    mensagem:
+      "A nutrição parentérica deve ser administrada por perfusão controlada. Administração rápida pode causar alterações metabólicas, osmolares ou hemodinâmicas.",
+    recomendacao:
+      "Administrar apenas conforme prescrição e protocolo institucional. Não fazer bólus ou flush rápido da solução remanescente."
+  },
+
+  fluido_solvente: {
+    nivel: "baixo",
+    titulo: "Sem alerta específico de bólus de fármaco",
+    mensagem:
+      "Solução usada como fluido/solvente. O risco depende sobretudo do contexto clínico, volume, velocidade, osmolaridade e compatibilidade.",
+    recomendacao:
+      "Confirmar prescrição, compatibilidade e restrições clínicas do doente."
+  }
 };
+
+const ALERTA_BOLUS_POR_MEDICAMENTO = {
+  acido_tranexamico: "antitrombotico_hemostatico",
+  adrenalina: "vasoativo",
+  albumina_humana_20: "administracao_lenta",
+  alteplase: "antitrombotico_hemostatico",
+  aminofilina: "toxicidade_margem_terapeutica",
+  amiodarona_cloridrato: "vasoativo",
+  bicarbonato_sodio: "eletrolito_metabolico",
+  cetamina_cloridrato: "sedativo_analgesico_anestesico",
+  ciclofosfamida: "toxicidade_margem_terapeutica",
+  cloreto_calcio: "eletrolito_metabolico",
+  cloreto_potassio: "potassio",
+  cloreto_sodio_0_9: "fluido_solvente",
+  dexmedetomidina: "sedativo_analgesico_anestesico",
+  dinitrato_isossorbida: "vasoativo",
+  dobutamina_cloridrato: "vasoativo",
+  dopamina_cloridrato: "vasoativo",
+  esmolol_cloridrato: "vasoativo",
+  fosfato_potassio: "potassio",
+  furosemida: "administracao_lenta",
+  glucose_5: "fluido_solvente",
+  gluconato_calcio: "eletrolito_metabolico",
+  heparina_sodica: "antitrombotico_hemostatico",
+  insulina: "insulina",
+  isoprenalina_cloridrato: "vasoativo",
+  labetalol_cloridrato: "vasoativo",
+  levosimendan: "vasoativo",
+  manitol: "administracao_lenta",
+  metotrexato_sodico: "toxicidade_margem_terapeutica",
+  midazolam_cloridrato: "sedativo_analgesico_anestesico",
+  morfina_sulfato: "sedativo_analgesico_anestesico",
+  nitroprussiato_sodio: "vasoativo",
+  noradrenalina_bitartarato: "vasoativo",
+  nutricao_parenterica_binaria: "nutricao_parenterica",
+  nutricao_parenterica_com_lipidos: "nutricao_parenterica",
+  octreotido_acetato: "administracao_lenta",
+  omeprazol_sodico: "administracao_lenta",
+  piperacilina_sodica: "administracao_lenta",
+  piperacilina_sodica_tazobactam: "administracao_lenta",
+  propofol: "sedativo_analgesico_anestesico",
+  remifentanil_cloridrato: "sedativo_analgesico_anestesico",
+  ringer_lactato: "fluido_solvente",
+  rocuronio_brometo: "bloqueador_neuromuscular",
+  sufentanil_citrato: "sedativo_analgesico_anestesico",
+  sulfato_magnesio: "eletrolito_metabolico",
+  tacrolimus: "toxicidade_margem_terapeutica",
+  vancomicina_cloridrato: "administracao_lenta",
+  vasopressina: "vasoativo"
+};
+
+function obterAlertaBolus(medicamentoId) {
+  const grupo = ALERTA_BOLUS_POR_MEDICAMENTO[medicamentoId];
+
+  if (!grupo || !ALERTAS_BOLUS_GRUPOS[grupo]) {
+    return null;
+  }
+
+  return {
+    grupo,
+    ...ALERTAS_BOLUS_GRUPOS[grupo]
+  };
+}
 
 function valorParaId(valor) {
   if (!valor) return null;
@@ -409,14 +551,31 @@ function obterNomeMedicamento(id) {
 }
 
 function criarAvisoBolus(idsSelecionados) {
-  const idsComAviso = [...new Set(idsSelecionados)].filter(id => alertasBolus[id]);
+  const gruposSelecionados = new Map();
 
-  if (idsComAviso.length === 0) {
+  [...new Set(idsSelecionados)].forEach(id => {
+    const alerta = obterAlertaBolus(id);
+
+    if (!alerta) {
+      return;
+    }
+
+    if (!gruposSelecionados.has(alerta.grupo)) {
+      gruposSelecionados.set(alerta.grupo, {
+        alerta,
+        medicamentos: []
+      });
+    }
+
+    gruposSelecionados.get(alerta.grupo).medicamentos.push(obterNomeMedicamento(id));
+  });
+
+  if (gruposSelecionados.size === 0) {
     return null;
   }
 
   const caixa = document.createElement("div");
-  caixa.classList.add("alerta-bolus");
+  caixa.classList.add("alertas-bolus");
 
   const titulo = document.createElement("div");
   titulo.classList.add("alerta-bolus-titulo");
@@ -425,24 +584,45 @@ function criarAvisoBolus(idsSelecionados) {
 
   const intro = document.createElement("p");
   intro.classList.add("alerta-bolus-intro");
-  intro.textContent = "Quando estes medicamentos partilham a via, um flush, reabertura da linha ou outra manipulação pode administrar um bólus não intencional.";
+  intro.textContent =
+    "Quando medicamentos ou soluções partilham a via, um flush, reabertura da linha ou outra manipulação pode administrar conteúdo remanescente de forma não intencional.";
   caixa.appendChild(intro);
 
-  const lista = document.createElement("ul");
-  lista.classList.add("alerta-bolus-lista");
+  const ordemNiveis = { alto: 1, moderado: 2, baixo: 3 };
+  const gruposOrdenados = [...gruposSelecionados.values()].sort(
+    (a, b) => ordemNiveis[a.alerta.nivel] - ordemNiveis[b.alerta.nivel]
+  );
+  const apenasNivelBaixo = gruposOrdenados.every(item => item.alerta.nivel === "baixo");
 
-  idsComAviso.forEach(id => {
-    const item = document.createElement("li");
+  if (apenasNivelBaixo) {
+    caixa.classList.add("alertas-bolus-so-baixo");
+  }
 
-    const nome = document.createElement("strong");
-    nome.textContent = `${obterNomeMedicamento(id)}: `;
-    item.appendChild(nome);
+  gruposOrdenados.forEach(({ alerta, medicamentos }) => {
+    const bloco = document.createElement("div");
+    bloco.classList.add("alerta-bolus", `alerta-bolus-${alerta.nivel}`);
 
-    item.appendChild(document.createTextNode(alertasBolus[id]));
-    lista.appendChild(item);
+    const subtitulo = document.createElement("strong");
+    subtitulo.classList.add("alerta-bolus-grupo-titulo");
+    subtitulo.textContent = alerta.titulo;
+    bloco.appendChild(subtitulo);
+
+    const medicamentosTexto = document.createElement("p");
+    medicamentosTexto.classList.add("alerta-bolus-medicamentos");
+    medicamentosTexto.textContent = `Medicamentos selecionados: ${medicamentos.join(", ")}.`;
+    bloco.appendChild(medicamentosTexto);
+
+    const mensagem = document.createElement("p");
+    mensagem.textContent = alerta.mensagem;
+    bloco.appendChild(mensagem);
+
+    const recomendacao = document.createElement("p");
+    recomendacao.classList.add("alerta-bolus-recomendacao");
+    recomendacao.textContent = alerta.recomendacao;
+    bloco.appendChild(recomendacao);
+
+    caixa.appendChild(bloco);
   });
-
-  caixa.appendChild(lista);
 
   return caixa;
 }

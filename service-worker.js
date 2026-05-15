@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v10-melhorias-operacionais";
+const CACHE_NAME = "compy-v11-alertas-bolus-grupos";
 
 const URLS_TO_CACHE = [
   "./",

@@ -311,8 +311,14 @@
   color: #5F4300;
   font-size: 0.9rem;
 }
-    .alerta-bolus {
+
+.alertas-bolus {
   margin-bottom: 16px;
+  color: #7A0B3A;
+}
+
+.alerta-bolus {
+  margin-top: 10px;
   background: #FFF0F6;
   border: 2px solid #E0115F;
   border-left: 6px solid #E0115F;
@@ -322,11 +328,31 @@
   color: #7A0B3A;
 }
 
+.alerta-bolus-moderado {
+  background: #FFF9E3;
+  border-color: #F9A825;
+  border-left-color: #F9A825;
+  box-shadow: 0 2px 5px rgba(249, 168, 37, 0.12);
+  color: #5F4300;
+}
+
+.alerta-bolus-baixo {
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-left: 5px solid #94A3B8;
+  box-shadow: none;
+  color: #334155;
+}
+
 .alerta-bolus-titulo {
   font-weight: 700;
   font-size: 1rem;
   color: #E0115F;
   margin-bottom: 8px;
+}
+
+.alertas-bolus-so-baixo .alerta-bolus-titulo {
+  color: #475569;
 }
 
 .alerta-bolus-intro {
@@ -335,16 +361,25 @@
   color: #7A0B3A;
 }
 
-.alerta-bolus-lista {
-  margin: 0;
-  padding-left: 20px;
+.alertas-bolus-so-baixo .alerta-bolus-intro {
+  color: #475569;
 }
 
-.alerta-bolus-lista li {
-  margin-bottom: 8px;
+.alerta-bolus-grupo-titulo {
+  display: block;
+  margin-bottom: 6px;
+  color: inherit;
+}
+
+.alerta-bolus p {
+  margin: 6px 0 0;
   line-height: 1.45;
 }
 
-.alerta-bolus-lista strong {
-  color: #A10C45;
+.alerta-bolus-medicamentos {
+  font-weight: 600;
+}
+
+.alerta-bolus-recomendacao {
+  font-style: italic;
 }
