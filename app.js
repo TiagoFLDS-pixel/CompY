@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+﻿document.addEventListener("DOMContentLoaded", async () => {
   const botao = document.getElementById("btn-verificar");
   const botaoLimpar = document.getElementById("btn-limpar");
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ==========================
-// FUNÇÕES DE NORMALIZAÇÃO
+// FUNÃ‡Ã•ES DE NORMALIZAÃ‡ÃƒO
 // ==========================
 
 function normaliza(nome) {
@@ -63,20 +63,20 @@ function textoOrigemDados(resultado) {
       return "Base consultada: fallback local | Sem registo na base validada para este par.";
     }
 
-    return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: fallback local";
+    return "Fonte clÃ­nica: Stabilis | ValidaÃ§Ã£o CompY: 09/05/2026 | Base consultada: fallback local";
   }
 
   if (resultado.status === "nao_identificado") {
     return "Base consultada: Supabase | Sem registo na base validada para este par.";
   }
 
-  return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: Supabase";
+  return "Fonte clÃ­nica: Stabilis | ValidaÃ§Ã£o CompY: 09/05/2026 | Base consultada: Supabase";
 }
 
 async function carregarMedicamentosComFallback() {
   try {
     if (!window.compYSupabase) {
-      throw new Error("Cliente Supabase não está disponível.");
+      throw new Error("Cliente Supabase nÃ£o estÃ¡ disponÃ­vel.");
     }
 
     const { data, error } = await window.compYSupabase
@@ -124,101 +124,101 @@ function atualizarIndicesMedicamentos(listaMedicamentos) {
 const ALERTAS_BOLUS_GRUPOS = {
   vasoativo: {
     nivel: "alto",
-    titulo: "Alto risco de bólus inadvertido",
+    titulo: "Alto risco de bÃ³lus inadvertido",
     mensagem:
-      "Medicamento com efeito hemodinâmico relevante. Administração rápida ou flush rápido de fármaco remanescente na linha pode causar alterações abruptas da pressão arterial, frequência cardíaca ou ritmo cardíaco.",
+      "Medicamento com efeito hemodinÃ¢mico relevante. AdministraÃ§Ã£o rÃ¡pida ou flush rÃ¡pido de fÃ¡rmaco remanescente na linha pode causar alteraÃ§Ãµes abruptas da pressÃ£o arterial, frequÃªncia cardÃ­aca ou ritmo cardÃ­aco.",
     recomendacao:
-      "Respeitar velocidade/protocolo institucional, evitar flush rápido e monitorizar resposta hemodinâmica. Usar o conector mais proximal ao doente sempre que possível."
+      "Respeitar velocidade/protocolo institucional, evitar flush rÃ¡pido e monitorizar resposta hemodinÃ¢mica. Usar o conector mais proximal ao doente sempre que possÃ­vel."
   },
 
   eletrolito_metabolico: {
     nivel: "alto",
-    titulo: "Alto risco eletrolítico/metabólico",
+    titulo: "Alto risco eletrolÃ­tico/metabÃ³lico",
     mensagem:
-      "Administração rápida pode causar alterações eletrolíticas, metabólicas ou cardiovasculares relevantes, incluindo risco de arritmias ou instabilidade hemodinâmica.",
+      "AdministraÃ§Ã£o rÃ¡pida pode causar alteraÃ§Ãµes eletrolÃ­ticas, metabÃ³licas ou cardiovasculares relevantes, incluindo risco de arritmias ou instabilidade hemodinÃ¢mica.",
     recomendacao:
-      "Confirmar concentração, diluição, via e velocidade antes da administração. Evitar bólus não protocolado e flush rápido subsequente."
+      "Confirmar concentraÃ§Ã£o, diluiÃ§Ã£o, via e velocidade antes da administraÃ§Ã£o. Evitar bÃ³lus nÃ£o protocolado e flush rÃ¡pido subsequente."
   },
 
   potassio: {
     nivel: "alto",
-    titulo: "Alto risco — potássio IV",
+    titulo: "Alto risco â€” potÃ¡ssio IV",
     mensagem:
-      "Administração rápida de potássio pode causar arritmias graves e instabilidade hemodinâmica.",
+      "AdministraÃ§Ã£o rÃ¡pida de potÃ¡ssio pode causar arritmias graves e instabilidade hemodinÃ¢mica.",
     recomendacao:
-      "Confirmar concentração, diluição, via e velocidade. Evitar administração em bólus não protocolado e flush rápido."
+      "Confirmar concentraÃ§Ã£o, diluiÃ§Ã£o, via e velocidade. Evitar administraÃ§Ã£o em bÃ³lus nÃ£o protocolado e flush rÃ¡pido."
   },
 
   sedativo_analgesico_anestesico: {
     nivel: "alto",
-    titulo: "Alto risco respiratório/neurológico",
+    titulo: "Alto risco respiratÃ³rio/neurolÃ³gico",
     mensagem:
-      "Administração rápida ou flush rápido pode causar sedação excessiva, depressão respiratória, hipotensão, bradicardia ou outros efeitos neurológicos/hemodinâmicos relevantes.",
+      "AdministraÃ§Ã£o rÃ¡pida ou flush rÃ¡pido pode causar sedaÃ§Ã£o excessiva, depressÃ£o respiratÃ³ria, hipotensÃ£o, bradicardia ou outros efeitos neurolÃ³gicos/hemodinÃ¢micos relevantes.",
     recomendacao:
-      "Administrar apenas com monitorização adequada. Respeitar velocidade/protocolo institucional e evitar flush rápido subsequente."
+      "Administrar apenas com monitorizaÃ§Ã£o adequada. Respeitar velocidade/protocolo institucional e evitar flush rÃ¡pido subsequente."
   },
 
   bloqueador_neuromuscular: {
     nivel: "alto",
-    titulo: "Alto risco — bloqueador neuromuscular",
+    titulo: "Alto risco â€” bloqueador neuromuscular",
     mensagem:
-      "Administração inadvertida pode causar paralisia sem sedação e compromisso respiratório.",
+      "AdministraÃ§Ã£o inadvertida pode causar paralisia sem sedaÃ§Ã£o e compromisso respiratÃ³rio.",
     recomendacao:
-      "Garantir indicação, suporte ventilatório, monitorização e dupla verificação conforme protocolo institucional."
+      "Garantir indicaÃ§Ã£o, suporte ventilatÃ³rio, monitorizaÃ§Ã£o e dupla verificaÃ§Ã£o conforme protocolo institucional."
   },
 
   antitrombotico_hemostatico: {
     nivel: "alto",
-    titulo: "Alto risco hematológico",
+    titulo: "Alto risco hematolÃ³gico",
     mensagem:
-      "Administração incorreta, dose errada ou bólus inadvertido pode ter consequências clínicas relevantes, incluindo risco hemorrágico ou trombótico conforme o fármaco.",
+      "AdministraÃ§Ã£o incorreta, dose errada ou bÃ³lus inadvertido pode ter consequÃªncias clÃ­nicas relevantes, incluindo risco hemorrÃ¡gico ou trombÃ³tico conforme o fÃ¡rmaco.",
     recomendacao:
-      "Confirmar dose, via, velocidade, indicação e compatibilidade com a linha. Evitar flush rápido não controlado."
+      "Confirmar dose, via, velocidade, indicaÃ§Ã£o e compatibilidade com a linha. Evitar flush rÃ¡pido nÃ£o controlado."
   },
 
   insulina: {
     nivel: "alto",
-    titulo: "Alto risco — insulina IV",
+    titulo: "Alto risco â€” insulina IV",
     mensagem:
-      "Administração rápida, dose incorreta ou flush inadvertido pode causar hipoglicemia grave.",
+      "AdministraÃ§Ã£o rÃ¡pida, dose incorreta ou flush inadvertido pode causar hipoglicemia grave.",
     recomendacao:
-      "Confirmar dose, concentração, via, velocidade e monitorização glicémica conforme protocolo."
+      "Confirmar dose, concentraÃ§Ã£o, via, velocidade e monitorizaÃ§Ã£o glicÃ©mica conforme protocolo."
   },
 
   toxicidade_margem_terapeutica: {
     nivel: "alto",
-    titulo: "Alto risco — toxicidade/margem terapêutica",
+    titulo: "Alto risco â€” toxicidade/margem terapÃªutica",
     mensagem:
-      "Medicamento com risco relevante de toxicidade ou margem terapêutica estreita. Administração rápida ou flush não controlado pode aumentar o risco de exposição inadequada.",
+      "Medicamento com risco relevante de toxicidade ou margem terapÃªutica estreita. AdministraÃ§Ã£o rÃ¡pida ou flush nÃ£o controlado pode aumentar o risco de exposiÃ§Ã£o inadequada.",
     recomendacao:
-      "Confirmar protocolo, concentração, via, tempo de administração, compatibilidade e necessidade de monitorização."
+      "Confirmar protocolo, concentraÃ§Ã£o, via, tempo de administraÃ§Ã£o, compatibilidade e necessidade de monitorizaÃ§Ã£o."
   },
 
   administracao_lenta: {
     nivel: "moderado",
-    titulo: "Atenção à velocidade de administração",
+    titulo: "AtenÃ§Ã£o Ã  velocidade de administraÃ§Ã£o",
     mensagem:
-      "Administração rápida pode aumentar o risco de reação relacionada com a administração, desconforto, hipotensão, irritação local ou outros efeitos adversos.",
+      "AdministraÃ§Ã£o rÃ¡pida pode aumentar o risco de reaÃ§Ã£o relacionada com a administraÃ§Ã£o, desconforto, hipotensÃ£o, irritaÃ§Ã£o local ou outros efeitos adversos.",
     recomendacao:
-      "Confirmar velocidade recomendada/protocolo institucional. Evitar flush rápido se houver fármaco remanescente na linha."
+      "Confirmar velocidade recomendada/protocolo institucional. Evitar flush rÃ¡pido se houver fÃ¡rmaco remanescente na linha."
   },
 
   nutricao_parenterica: {
     nivel: "alto",
-    titulo: "Não administrar em bólus",
+    titulo: "NÃ£o administrar em bÃ³lus",
     mensagem:
-      "A nutrição parentérica deve ser administrada por perfusão controlada. Administração rápida pode causar alterações metabólicas, osmolares ou hemodinâmicas.",
+      "A nutriÃ§Ã£o parentÃ©rica deve ser administrada por perfusÃ£o controlada. AdministraÃ§Ã£o rÃ¡pida pode causar alteraÃ§Ãµes metabÃ³licas, osmolares ou hemodinÃ¢micas.",
     recomendacao:
-      "Administrar apenas conforme prescrição e protocolo institucional. Não fazer bólus ou flush rápido da solução remanescente."
+      "Administrar apenas conforme prescriÃ§Ã£o e protocolo institucional. NÃ£o fazer bÃ³lus ou flush rÃ¡pido da soluÃ§Ã£o remanescente."
   },
 
   fluido_solvente: {
     nivel: "baixo",
-    titulo: "Sem alerta específico de bólus de fármaco",
+    titulo: "Sem alerta especÃ­fico de bÃ³lus de fÃ¡rmaco",
     mensagem:
-      "Solução usada como fluido/solvente. O risco depende sobretudo do contexto clínico, volume, velocidade, osmolaridade e compatibilidade.",
+      "SoluÃ§Ã£o usada como fluido/solvente. O risco depende sobretudo do contexto clÃ­nico, volume, velocidade, osmolaridade e compatibilidade.",
     recomendacao:
-      "Confirmar prescrição, compatibilidade e restrições clínicas do doente."
+      "Confirmar prescriÃ§Ã£o, compatibilidade e restriÃ§Ãµes clÃ­nicas do doente."
   }
 };
 
@@ -355,7 +355,7 @@ function buscarCompatibilidade(idA, idB) {
 }
 async function buscarCompatibilidadeSupabase(idA, idB) {
   if (!window.compYSupabase) {
-    throw new Error("Cliente Supabase não está disponível.");
+    throw new Error("Cliente Supabase nÃ£o estÃ¡ disponÃ­vel.");
   }
 
   const { data, error } = await window.compYSupabase.rpc("obter_compatibilidade", {
@@ -411,7 +411,7 @@ async function buscarCompatibilidadeComFallback(idA, idB) {
 async function registrarUtilizacaoAnonima(payload) {
   try {
     if (!window.compYSupabase) {
-      throw new Error("Cliente Supabase não está disponível.");
+      throw new Error("Cliente Supabase nÃ£o estÃ¡ disponÃ­vel.");
     }
 
     const { error } = await window.compYSupabase
@@ -422,7 +422,7 @@ async function registrarUtilizacaoAnonima(payload) {
       throw error;
     }
   } catch (erro) {
-    console.warn("Não foi possível registar a métrica anónima de utilização.", erro);
+    console.warn("NÃ£o foi possÃ­vel registar a mÃ©trica anÃ³nima de utilizaÃ§Ã£o.", erro);
   }
 }
 
@@ -498,10 +498,10 @@ function validarBase() {
     }
   }
 
-  console.group("Validação da base de compatibilidade");
-  console.log("Chaves sem correspondência no array MEDICAMENTOS:", chavesSemMatch);
-  console.log("Referências inválidas dentro das listas:", refsInvalidas);
-  console.log("Medicamentos sem bloco próprio:", medsSemBloco);
+  console.group("ValidaÃ§Ã£o da base de compatibilidade");
+  console.log("Chaves sem correspondÃªncia no array MEDICAMENTOS:", chavesSemMatch);
+  console.log("ReferÃªncias invÃ¡lidas dentro das listas:", refsInvalidas);
+  console.log("Medicamentos sem bloco prÃ³prio:", medsSemBloco);
   console.log("Pares com conflito de status:", conflitos);
   console.groupEnd();
 }
@@ -579,13 +579,13 @@ function criarAvisoBolus(idsSelecionados) {
 
   const titulo = document.createElement("div");
   titulo.classList.add("alerta-bolus-titulo");
-  titulo.textContent = "⚠️ Atenção: risco de bólus inadvertido nesta via";
+  titulo.textContent = "âš ï¸ AtenÃ§Ã£o: risco de bÃ³lus inadvertido nesta via";
   caixa.appendChild(titulo);
 
   const intro = document.createElement("p");
   intro.classList.add("alerta-bolus-intro");
   intro.textContent =
-    "Quando medicamentos ou soluções partilham a via, um flush, reabertura da linha ou outra manipulação pode administrar conteúdo remanescente de forma não intencional.";
+    "Quando medicamentos ou soluÃ§Ãµes partilham a via, um flush, reabertura da linha ou outra manipulaÃ§Ã£o pode administrar conteÃºdo remanescente de forma nÃ£o intencional.";
   caixa.appendChild(intro);
 
   const ordemNiveis = { alto: 1, moderado: 2, baixo: 3 };
@@ -648,7 +648,7 @@ async function verificarCompatibilidade() {
     const avisoDuplicados = document.createElement("div");
     avisoDuplicados.classList.add("aviso-selecao");
     avisoDuplicados.textContent =
-      "Há medicamentos repetidos na seleção. Remova duplicados antes de verificar a compatibilidade.";
+      "HÃ¡ medicamentos repetidos na seleÃ§Ã£o. Remova duplicados antes de verificar a compatibilidade.";
     resultadoDiv.appendChild(avisoDuplicados);
     return;
   }
@@ -697,26 +697,26 @@ async function verificarCompatibilidade() {
         bloco.classList.add("status-desconhecido");
         temSemDados = true;
         texto.textContent =
-          "Não foi possível interpretar esta combinação na base atual. Confirmar em fontes oficiais.";
+          "NÃ£o foi possÃ­vel interpretar esta combinaÃ§Ã£o na base atual. Confirmar em fontes oficiais.";
       } else {
         const { status } = resultado;
 
         if (status === "compativel") {
           bloco.classList.add("status-compativel");
-          texto.textContent = "Provavelmente compatível em via Y. Conferir sempre protocolo institucional.";
+          texto.textContent = "Provavelmente compatÃ­vel em via Y. Conferir sempre protocolo institucional.";
         } else if (status === "incompativel") {
           bloco.classList.add("status-incompativel");
           temIncompatibilidade = true;
-          texto.textContent = "Provavelmente incompatível em via Y. Preferir via exclusiva ou outra estratégia.";
+          texto.textContent = "Provavelmente incompatÃ­vel em via Y. Preferir via exclusiva ou outra estratÃ©gia.";
         } else if (status === "variavel") {
           bloco.classList.add("status-variavel");
           temVariavel = true;
-          texto.textContent = "Compatibilidade variável/controversa. Verificar fonte atualizada e protocolo local.";
+          texto.textContent = "Compatibilidade variÃ¡vel/controversa. Verificar fonte atualizada e protocolo local.";
         } else if (status === "nao_identificado") {
           bloco.classList.add("status-desconhecido");
           temSemDados = true;
           texto.textContent =
-            "Sem dados de compatibilidade registados na base atual. Não interpretar como compatível. Confirmar em fonte oficial atualizada e/ou com a farmácia clínica.";
+            "Sem dados de compatibilidade registados na base atual. NÃ£o interpretar como compatÃ­vel. Confirmar em fonte oficial atualizada e/ou com a farmÃ¡cia clÃ­nica.";
         }
       }
 
@@ -737,14 +737,14 @@ async function verificarCompatibilidade() {
     const avisoFallback = document.createElement("p");
     avisoFallback.classList.add("disclaimer");
     avisoFallback.textContent =
-      "Supabase indisponível. Resultados calculados pela base local de segurança.";
+      "Supabase indisponÃ­vel. Resultados calculados pela base local de seguranÃ§a.";
     resultadoDiv.appendChild(avisoFallback);
   }
 
   const rodape = document.createElement("p");
   rodape.classList.add("disclaimer");
   rodape.textContent =
-    "Ferramenta experimental para treinamento. Não utilizar para decisões clínicas reais.";
+    "Ferramenta experimental para treinamento. NÃ£o utilizar para decisÃµes clÃ­nicas reais.";
   resultadoDiv.appendChild(rodape);
 
   registrarUtilizacaoAnonima({
@@ -769,3 +769,4 @@ if ("serviceWorker" in navigator) {
       });
   });
 }
+
