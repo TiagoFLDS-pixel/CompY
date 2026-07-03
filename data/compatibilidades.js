@@ -17,6 +17,7 @@ const MEDICAMENTOS = [
 { id: "dobutamina_cloridrato", nome: "Dobutamina (Cloridrato)" },
 { id: "dopamina_cloridrato", nome: "Dopamina (Cloridrato)" },
 { id: "esmolol_cloridrato", nome: "Esmolol (Cloridrato)" },
+{ id: "fentanilo_citrato", nome: "Fentanilo (Citrato)" },
 { id: "fosfato_potassio", nome: "Fosfato de Potássio" },
 { id: "furosemida", nome: "Furosemida" },
 { id: "glucose_5", nome: "Glucose 5%" },
@@ -39,10 +40,10 @@ const MEDICAMENTOS = [
 { id: "piperacilina_sodica", nome: "Piperacilina (Sódica)" },
 { id: "piperacilina_sodica_tazobactam", nome: "Piperacilina (Sódica) + Tazobactam" },
 { id: "propofol", nome: "Propofol" },
-{ id: "remifentanil_cloridrato", nome: "Remifentanil (Cloridrato)" },
+{ id: "remifentanilo_cloridrato", nome: "Remifentanilo (Cloridrato)" },
 { id: "ringer_lactato", nome: "Ringer Lactato" },
 { id: "rocuronio_brometo", nome: "Rocurónio (Brometo)" },
-{ id: "sufentanil_citrato", nome: "Sufentanil (Citrato)" },
+{ id: "sufentanilo_citrato", nome: "Sufentanilo (Citrato)" },
 { id: "sulfato_magnesio", nome: "Sulfato de Magnésio" },
 { id: "tacrolimus", nome: "Tacrolimus" },
 { id: "vancomicina_cloridrato", nome: "Vancomicina (Cloridrato)" },
@@ -76,10 +77,10 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "rocuronio_brometo",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "tacrolimus",
       "acido_tranexamico",
       "vancomicina_cloridrato"
@@ -189,7 +190,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "fosfato_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "rocuronio_brometo",
       "bicarbonato_sodio",
       "vancomicina_cloridrato"
@@ -227,10 +228,10 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "rocuronio_brometo",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "tacrolimus",
       "acido_tranexamico",
       "vancomicina_cloridrato"
@@ -267,7 +268,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
@@ -359,7 +360,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
@@ -369,7 +370,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "fosfato_potassio",
       "bicarbonato_sodio",
-      "sufentanil_citrato"
+      "sufentanilo_citrato"
     ],
     variavel: []
   },
@@ -415,10 +416,10 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "rocuronio_brometo",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "acido_tranexamico",
       "vancomicina_cloridrato"
     ],
@@ -443,7 +444,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus",
       "vancomicina_cloridrato",
       "vasopressina"
@@ -485,7 +486,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus",
       "vancomicina_cloridrato",
       "vasopressina"
@@ -524,7 +525,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "vancomicina_cloridrato",
       "vasopressina"
     ],
@@ -557,7 +558,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_potassio",
       "fosfato_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus",
       "vancomicina_cloridrato"
     ],
@@ -589,7 +590,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_potassio",
       "propofol",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "tacrolimus"
     ],
     incompativel: [
@@ -608,7 +609,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "esmolol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "vasopressina"
     ]
   },
@@ -630,9 +631,9 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "fosfato_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "tacrolimus",
       "acido_tranexamico",
       "vasopressina"
@@ -705,7 +706,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
       "noradrenalina_bitartarato",
-      "remifentanil_cloridrato"
+      "remifentanilo_cloridrato"
     ]
   },
   "isoprenalina_cloridrato": {
@@ -721,7 +722,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cetamina_cloridrato",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
@@ -759,7 +760,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "propofol",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "vancomicina_cloridrato",
       "vasopressina"
     ],
@@ -831,7 +832,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica_tazobactam",
       "cloreto_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "bicarbonato_sodio"
     ],
     incompativel: [],
@@ -877,9 +878,9 @@ const COMPATIBILIDADE_POR_DROGA = {
       "piperacilina_sodica",
       "cloreto_potassio",
       "fosfato_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "rocuronio_brometo",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [
@@ -919,7 +920,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus",
       "vancomicina_cloridrato"
     ],
@@ -977,8 +978,8 @@ const COMPATIBILIDADE_POR_DROGA = {
       "midazolam_cloridrato",
       "morfina_sulfato",
       "propofol",
-      "remifentanil_cloridrato",
-      "sufentanil_citrato",
+      "remifentanilo_cloridrato",
+      "sufentanilo_citrato",
       "vasopressina"
     ],
     incompativel: [
@@ -1029,7 +1030,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "midazolam_cloridrato",
       "morfina_sulfato",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
@@ -1061,7 +1062,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "metotrexato_sodico",
       "morfina_sulfato",
       "cloreto_potassio",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "vasopressina"
     ],
     incompativel: [
@@ -1096,7 +1097,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "midazolam_cloridrato",
       "piperacilina_sodica_tazobactam",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "bicarbonato_sodio",
       "tacrolimus"
     ],
@@ -1114,8 +1115,8 @@ const COMPATIBILIDADE_POR_DROGA = {
       "labetalol_cloridrato",
       "midazolam_cloridrato",
       "propofol",
-      "remifentanil_cloridrato",
-      "sufentanil_citrato"
+      "remifentanilo_cloridrato",
+      "sufentanilo_citrato"
     ],
     incompativel: [
       "amiodarona_cloridrato",
@@ -1151,7 +1152,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_potassio",
       "fosfato_potassio",
       "bicarbonato_sodio",
-      "sufentanil_citrato"
+      "sufentanilo_citrato"
     ],
     incompativel: [
       "ringer_lactato",
@@ -1164,11 +1165,11 @@ const COMPATIBILIDADE_POR_DROGA = {
       "heparina_sodica",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "vancomicina_cloridrato"
     ]
   },
-  "remifentanil_cloridrato": {
+  "remifentanilo_cloridrato": {
     compativel: [
       "glucose_5",
       "ringer_lactato",
@@ -1191,7 +1192,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_potassio",
       "fosfato_potassio",
       "rocuronio_brometo",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [],
@@ -1208,7 +1209,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_sodio_0_9",
       "dexmedetomidina",
       "midazolam_cloridrato",
-      "remifentanil_cloridrato"
+      "remifentanilo_cloridrato"
     ],
     incompativel: [
       "nutricao_parenterica_com_lipidos",
@@ -1256,7 +1257,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "tacrolimus"
     ]
   },
-  "sufentanil_citrato": {
+  "sufentanilo_citrato": {
     compativel: [
       "glucose_5",
       "cloreto_sodio_0_9",
@@ -1268,7 +1269,7 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "fosfato_potassio",
       "propofol",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [
@@ -1332,9 +1333,9 @@ const COMPATIBILIDADE_POR_DROGA = {
       "labetalol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
-      "remifentanil_cloridrato",
+      "remifentanilo_cloridrato",
       "bicarbonato_sodio",
-      "sufentanil_citrato",
+      "sufentanilo_citrato",
       "tacrolimus"
     ],
     incompativel: [
