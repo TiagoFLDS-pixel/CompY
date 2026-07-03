@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v6-seis-medicamentos-legenda";
+const CACHE_NAME = "compy-v7-utf8-textos";
 
 const URLS_TO_CACHE = [
   "./",
