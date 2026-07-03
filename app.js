@@ -73,6 +73,9 @@ function textoOrigemDados(resultado) {
   return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: Supabase";
 }
 
+const MENSAGEM_SEM_DADOS =
+  "Sem dados disponíveis na base para esta combinação. Isto não implica compatibilidade ou ausência de interação. Validar em fonte institucional/protocolo local.";
+
 async function carregarMedicamentosComFallback() {
   try {
     if (!window.compYSupabase) {
@@ -627,6 +630,66 @@ function criarAvisoBolus(idsSelecionados) {
   return caixa;
 }
 
+function contarAlertasRelevantes(idsSelecionados) {
+  const grupos = new Set();
+
+  [...new Set(idsSelecionados)].forEach(id => {
+    const alerta = obterAlertaBolus(id);
+
+    if (alerta) {
+      grupos.add(alerta.grupo);
+    }
+  });
+
+  return grupos.size;
+}
+
+function atualizarResumoAnalise(resumo, resultado) {
+  resumo.total += 1;
+
+  if (!resultado || resultado.status === "nao_identificado") {
+    resumo.semDados += 1;
+    return;
+  }
+
+  if (resultado.status === "compativel") {
+    resumo.compativel += 1;
+  } else if (resultado.status === "incompativel") {
+    resumo.incompativel += 1;
+  } else if (resultado.status === "variavel") {
+    resumo.variavel += 1;
+  }
+}
+
+function adicionarLinhaResumo(lista, etiqueta, valor) {
+  const item = document.createElement("li");
+  item.textContent = `${etiqueta}: ${valor}`;
+  lista.appendChild(item);
+}
+
+function criarResumoAnalise(resumo) {
+  const bloco = document.createElement("div");
+  bloco.classList.add("resultado-item", "resumo-analise");
+
+  const titulo = document.createElement("strong");
+  titulo.textContent = "Resumo da análise";
+  bloco.appendChild(titulo);
+
+  const lista = document.createElement("ul");
+  adicionarLinhaResumo(lista, "Total de pares avaliados", resumo.total);
+  adicionarLinhaResumo(lista, "Compatíveis", resumo.compativel);
+  adicionarLinhaResumo(lista, "Incompatíveis", resumo.incompativel);
+  adicionarLinhaResumo(lista, "Variáveis/dados conflitantes", resumo.variavel);
+  adicionarLinhaResumo(lista, "Sem dados", resumo.semDados);
+
+  if (resumo.alertas > 0) {
+    adicionarLinhaResumo(lista, "Alertas relevantes", resumo.alertas);
+  }
+
+  bloco.appendChild(lista);
+  return bloco;
+}
+
 function limparSelecao() {
   document.querySelectorAll(".med-select").forEach(select => {
     select.value = "";
@@ -664,21 +727,25 @@ async function verificarCompatibilidade() {
   }
 
   let fallbackLocalUsado = false;
-  let numeroPares = 0;
-  let temIncompatibilidade = false;
-  let temVariavel = false;
-  let temSemDados = false;
+  const blocosResultados = [];
+  const resumoAnalise = {
+    total: 0,
+    compativel: 0,
+    incompativel: 0,
+    variavel: 0,
+    semDados: 0,
+    alertas: contarAlertasRelevantes(unicos)
+  };
 
   for (let i = 0; i < unicos.length; i++) {
     for (let j = i + 1; j < unicos.length; j++) {
-      numeroPares++;
-
       const idA = unicos[i];
       const idB = unicos[j];
       const nomeA = obterNomeMedicamento(idA);
       const nomeB = obterNomeMedicamento(idB);
 
       const resultado = await buscarCompatibilidadeComFallback(idA, idB);
+      atualizarResumoAnalise(resumoAnalise, resultado);
 
       if (resultado && resultado.origem === "json_local") {
         fallbackLocalUsado = true;
@@ -695,9 +762,7 @@ async function verificarCompatibilidade() {
 
       if (!resultado) {
         bloco.classList.add("status-desconhecido");
-        temSemDados = true;
-        texto.textContent =
-          "Não foi possível interpretar esta combinação na base atual. Confirmar em fontes oficiais.";
+        texto.textContent = MENSAGEM_SEM_DADOS;
       } else {
         const { status } = resultado;
 
@@ -706,17 +771,13 @@ async function verificarCompatibilidade() {
           texto.textContent = "Provavelmente compatível em via Y. Conferir sempre protocolo institucional.";
         } else if (status === "incompativel") {
           bloco.classList.add("status-incompativel");
-          temIncompatibilidade = true;
           texto.textContent = "Provavelmente incompatível em via Y. Preferir via exclusiva ou outra estratégia.";
         } else if (status === "variavel") {
           bloco.classList.add("status-variavel");
-          temVariavel = true;
           texto.textContent = "Compatibilidade variável/controversa. Verificar fonte atualizada e protocolo local.";
         } else if (status === "nao_identificado") {
           bloco.classList.add("status-desconhecido");
-          temSemDados = true;
-          texto.textContent =
-            "Sem dados de compatibilidade registados na base atual. Não interpretar como compatível. Confirmar em fonte oficial atualizada e/ou com a farmácia clínica.";
+          texto.textContent = MENSAGEM_SEM_DADOS;
         }
       }
 
@@ -729,9 +790,12 @@ async function verificarCompatibilidade() {
         bloco.appendChild(fonte);
       }
 
-      resultadoDiv.appendChild(bloco);
+      blocosResultados.push(bloco);
     }
   }
+
+  resultadoDiv.appendChild(criarResumoAnalise(resumoAnalise));
+  blocosResultados.forEach(bloco => resultadoDiv.appendChild(bloco));
 
   if (fallbackLocalUsado) {
     const avisoFallback = document.createElement("p");
@@ -749,10 +813,10 @@ async function verificarCompatibilidade() {
 
   registrarUtilizacaoAnonima({
     numero_medicamentos: unicos.length,
-    numero_pares: numeroPares,
-    tem_incompatibilidade: temIncompatibilidade,
-    tem_variavel: temVariavel,
-    tem_sem_dados: temSemDados,
+    numero_pares: resumoAnalise.total,
+    tem_incompatibilidade: resumoAnalise.incompativel > 0,
+    tem_variavel: resumoAnalise.variavel > 0,
+    tem_sem_dados: resumoAnalise.semDados > 0,
     base_consultada: fallbackLocalUsado ? "fallback_local" : "supabase",
     versao_base: "2026-05-09"
   });
