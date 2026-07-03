@@ -52,20 +52,8 @@ const MEDICAMENTOS = [
 const COMPATIBILIDADE_POR_DROGA = {
   "glucose_5": {
     compativel: [
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "gluconato_calcio",
-      "ciclofosfamida",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
       "heparina_sodica",
       "insulina",
-      "dinitrato_isossorbida",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "levosimendan",
       "metotrexato_sodico",
@@ -76,149 +64,66 @@ const COMPATIBILIDADE_POR_DROGA = {
       "omeprazol_sodico",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "remifentanilo_cloridrato",
       "rocuronio_brometo",
-      "bicarbonato_sodio",
       "sufentanilo_citrato",
       "tacrolimus",
-      "acido_tranexamico",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "alteplase",
-      "furosemida"
     ],
     variavel: []
   },
   "nutricao_parenterica_com_lipidos": {
     compativel: [
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "gluconato_calcio",
-      "ciclofosfamida",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "isoprenalina_cloridrato",
-      "cetamina_cloridrato",
-      "manitol",
-      "metotrexato_sodico",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
-      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
-      "bicarbonato_sodio",
       "tacrolimus",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "albumina_humana_20",
       "rocuronio_brometo"
     ],
     variavel: [
-      "furosemida",
-      "heparina_sodica",
-      "insulina",
-      "fosfato_potassio"
     ]
   },
   "nutricao_parenterica_binaria": {
     compativel: [
-      "aminofilina",
-      "cloreto_calcio",
-      "gluconato_calcio",
-      "ciclofosfamida",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "furosemida",
-      "heparina_sodica",
-      "albumina_humana_20",
-      "insulina",
-      "manitol",
-      "morfina_sulfato",
-      "noradrenalina_bitartarato",
       "octreotido_acetato",
       "omeprazol_sodico",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "tacrolimus",
-      "acido_tranexamico",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "amiodarona_cloridrato",
-      "metotrexato_sodico",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "midazolam_cloridrato",
-      "fosfato_potassio",
       "propofol"
     ]
   },
   "ringer_lactato": {
     compativel: [
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "gluconato_calcio",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "albumina_humana_20",
-      "insulina",
-      "isoprenalina_cloridrato",
-      "labetalol_cloridrato",
-      "manitol",
-      "metotrexato_sodico",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
-      "noradrenalina_bitartarato",
-      "octreotido_acetato",
-      "piperacilina_sodica",
-      "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
-      "fosfato_potassio",
-      "remifentanilo_cloridrato",
       "rocuronio_brometo",
-      "bicarbonato_sodio",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "cetamina_cloridrato",
-      "propofol"
     ],
     variavel: []
   },
   "cloreto_sodio_0_9": {
     compativel: [
-      "alteplase",
-      "aminofilina",
-      "cloreto_calcio",
       "gluconato_calcio",
-      "ciclofosfamida",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "furosemida",
       "heparina_sodica",
       "insulina",
       "isoprenalina_cloridrato",
       "dinitrato_isossorbida",
-      "cetamina_cloridrato",
       "metotrexato_sodico",
       "midazolam_cloridrato",
       "morfina_sulfato",
@@ -227,17 +132,13 @@ const COMPATIBILIDADE_POR_DROGA = {
       "omeprazol_sodico",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "remifentanilo_cloridrato",
       "rocuronio_brometo",
-      "bicarbonato_sodio",
       "sufentanilo_citrato",
       "tacrolimus",
-      "acido_tranexamico",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "amiodarona_cloridrato"
     ],
     variavel: []
   },
@@ -275,7 +176,6 @@ const COMPATIBILIDADE_POR_DROGA = {
       "amiodarona_cloridrato",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "isoprenalina_cloridrato",
       "cetamina_cloridrato",
       "morfina_sulfato",
@@ -294,7 +194,6 @@ const COMPATIBILIDADE_POR_DROGA = {
       "gluconato_calcio",
       "dexmedetomidina",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "isoprenalina_cloridrato",
       "cetamina_cloridrato",
@@ -306,7 +205,6 @@ const COMPATIBILIDADE_POR_DROGA = {
     incompativel: [
       "nutricao_parenterica_binaria",
       "cloreto_sodio_0_9",
-      "aminofilina",
       "heparina_sodica",
       "piperacilina_sodica",
       "fosfato_potassio",
@@ -330,7 +228,6 @@ const COMPATIBILIDADE_POR_DROGA = {
       "cloreto_sodio_0_9",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "insulina",
       "vasopressina"
@@ -349,27 +246,18 @@ const COMPATIBILIDADE_POR_DROGA = {
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
-      "dexmedetomidina",
-      "furosemida",
       "insulina",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "midazolam_cloridrato",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "propofol",
       "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
-      "dobutamina_cloridrato",
       "heparina_sodica",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
-      "fosfato_potassio",
-      "bicarbonato_sodio",
       "sufentanilo_citrato"
     ],
     variavel: []
@@ -383,7 +271,6 @@ const COMPATIBILIDADE_POR_DROGA = {
       "metotrexato_sodico",
       "piperacilina_sodica_tazobactam",
       "propofol",
-      "bicarbonato_sodio"
     ],
     incompativel: [],
     variavel: []
@@ -393,19 +280,13 @@ const COMPATIBILIDADE_POR_DROGA = {
       "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "aminofilina",
-      "amiodarona_cloridrato",
       "gluconato_calcio",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "furosemida",
       "heparina_sodica",
-      "albumina_humana_20",
       "isoprenalina_cloridrato",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "levosimendan",
       "manitol",
@@ -414,13 +295,10 @@ const COMPATIBILIDADE_POR_DROGA = {
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "propofol",
       "remifentanilo_cloridrato",
       "rocuronio_brometo",
-      "bicarbonato_sodio",
       "sufentanilo_citrato",
-      "acido_tranexamico",
       "vancomicina_cloridrato"
     ],
     incompativel: [],
@@ -432,17 +310,11 @@ const COMPATIBILIDADE_POR_DROGA = {
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "cloreto_calcio",
-      "dexmedetomidina",
       "dopamina_cloridrato",
-      "adrenalina",
       "isoprenalina_cloridrato",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
-      "cloreto_potassio",
       "propofol",
       "remifentanilo_cloridrato",
       "tacrolimus",
@@ -450,15 +322,11 @@ const COMPATIBILIDADE_POR_DROGA = {
       "vasopressina"
     ],
     incompativel: [
-      "alteplase",
-      "aminofilina",
       "gluconato_calcio",
       "piperacilina_sodica_tazobactam",
       "fosfato_potassio",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "amiodarona_cloridrato",
       "furosemida",
       "heparina_sodica",
       "insulina",
@@ -471,30 +339,19 @@ const COMPATIBILIDADE_POR_DROGA = {
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "manitol",
       "midazolam_cloridrato",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "remifentanilo_cloridrato",
       "tacrolimus",
       "vancomicina_cloridrato",
       "vasopressina"
     ],
     incompativel: [
-      "alteplase",
-      "aminofilina",
-      "bicarbonato_sodio"
     ],
     variavel: [
       "furosemida",
@@ -539,23 +396,13 @@ const COMPATIBILIDADE_POR_DROGA = {
     compativel: [
       "glucose_5",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "dexmedetomidina",
-      "dopamina_cloridrato",
-      "adrenalina",
       "heparina_sodica",
-      "albumina_humana_20",
       "insulina",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
-      "cloreto_potassio",
       "fosfato_potassio",
       "propofol",
       "remifentanilo_cloridrato",
@@ -565,48 +412,34 @@ const COMPATIBILIDADE_POR_DROGA = {
     incompativel: [],
     variavel: [
       "furosemida",
-      "bicarbonato_sodio"
     ]
   },
   "furosemida": {
     compativel: [
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "aminofilina",
       "gluconato_calcio",
-      "dexmedetomidina",
-      "adrenalina",
       "heparina_sodica",
       "insulina",
       "isoprenalina_cloridrato",
-      "dinitrato_isossorbida",
       "levosimendan",
       "manitol",
       "metotrexato_sodico",
       "noradrenalina_bitartarato",
       "omeprazol_sodico",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "propofol",
-      "bicarbonato_sodio",
       "sufentanilo_citrato",
       "tacrolimus"
     ],
     incompativel: [
       "glucose_5",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
-      "fosfato_potassio",
       "rocuronio_brometo",
       "vancomicina_cloridrato"
     ],
     variavel: [
       "nutricao_parenterica_com_lipidos",
-      "amiodarona_cloridrato",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "esmolol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
       "remifentanilo_cloridrato",
@@ -615,40 +448,23 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "heparina_sodica": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "dexmedetomidina",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "furosemida",
       "insulina",
       "isoprenalina_cloridrato",
       "levosimendan",
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
-      "fosfato_potassio",
       "remifentanilo_cloridrato",
-      "bicarbonato_sodio",
       "sufentanilo_citrato",
       "tacrolimus",
-      "acido_tranexamico",
       "vasopressina"
     ],
     incompativel: [
-      "alteplase",
-      "amiodarona_cloridrato",
-      "gluconato_calcio",
-      "cetamina_cloridrato"
     ],
     variavel: [
       "nutricao_parenterica_com_lipidos",
-      "cloreto_calcio",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
       "labetalol_cloridrato",
       "metotrexato_sodico",
       "midazolam_cloridrato",
@@ -674,37 +490,22 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "insulina": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "cloreto_calcio",
-      "gluconato_calcio",
-      "esmolol_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "dinitrato_isossorbida",
       "midazolam_cloridrato",
       "morfina_sulfato",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
-      "fosfato_potassio",
       "propofol",
-      "bicarbonato_sodio",
       "tacrolimus",
       "vancomicina_cloridrato",
       "vasopressina"
     ],
     incompativel: [
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "rocuronio_brometo"
     ],
     variavel: [
       "nutricao_parenterica_com_lipidos",
-      "amiodarona_cloridrato",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
       "noradrenalina_bitartarato",
       "remifentanilo_cloridrato"
     ]
@@ -713,27 +514,17 @@ const COMPATIBILIDADE_POR_DROGA = {
     compativel: [
       "nutricao_parenterica_com_lipidos",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "cetamina_cloridrato",
-      "cloreto_potassio",
       "propofol",
       "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
-      "aminofilina"
     ],
     variavel: []
   },
   "dinitrato_isossorbida": {
     compativel: [
       "glucose_5",
-      "cloreto_sodio_0_9",
       "furosemida",
       "insulina",
       "vancomicina_cloridrato"
@@ -746,12 +537,10 @@ const COMPATIBILIDADE_POR_DROGA = {
       "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
       "gluconato_calcio",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "isoprenalina_cloridrato",
       "midazolam_cloridrato",
@@ -766,12 +555,10 @@ const COMPATIBILIDADE_POR_DROGA = {
     ],
     incompativel: [
       "ringer_lactato",
-      "aminofilina",
       "furosemida",
       "heparina_sodica",
       "insulina",
       "fosfato_potassio",
-      "bicarbonato_sodio"
     ],
     variavel: [
       "piperacilina_sodica"
@@ -779,42 +566,21 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "labetalol_cloridrato": {
     compativel: [
-      "glucose_5",
       "ringer_lactato",
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "gluconato_calcio",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
       "midazolam_cloridrato",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
-      "cloreto_potassio",
-      "fosfato_potassio",
       "propofol",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "furosemida",
-      "albumina_humana_20",
-      "insulina",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "heparina_sodica"
     ]
   },
   "levosimendan": {
     compativel: [
-      "glucose_5",
-      "dexmedetomidina",
-      "adrenalina",
-      "furosemida",
-      "heparina_sodica",
       "midazolam_cloridrato",
       "morfina_sulfato"
     ],
@@ -826,26 +592,17 @@ const COMPATIBILIDADE_POR_DROGA = {
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "dexmedetomidina",
-      "dopamina_cloridrato",
-      "furosemida",
       "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
       "propofol",
       "remifentanilo_cloridrato",
-      "bicarbonato_sodio"
     ],
     incompativel: [],
     variavel: []
   },
   "metotrexato_sodico": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "ciclofosfamida",
-      "furosemida",
       "piperacilina_sodica_tazobactam"
     ],
     incompativel: [
@@ -855,68 +612,33 @@ const COMPATIBILIDADE_POR_DROGA = {
       "vancomicina_cloridrato"
     ],
     variavel: [
-      "heparina_sodica"
     ]
   },
   "midazolam_cloridrato": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "gluconato_calcio",
-      "dexmedetomidina",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "insulina",
-      "cetamina_cloridrato",
-      "labetalol_cloridrato",
-      "levosimendan",
       "morfina_sulfato",
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
-      "cloreto_potassio",
-      "fosfato_potassio",
       "remifentanilo_cloridrato",
       "rocuronio_brometo",
       "sufentanilo_citrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "albumina_humana_20",
-      "metotrexato_sodico",
       "omeprazol_sodico",
-      "bicarbonato_sodio"
     ],
     variavel: [
       "nutricao_parenterica_binaria",
-      "aminofilina",
-      "amiodarona_cloridrato",
-      "dobutamina_cloridrato",
-      "furosemida",
-      "heparina_sodica",
       "propofol"
     ]
   },
   "morfina_sulfato": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "insulina",
-      "cetamina_cloridrato",
-      "labetalol_cloridrato",
-      "levosimendan",
-      "midazolam_cloridrato",
       "noradrenalina_bitartarato",
       "piperacilina_sodica",
       "piperacilina_sodica_tazobactam",
@@ -925,14 +647,8 @@ const COMPATIBILIDADE_POR_DROGA = {
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "alteplase",
-      "aminofilina",
-      "gluconato_calcio",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "furosemida",
-      "heparina_sodica",
       "propofol"
     ]
   },
@@ -961,115 +677,56 @@ const COMPATIBILIDADE_POR_DROGA = {
 },
   "noradrenalina_bitartarato": {
     compativel: [
-      "glucose_5",
       "nutricao_parenterica_com_lipidos",
       "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "cetamina_cloridrato",
-      "labetalol_cloridrato",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
       "propofol",
       "remifentanilo_cloridrato",
       "sufentanilo_citrato",
       "vasopressina"
     ],
     incompativel: [
-      "aminofilina",
-      "gluconato_calcio",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "amiodarona_cloridrato",
-      "insulina"
     ]
   },
   "octreotido_acetato": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_com_lipidos",
-      "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9"
     ],
     incompativel: [],
     variavel: []
   },
   "omeprazol_sodico": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_binaria",
-      "cloreto_sodio_0_9",
-      "furosemida"
     ],
     incompativel: [
-      "midazolam_cloridrato",
       "vancomicina_cloridrato"
     ],
     variavel: []
   },
   "piperacilina_sodica": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_com_lipidos",
-      "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "dexmedetomidina",
-      "esmolol_cloridrato",
-      "heparina_sodica",
-      "labetalol_cloridrato",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
       "propofol",
       "remifentanilo_cloridrato",
       "tacrolimus"
     ],
     incompativel: [
-      "amiodarona_cloridrato",
-      "bicarbonato_sodio"
     ],
     variavel: [
-      "cetamina_cloridrato",
       "vancomicina_cloridrato"
     ]
   },
   "piperacilina_sodica_tazobactam": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_com_lipidos",
-      "nutricao_parenterica_binaria",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "aminofilina",
-      "gluconato_calcio",
-      "ciclofosfamida",
-      "dexmedetomidina",
-      "dopamina_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "insulina",
-      "cetamina_cloridrato",
-      "manitol",
-      "metotrexato_sodico",
-      "morfina_sulfato",
-      "cloreto_potassio",
       "remifentanilo_cloridrato",
       "vasopressina"
     ],
     incompativel: [
-      "dobutamina_cloridrato"
     ],
     variavel: [
-      "bicarbonato_sodio",
       "vancomicina_cloridrato"
     ]
   },
@@ -1080,36 +737,30 @@ const COMPATIBILIDADE_POR_DROGA = {
       "nutricao_parenterica_binaria",
       "ringer_lactato",
       "cloreto_sodio_0_9",
-      "aminofilina",
       "gluconato_calcio",
       "dexmedetomidina",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "esmolol_cloridrato",
       "furosemida",
       "heparina_sodica",
       "insulina",
       "isoprenalina_cloridrato",
-      "cetamina_cloridrato",
       "labetalol_cloridrato",
       "manitol",
       "midazolam_cloridrato",
       "piperacilina_sodica_tazobactam",
       "propofol",
       "remifentanilo_cloridrato",
-      "bicarbonato_sodio",
       "tacrolimus"
     ],
     incompativel: [],
     variavel: [
-      "amiodarona_cloridrato"
     ]
   },
   "fosfato_potassio": {
     compativel: [
       "ringer_lactato",
-      "esmolol_cloridrato",
       "heparina_sodica",
       "insulina",
       "labetalol_cloridrato",
@@ -1119,13 +770,8 @@ const COMPATIBILIDADE_POR_DROGA = {
       "sufentanilo_citrato"
     ],
     incompativel: [
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
       "gluconato_calcio",
-      "dobutamina_cloridrato",
       "furosemida",
-      "cetamina_cloridrato",
-      "bicarbonato_sodio"
     ],
     variavel: [
       "nutricao_parenterica_com_lipidos",
@@ -1134,87 +780,31 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "propofol": {
     compativel: [
-      "aminofilina",
-      "gluconato_calcio",
-      "ciclofosfamida",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "furosemida",
-      "insulina",
-      "isoprenalina_cloridrato",
-      "cetamina_cloridrato",
-      "labetalol_cloridrato",
-      "manitol",
-      "noradrenalina_bitartarato",
-      "piperacilina_sodica",
-      "cloreto_potassio",
-      "fosfato_potassio",
-      "bicarbonato_sodio",
       "sufentanilo_citrato"
     ],
     incompativel: [
       "ringer_lactato",
-      "cloreto_calcio",
-      "metotrexato_sodico"
     ],
     variavel: [
-      "nutricao_parenterica_binaria",
-      "dopamina_cloridrato",
-      "heparina_sodica",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
       "remifentanilo_cloridrato",
       "vancomicina_cloridrato"
     ]
   },
   "remifentanilo_cloridrato": {
     compativel: [
-      "glucose_5",
       "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "aminofilina",
-      "gluconato_calcio",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "heparina_sodica",
-      "isoprenalina_cloridrato",
-      "manitol",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
-      "noradrenalina_bitartarato",
-      "piperacilina_sodica",
-      "piperacilina_sodica_tazobactam",
-      "cloreto_potassio",
-      "fosfato_potassio",
       "rocuronio_brometo",
       "sufentanilo_citrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [],
     variavel: [
-      "furosemida",
-      "insulina",
-      "propofol"
     ]
   },
   "rocuronio_brometo": {
     compativel: [
-      "glucose_5",
-      "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "dexmedetomidina",
-      "midazolam_cloridrato",
-      "remifentanilo_cloridrato"
     ],
     incompativel: [
-      "nutricao_parenterica_com_lipidos",
-      "furosemida",
-      "insulina",
       "vancomicina_cloridrato"
     ],
     variavel: []
@@ -1238,11 +828,9 @@ const COMPATIBILIDADE_POR_DROGA = {
     ],
     incompativel: [
       "nutricao_parenterica_binaria",
-      "amiodarona_cloridrato",
       "gluconato_calcio",
       "dobutamina_cloridrato",
       "dopamina_cloridrato",
-      "adrenalina",
       "cetamina_cloridrato",
       "labetalol_cloridrato",
       "midazolam_cloridrato",
@@ -1259,47 +847,18 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "sufentanilo_citrato": {
     compativel: [
-      "glucose_5",
-      "cloreto_sodio_0_9",
-      "dexmedetomidina",
-      "furosemida",
-      "heparina_sodica",
-      "cetamina_cloridrato",
-      "midazolam_cloridrato",
-      "noradrenalina_bitartarato",
-      "fosfato_potassio",
-      "propofol",
-      "remifentanilo_cloridrato",
       "vancomicina_cloridrato"
     ],
     incompativel: [
-      "gluconato_calcio"
     ],
     variavel: []
   },
   "tacrolimus": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_com_lipidos",
-      "nutricao_parenterica_binaria",
-      "cloreto_sodio_0_9",
-      "aminofilina",
-      "gluconato_calcio",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "esmolol_cloridrato",
-      "furosemida",
-      "heparina_sodica",
-      "insulina",
-      "isoprenalina_cloridrato",
-      "morfina_sulfato",
-      "piperacilina_sodica",
-      "cloreto_potassio",
       "vancomicina_cloridrato"
     ],
     incompativel: [],
     variavel: [
-      "bicarbonato_sodio"
     ]
   },
   "acido_tranexamico": {
@@ -1315,60 +874,17 @@ const COMPATIBILIDADE_POR_DROGA = {
   },
   "vancomicina_cloridrato": {
     compativel: [
-      "glucose_5",
-      "nutricao_parenterica_com_lipidos",
-      "nutricao_parenterica_binaria",
-      "ringer_lactato",
-      "cloreto_sodio_0_9",
-      "amiodarona_cloridrato",
-      "dexmedetomidina",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "esmolol_cloridrato",
-      "albumina_humana_20",
-      "insulina",
-      "dinitrato_isossorbida",
-      "cetamina_cloridrato",
-      "labetalol_cloridrato",
-      "midazolam_cloridrato",
-      "morfina_sulfato",
-      "remifentanilo_cloridrato",
-      "bicarbonato_sodio",
-      "sufentanilo_citrato",
-      "tacrolimus"
     ],
     incompativel: [
-      "aminofilina",
-      "furosemida",
-      "metotrexato_sodico",
-      "omeprazol_sodico",
-      "rocuronio_brometo"
     ],
     variavel: [
-      "heparina_sodica",
-      "piperacilina_sodica",
-      "piperacilina_sodica_tazobactam",
-      "propofol"
     ]
   },
   "vasopressina": {
     compativel: [
-      "amiodarona_cloridrato",
-      "cloreto_calcio",
-      "dobutamina_cloridrato",
-      "dopamina_cloridrato",
-      "adrenalina",
-      "heparina_sodica",
-      "insulina",
-      "cetamina_cloridrato",
-      "noradrenalina_bitartarato",
-      "piperacilina_sodica_tazobactam",
-      "bicarbonato_sodio"
     ],
     incompativel: [],
     variavel: [
-      "furosemida"
     ]
   }
 };
