@@ -1,6 +1,6 @@
 // ficheiro de dados de compatibilidade
 const MEDICAMENTOS = [
-{ id: "acido_tranexamico", nome: "�cido Tranex�mico" },
+{ id: "acido_tranexamico", nome: "Ácido Tranexâmico" },
 { id: "adrenalina", nome: "Adrenalina" },
 { id: "albumina_humana_20", nome: "Albumina Humana 20%" },
 { id: "alteplase", nome: "Alteplase" },
@@ -32,8 +32,8 @@ const MEDICAMENTOS = [
 { id: "morfina_sulfato", nome: "Morfina (Sulfato)" },
 { id: "nitroprussiato_sodio", nome: "Nitroprussiato de Sódio" },
 { id: "noradrenalina_bitartarato", nome: "Noradrenalina (Bitartarato)" },
-{ id: "nutricao_parenterica_binaria", nome: "Nutri��o Parent�rica Bin�ria" },
-{ id: "nutricao_parenterica_com_lipidos", nome: "Nutri��o Parent�rica com L�pidos" },
+{ id: "nutricao_parenterica_binaria", nome: "Nutrição Parentérica Binária" },
+{ id: "nutricao_parenterica_com_lipidos", nome: "Nutrição Parentérica com Lípidos" },
 { id: "octreotido_acetato", nome: "Octreótido (Acetato)" },
 { id: "omeprazol_sodico", nome: "Omeprazol (Sódico)" },
 { id: "piperacilina_sodica", nome: "Piperacilina (Sódica)" },
@@ -119,4 +119,3 @@ const COMPATIBILIDADE_POR_DROGA = {
   "vancomicina_cloridrato": { compativel: ["glucose_5", "nutricao_parenterica_com_lipidos", "nutricao_parenterica_binaria", "ringer_lactato", "cloreto_sodio_0_9", "amiodarona_cloridrato", "dexmedetomidina", "dobutamina_cloridrato", "dopamina_cloridrato", "adrenalina", "esmolol_cloridrato", "albumina_humana_20", "insulina", "dinitrato_isossorbida", "cetamina_cloridrato", "labetalol_cloridrato", "sulfato_magnesio", "midazolam_cloridrato", "morfina_sulfato", "remifentanil_cloridrato", "bicarbonato_sodio", "sufentanil_citrato", "tacrolimus"], incompativel: ["aminofilina", "furosemida", "metotrexato_sodico", "omeprazol_sodico", "rocuronio_brometo"], variavel: ["heparina_sodica", "piperacilina_sodica", "piperacilina_sodica_tazobactam", "propofol"] },
   "vasopressina": { compativel: ["amiodarona_cloridrato", "cloreto_calcio", "dobutamina_cloridrato", "dopamina_cloridrato", "adrenalina", "heparina_sodica", "insulina", "cetamina_cloridrato", "noradrenalina_bitartarato", "piperacilina_sodica_tazobactam", "bicarbonato_sodio"], incompativel: [], variavel: ["furosemida"] }
 };
-
