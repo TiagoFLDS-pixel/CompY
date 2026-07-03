@@ -5,15 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVP5EMMV4B"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TVP5EMMV4B');
-  </script>
-
   <!-- Cor da barra do navegador / app -->
   <meta name="theme-color" content="#3092FB">
 
@@ -37,7 +28,11 @@
       <h2>Compatibilidade em Via Y (Protótipo)</h2>
       <p class="descricao">
         Selecione até 6 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
-        ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
+        ou alertas. <strong>Uso apenas como apoio. N�o substitui fontes oficiais nem o farmac�utico.</strong>
+      </p>
+      <p class="meta-base">Base validada CompY: 09/05/2026</p>
+      <p class="instrucao-rapida">
+        Escolha 2 a 6 medicamentos da mesma via e carregue em "Verificar compatibilidade". Confirme sempre em protocolo local ou com a farmácia clínica.
       </p>
 
       <div class="form-grid">
@@ -84,7 +79,10 @@
         </label>
       </div>
 
-      <button type="button" id="btn-verificar">Verificar compatibilidade</button>
+      <div class="acoes-form">
+        <button type="button" id="btn-verificar">Verificar compatibilidade</button>
+        <button type="button" id="btn-limpar" class="btn-secundario">Limpar sele��o</button>
+      </div>
 
       <div id="resultado"></div>
 
@@ -92,7 +90,7 @@
         <span class="legenda-item"><span class="legenda-cor legenda-compativel"></span> Compatível</span>
         <span class="legenda-item"><span class="legenda-cor legenda-incompativel"></span> Incompatível</span>
         <span class="legenda-item"><span class="legenda-cor legenda-variavel"></span> Variável</span>
-        <span class="legenda-item"><span class="legenda-cor legenda-sem-dados"></span> Sem dados / não registado</span>
+        <span class="legenda-item"><span class="legenda-cor legenda-sem-dados"></span> Sem dados / n�o registado</span>
       </div>
 
       <p class="disclaimer">
@@ -108,3 +106,4 @@
 <script src="app.js" charset="UTF-8"></script>
 </body>
 </html>
+
