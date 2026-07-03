@@ -1,0 +1,331 @@
+[
+  {
+    "id": "acido_tranexamico",
+    "nome": "Ácido Tranexâmico",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "adrenalina",
+    "nome": "Adrenalina",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "albumina_humana_20",
+    "nome": "Albumina Humana 20%",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "alteplase",
+    "nome": "Alteplase",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "aminofilina",
+    "nome": "Aminofilina",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "amiodarona_cloridrato",
+    "nome": "Amiodarona (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "bicarbonato_sodio",
+    "nome": "Bicarbonato de Sódio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "cetamina_cloridrato",
+    "nome": "Cetamina (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "ciclofosfamida",
+    "nome": "Ciclofosfamida",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "cloreto_calcio",
+    "nome": "Cloreto de Cálcio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "cloreto_potassio",
+    "nome": "Cloreto de Potássio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "cloreto_sodio_0_9",
+    "nome": "Cloreto de Sódio 0,9%",
+    "tipo": "solvente",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "dexmedetomidina",
+    "nome": "Dexmedetomidina",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "dinitrato_isossorbida",
+    "nome": "Dinitrato de Isossorbida",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "dobutamina_cloridrato",
+    "nome": "Dobutamina (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "dopamina_cloridrato",
+    "nome": "Dopamina (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "esmolol_cloridrato",
+    "nome": "Esmolol (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "fosfato_potassio",
+    "nome": "Fosfato de Potássio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "furosemida",
+    "nome": "Furosemida",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "glucose_5",
+    "nome": "Glucose 5%",
+    "tipo": "solvente",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "gluconato_calcio",
+    "nome": "Gluconato de Cálcio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "heparina_sodica",
+    "nome": "Heparina (Sódica)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "insulina",
+    "nome": "Insulina",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "isoprenalina_cloridrato",
+    "nome": "Isoprenalina (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "labetalol_cloridrato",
+    "nome": "Labetalol (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "levosimendan",
+    "nome": "Levosimendan",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "manitol",
+    "nome": "Manitol",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "metotrexato_sodico",
+    "nome": "Metotrexato (Sódico)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "midazolam_cloridrato",
+    "nome": "Midazolam (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "morfina_sulfato",
+    "nome": "Morfina (Sulfato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "noradrenalina_bitartarato",
+    "nome": "Noradrenalina (Bitartarato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "nutricao_parenterica_binaria",
+    "nome": "Nutrição Parentérica Binária",
+    "tipo": "nutricao_parenterica",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "nutricao_parenterica_com_lipidos",
+    "nome": "Nutrição Parentérica com Lípidos",
+    "tipo": "nutricao_parenterica",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "octreotido_acetato",
+    "nome": "Octreótido (Acetato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "omeprazol_sodico",
+    "nome": "Omeprazol (Sódico)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "piperacilina_sodica",
+    "nome": "Piperacilina (Sódica)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "piperacilina_sodica_tazobactam",
+    "nome": "Piperacilina (Sódica) + Tazobactam",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "propofol",
+    "nome": "Propofol",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "remifentanil_cloridrato",
+    "nome": "Remifentanil (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "ringer_lactato",
+    "nome": "Ringer Lactato",
+    "tipo": "solvente",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "rocuronio_brometo",
+    "nome": "Rocurónio (Brometo)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "sufentanil_citrato",
+    "nome": "Sufentanil (Citrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "sulfato_magnesio",
+    "nome": "Sulfato de Magnésio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "tacrolimus",
+    "nome": "Tacrolimus",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "vancomicina_cloridrato",
+    "nome": "Vancomicina (Cloridrato)",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "vasopressina",
+    "nome": "Vasopressina",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  },
+  {
+    "id": "nitroprussiato_sodio",
+    "nome": "Nitroprussiato de Sódio",
+    "tipo": "medicamento",
+    "ativo": true,
+    "criado_em": "2026-05-09T13:26:43.38277"
+  }
+]

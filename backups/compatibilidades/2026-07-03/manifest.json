@@ -1,0 +1,33 @@
+{
+  "backup_criado_em": "2026-07-03T20:54:19.302Z",
+  "data_backup": "2026-07-03",
+  "branch_atual": "main",
+  "commit_atual": "aad44645d282dcd5738b88ecf28b79fb01138550",
+  "versao_app": "CompY v0.9.0-beta",
+  "versao_base": "09/05/2026",
+  "origem_dos_dados": {
+    "local": "data/compatibilidades.js no GitHub/local",
+    "supabase": "exportação por leitura das tabelas medicamentos e compatibilidades"
+  },
+  "ficheiros": {
+    "local": "compatibilidades.js",
+    "supabase_medicamentos": "supabase_medicamentos.json",
+    "supabase_compatibilidades": "supabase_compatibilidades.json"
+  },
+  "contagens": {
+    "medicamentos_locais": 47,
+    "pares_locais": 527,
+    "medicamentos_supabase": 47,
+    "pares_supabase": 527
+  },
+  "supabase": {
+    "exportado": true,
+    "modo": "leitura apenas",
+    "escrita_realizada": false,
+    "erro": null
+  },
+  "observacoes": [
+    "Backup não contém dados de doentes nem identificadores pessoais.",
+    "Não foram alterados estados, recomendações ou conteúdo clínico."
+  ]
+}
