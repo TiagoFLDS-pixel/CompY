@@ -30,7 +30,28 @@
         Selecione até 6 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
         ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
       </p>
-      <p class="meta-base">Base validada CompY: 09/05/2026</p>
+      <dl class="app-meta" aria-label="Versão e base de dados da CompY">
+        <div>
+          <dt>App</dt>
+          <dd>CompY v0.9.0-beta</dd>
+        </div>
+        <div>
+          <dt>Base validada</dt>
+          <dd>09/05/2026</dd>
+        </div>
+        <div>
+          <dt>Fonte clínica</dt>
+          <dd>Stabilis / IPO-Porto SMI</dd>
+        </div>
+        <div>
+          <dt>Base consultada</dt>
+          <dd>Supabase</dd>
+        </div>
+        <div>
+          <dt>Ambiente</dt>
+          <dd>protótipo/demonstração</dd>
+        </div>
+      </dl>
       <p class="instrucao-rapida">
         Escolha 2 a 6 medicamentos da mesma via e carregue em "Verificar compatibilidade". Confirme sempre em protocolo local ou com a farmácia clínica.
       </p>
@@ -96,6 +117,18 @@
       <p class="disclaimer">
         Este protótipo ainda é experimental. Os exemplos de Incompatibilidade/Compatibilidade devem ser confirmados em protocolos institucionais, Trissel/Micromedex/Lexicomp, bula e com a farmácia clínica.
       </p>
+
+      <section class="fontes-limitacoes" aria-labelledby="fontes-limitacoes-titulo">
+        <h3 id="fontes-limitacoes-titulo">Fontes e limitações</h3>
+        <p>
+          A CompY é uma ferramenta de apoio à decisão e treino para demonstração institucional. Não substitui validação farmacêutica, protocolo local ou consulta de fontes clínicas oficiais atualizadas.
+        </p>
+        <ul>
+          <li>Ausência de dados na base não significa compatibilidade nem ausência de interação.</li>
+          <li>Compatibilidade física em Y-site não garante estabilidade química nem adequação clínica ao doente.</li>
+          <li>A interpretação final deve considerar concentração, diluente, tempo de contacto, via, contexto clínico e política institucional.</li>
+        </ul>
+      </section>
     </div>
   </main>
 

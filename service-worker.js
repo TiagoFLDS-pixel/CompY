@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v12-utf8-fix";
+const CACHE_NAME = "compy-v13-institutional-info";
 
 const URLS_TO_CACHE = [
   "./",
@@ -14,6 +14,7 @@ const URLS_TO_CACHE = [
 const NETWORK_FIRST_PATHS = [
   "/",
   "/index.html",
+  "/style.css",
   "/app.js",
   "/data/compatibilidades.js",
   "/service-worker.js"
