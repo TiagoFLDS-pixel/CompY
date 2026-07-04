@@ -75,6 +75,7 @@ function textoOrigemDados(resultado) {
 
 const MENSAGEM_SEM_DADOS =
   "Sem dados disponíveis na base para esta combinação. Isto não implica compatibilidade ou ausência de interação. Validar em fonte institucional/protocolo local.";
+const LIMITE_MEDICAMENTOS_SELECIONADOS = 6;
 
 async function carregarMedicamentosComFallback() {
   try {
@@ -546,11 +547,275 @@ async function popularSelects() {
   });
 
   console.log(`Medicamentos carregados de: ${origem}`, medicamentos.length);
+  configurarPesquisaMedicamentos();
 }
 
 function obterNomeMedicamento(id) {
   const med = medsById.get(id);
   return med ? med.nome : id;
+}
+
+function obterSelectsMedicamentos() {
+  return Array.from(document.querySelectorAll(".med-select"));
+}
+
+function obterIdsSelecionados() {
+  return obterSelectsMedicamentos()
+    .map(select => select.value)
+    .filter(Boolean);
+}
+
+function obterAliasesMedicamento(id) {
+  return Object.entries(aliases)
+    .filter(([, idCanonico]) => idCanonico === id)
+    .map(([alias]) => alias);
+}
+
+function criarIndicePesquisaMedicamentos() {
+  const medicamentos = window.compYMedicamentosAtivos || [];
+
+  return medicamentos.map(med => {
+    const aliasesMedicamento = obterAliasesMedicamento(med.id);
+    const termos = [med.nome, med.id, ...aliasesMedicamento];
+
+    return {
+      id: med.id,
+      nome: med.nome,
+      aliases: aliasesMedicamento,
+      termos: termos.map(formaCanonica)
+    };
+  });
+}
+
+function procurarMedicamentos(termo) {
+  const pesquisa = formaCanonica(termo);
+
+  if (pesquisa.length < 2) {
+    return [];
+  }
+
+  return criarIndicePesquisaMedicamentos()
+    .filter(item => item.termos.some(termoNormalizado => termoNormalizado.includes(pesquisa)))
+    .slice(0, 8);
+}
+
+function definirFeedbackPesquisa(mensagem, tipo = "info") {
+  const feedback = document.getElementById("med-search-feedback");
+
+  if (!feedback) {
+    return;
+  }
+
+  feedback.textContent = mensagem;
+  feedback.classList.toggle("aviso", tipo === "aviso");
+}
+
+function sincronizarSelectsComIds(ids) {
+  const selects = obterSelectsMedicamentos();
+
+  selects.forEach((select, index) => {
+    select.value = ids[index] || "";
+  });
+}
+
+function renderizarChipsSelecionados(mensagem) {
+  const chips = document.getElementById("med-chips");
+
+  if (!chips) {
+    return;
+  }
+
+  const ids = [...new Set(obterIdsSelecionados())];
+  chips.innerHTML = "";
+
+  ids.forEach(id => {
+    const chip = document.createElement("span");
+    chip.classList.add("chip-medicamento");
+
+    const nome = document.createElement("span");
+    nome.textContent = obterNomeMedicamento(id);
+    chip.appendChild(nome);
+
+    const remover = document.createElement("button");
+    remover.type = "button";
+    remover.classList.add("chip-remover");
+    remover.setAttribute("aria-label", `Remover ${obterNomeMedicamento(id)}`);
+    remover.textContent = "×";
+    remover.addEventListener("click", () => removerMedicamentoSelecionado(id));
+    chip.appendChild(remover);
+
+    chips.appendChild(chip);
+  });
+
+  if (mensagem) {
+    definirFeedbackPesquisa(mensagem, "aviso");
+  } else if (ids.length === 0) {
+    definirFeedbackPesquisa("Nenhum medicamento selecionado.");
+  } else {
+    definirFeedbackPesquisa(`${ids.length} de ${LIMITE_MEDICAMENTOS_SELECIONADOS} medicamentos selecionados.`);
+  }
+}
+
+function ocultarSugestoesMedicamentos() {
+  const sugestoes = document.getElementById("med-suggestions");
+  const input = document.getElementById("med-search");
+
+  if (sugestoes) {
+    sugestoes.innerHTML = "";
+    sugestoes.classList.remove("tem-sugestoes");
+  }
+
+  if (input) {
+    input.setAttribute("aria-expanded", "false");
+  }
+}
+
+function selecionarMedicamento(id) {
+  const ids = [...new Set(obterIdsSelecionados())];
+  const nome = obterNomeMedicamento(id);
+
+  if (ids.includes(id)) {
+    renderizarChipsSelecionados(`${nome} já está selecionado.`);
+    return false;
+  }
+
+  if (ids.length >= LIMITE_MEDICAMENTOS_SELECIONADOS) {
+    renderizarChipsSelecionados(`Limite de ${LIMITE_MEDICAMENTOS_SELECIONADOS} medicamentos atingido.`);
+    return false;
+  }
+
+  ids.push(id);
+  sincronizarSelectsComIds(ids);
+  renderizarChipsSelecionados();
+  return true;
+}
+
+function removerMedicamentoSelecionado(id) {
+  const ids = obterIdsSelecionados().filter(idSelecionado => idSelecionado !== id);
+
+  sincronizarSelectsComIds(ids);
+  renderizarChipsSelecionados();
+}
+
+function renderizarSugestoesMedicamentos(termo) {
+  const sugestoes = document.getElementById("med-suggestions");
+  const input = document.getElementById("med-search");
+
+  if (!sugestoes || !input) {
+    return;
+  }
+
+  const resultados = procurarMedicamentos(termo);
+  sugestoes.innerHTML = "";
+
+  if (resultados.length === 0) {
+    sugestoes.classList.remove("tem-sugestoes");
+    input.setAttribute("aria-expanded", "false");
+    return;
+  }
+
+  resultados.forEach(item => {
+    const linha = document.createElement("li");
+    linha.setAttribute("role", "option");
+
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.classList.add("sugestao-medicamento");
+    botao.dataset.id = item.id;
+
+    const nome = document.createElement("strong");
+    nome.textContent = item.nome;
+    botao.appendChild(nome);
+
+    const detalhe = document.createElement("span");
+    const aliasesTexto = item.aliases.length > 0 ? ` | aliases: ${item.aliases.join(", ")}` : "";
+    detalhe.textContent = `${item.id}${aliasesTexto}`;
+    botao.appendChild(detalhe);
+
+    botao.addEventListener("click", () => {
+      if (selecionarMedicamento(item.id)) {
+        input.value = "";
+        ocultarSugestoesMedicamentos();
+        input.focus();
+      }
+    });
+
+    linha.appendChild(botao);
+    sugestoes.appendChild(linha);
+  });
+
+  sugestoes.classList.add("tem-sugestoes");
+  input.setAttribute("aria-expanded", "true");
+}
+
+function adicionarMedicamentoDaPesquisa() {
+  const input = document.getElementById("med-search");
+
+  if (!input) {
+    return;
+  }
+
+  const termo = input.value.trim();
+  const resultados = procurarMedicamentos(termo);
+
+  if (resultados.length === 0) {
+    definirFeedbackPesquisa("Nenhum medicamento encontrado para a pesquisa.", "aviso");
+    return;
+  }
+
+  if (selecionarMedicamento(resultados[0].id)) {
+    input.value = "";
+    ocultarSugestoesMedicamentos();
+  }
+}
+
+function sincronizarChipsAPartirDosSelects() {
+  const ids = obterIdsSelecionados();
+  const unicos = [...new Set(ids)];
+
+  if (ids.length !== unicos.length) {
+    sincronizarSelectsComIds(unicos);
+    renderizarChipsSelecionados("Medicamento duplicado removido da seleção.");
+    return;
+  }
+
+  renderizarChipsSelecionados();
+}
+
+function configurarPesquisaMedicamentos() {
+  const input = document.getElementById("med-search");
+  const adicionar = document.getElementById("btn-adicionar-med");
+  const selects = obterSelectsMedicamentos();
+
+  if (!input || !adicionar || selects.length === 0) {
+    return;
+  }
+
+  input.addEventListener("input", () => renderizarSugestoesMedicamentos(input.value));
+  input.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      adicionarMedicamentoDaPesquisa();
+    } else if (event.key === "Escape") {
+      ocultarSugestoesMedicamentos();
+    }
+  });
+
+  adicionar.addEventListener("click", adicionarMedicamentoDaPesquisa);
+
+  selects.forEach(select => {
+    select.addEventListener("change", sincronizarChipsAPartirDosSelects);
+  });
+
+  document.addEventListener("click", event => {
+    const pesquisa = document.querySelector(".pesquisa-medicamentos");
+
+    if (pesquisa && !pesquisa.contains(event.target)) {
+      ocultarSugestoesMedicamentos();
+    }
+  });
+
+  renderizarChipsSelecionados();
 }
 
 function criarAvisoBolus(idsSelecionados) {
@@ -585,11 +850,8 @@ function criarAvisoBolus(idsSelecionados) {
   titulo.textContent = "⚠️ Atenção: risco de bólus inadvertido nesta via";
   caixa.appendChild(titulo);
 
-  const intro = document.createElement("p");
-  intro.classList.add("alerta-bolus-intro");
-  intro.textContent =
+  const textoContextoAlerta =
     "Quando medicamentos ou soluções partilham a via, um flush, reabertura da linha ou outra manipulação pode administrar conteúdo remanescente de forma não intencional.";
-  caixa.appendChild(intro);
 
   const ordemNiveis = { alto: 1, moderado: 2, baixo: 3 };
   const gruposOrdenados = [...gruposSelecionados.values()].sort(
@@ -602,27 +864,47 @@ function criarAvisoBolus(idsSelecionados) {
   }
 
   gruposOrdenados.forEach(({ alerta, medicamentos }) => {
-    const bloco = document.createElement("div");
+    const bloco = document.createElement("details");
     bloco.classList.add("alerta-bolus", `alerta-bolus-${alerta.nivel}`);
+
+    const resumo = document.createElement("summary");
+    resumo.classList.add("alerta-bolus-resumo");
 
     const subtitulo = document.createElement("strong");
     subtitulo.classList.add("alerta-bolus-grupo-titulo");
     subtitulo.textContent = alerta.titulo;
-    bloco.appendChild(subtitulo);
+    resumo.appendChild(subtitulo);
 
     const medicamentosTexto = document.createElement("p");
     medicamentosTexto.classList.add("alerta-bolus-medicamentos");
     medicamentosTexto.textContent = `Medicamentos selecionados: ${medicamentos.join(", ")}.`;
-    bloco.appendChild(medicamentosTexto);
+    resumo.appendChild(medicamentosTexto);
+
+    const indicador = document.createElement("span");
+    indicador.classList.add("alerta-bolus-indicador");
+    indicador.textContent = "Ver detalhes";
+    resumo.appendChild(indicador);
+
+    bloco.appendChild(resumo);
+
+    const detalhes = document.createElement("div");
+    detalhes.classList.add("alerta-bolus-detalhes");
+
+    const intro = document.createElement("p");
+    intro.classList.add("alerta-bolus-intro");
+    intro.textContent = textoContextoAlerta;
+    detalhes.appendChild(intro);
 
     const mensagem = document.createElement("p");
     mensagem.textContent = alerta.mensagem;
-    bloco.appendChild(mensagem);
+    detalhes.appendChild(mensagem);
 
     const recomendacao = document.createElement("p");
     recomendacao.classList.add("alerta-bolus-recomendacao");
     recomendacao.textContent = alerta.recomendacao;
-    bloco.appendChild(recomendacao);
+    detalhes.appendChild(recomendacao);
+
+    bloco.appendChild(detalhes);
 
     caixa.appendChild(bloco);
   });
@@ -661,39 +943,61 @@ function atualizarResumoAnalise(resumo, resultado) {
   }
 }
 
-function adicionarLinhaResumo(lista, etiqueta, valor) {
-  const item = document.createElement("li");
-  item.textContent = `${etiqueta}: ${valor}`;
-  lista.appendChild(item);
+function adicionarBadgeResumo(container, etiqueta, valor, classe, textoTeste = etiqueta) {
+  const item = document.createElement("div");
+  item.classList.add("resumo-badge", classe);
+
+  const label = document.createElement("span");
+  label.textContent = etiqueta;
+  item.appendChild(label);
+
+  const numero = document.createElement("strong");
+  numero.textContent = valor;
+  item.appendChild(numero);
+
+  const textoCompatibilidadeTeste = document.createElement("span");
+  textoCompatibilidadeTeste.classList.add("sr-only");
+  textoCompatibilidadeTeste.textContent = `${textoTeste}: ${valor}`;
+  item.appendChild(textoCompatibilidadeTeste);
+
+  container.appendChild(item);
 }
 
 function criarResumoAnalise(resumo) {
   const bloco = document.createElement("div");
   bloco.classList.add("resultado-item", "resumo-analise");
 
-  const titulo = document.createElement("strong");
-  titulo.textContent = "Resumo da análise";
+  const titulo = document.createElement("span");
+  titulo.classList.add("resumo-titulo");
+  titulo.textContent = "Resumo:";
   bloco.appendChild(titulo);
 
-  const lista = document.createElement("ul");
-  adicionarLinhaResumo(lista, "Total de pares avaliados", resumo.total);
-  adicionarLinhaResumo(lista, "Compatíveis", resumo.compativel);
-  adicionarLinhaResumo(lista, "Incompatíveis", resumo.incompativel);
-  adicionarLinhaResumo(lista, "Variáveis/dados conflitantes", resumo.variavel);
-  adicionarLinhaResumo(lista, "Sem dados", resumo.semDados);
+  const badges = document.createElement("div");
+  badges.classList.add("resumo-badges");
 
-  if (resumo.alertas > 0) {
-    adicionarLinhaResumo(lista, "Alertas relevantes", resumo.alertas);
-  }
+  adicionarBadgeResumo(badges, "Pares", resumo.total, "resumo-total", "Total de pares avaliados");
+  adicionarBadgeResumo(badges, "Compatíveis", resumo.compativel, "resumo-compativel");
+  adicionarBadgeResumo(badges, "Incompatíveis", resumo.incompativel, "resumo-incompativel");
+  adicionarBadgeResumo(badges, "Variáveis", resumo.variavel, "resumo-variavel", "Variáveis/dados conflitantes");
+  adicionarBadgeResumo(badges, "Sem dados", resumo.semDados, "resumo-sem-dados");
+  adicionarBadgeResumo(badges, "Alertas", resumo.alertas, "resumo-alertas", "Alertas relevantes");
 
-  bloco.appendChild(lista);
+  bloco.appendChild(badges);
   return bloco;
 }
 
 function limparSelecao() {
-  document.querySelectorAll(".med-select").forEach(select => {
+  obterSelectsMedicamentos().forEach(select => {
     select.value = "";
   });
+
+  const input = document.getElementById("med-search");
+  if (input) {
+    input.value = "";
+  }
+
+  ocultarSugestoesMedicamentos();
+  renderizarChipsSelecionados();
 
   const resultadoDiv = document.getElementById("resultado");
   resultadoDiv.innerHTML = "";
@@ -804,12 +1108,6 @@ async function verificarCompatibilidade() {
       "Supabase indisponível. Resultados calculados pela base local de segurança.";
     resultadoDiv.appendChild(avisoFallback);
   }
-
-  const rodape = document.createElement("p");
-  rodape.classList.add("disclaimer");
-  rodape.textContent =
-    "Ferramenta experimental para treinamento. Não utilizar para decisões clínicas reais.";
-  resultadoDiv.appendChild(rodape);
 
   registrarUtilizacaoAnonima({
     numero_medicamentos: unicos.length,

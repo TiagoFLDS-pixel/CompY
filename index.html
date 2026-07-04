@@ -25,80 +25,110 @@
     </header>
 
     <div class="app">
-      <h2>Compatibilidade em Via Y (Protótipo)</h2>
-      <p class="descricao">
-        Selecione até 6 medicamentos. O sistema avalia as combinações em pares e mostra possíveis compatibilidades
-        ou alertas. <strong>Uso apenas como apoio. Não substitui fontes oficiais nem o farmacêutico.</strong>
-      </p>
-      <dl class="app-meta" aria-label="Versão e base de dados da CompY">
-        <div>
-          <dt>App</dt>
-          <dd>CompY v0.9.0-beta</dd>
+      <div class="app-cabecalho">
+        <div class="app-intro">
+          <h2>Compatibilidade em Via Y (Protótipo)</h2>
+          <p class="descricao">
+            Selecione 2 a 6 medicamentos da mesma via e clique em "Verificar compatibilidade". Esta ferramenta é apenas de apoio e não substitui a validação farmacêutica.
+          </p>
         </div>
-        <div>
-          <dt>Base validada</dt>
-          <dd>09/05/2026</dd>
-        </div>
-        <div>
-          <dt>Fonte clínica</dt>
-          <dd>Stabilis / IPO-Porto SMI</dd>
-        </div>
-        <div>
-          <dt>Base consultada</dt>
-          <dd>Supabase</dd>
-        </div>
-        <div>
-          <dt>Ambiente</dt>
-          <dd>protótipo/demonstração</dd>
-        </div>
-      </dl>
-      <p class="instrucao-rapida">
-        Escolha 2 a 6 medicamentos da mesma via e carregue em "Verificar compatibilidade". Confirme sempre em protocolo local ou com a farmácia clínica.
-      </p>
 
-      <div class="form-grid">
-        <label>
-          Medicamento 1
-          <select class="med-select" name="med1">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
-
-        <label>
-          Medicamento 2
-          <select class="med-select" name="med2">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
-
-        <label>
-          Medicamento 3
-          <select class="med-select" name="med3">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
-
-        <label>
-          Medicamento 4
-          <select class="med-select" name="med4">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
-
-        <label>
-          Medicamento 5
-          <select class="med-select" name="med5">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
-
-        <label>
-          Medicamento 6
-          <select class="med-select" name="med6">
-            <option value="">-- Selecione --</option>
-          </select>
-        </label>
+        <dl class="app-meta" aria-label="Versão e base de dados da CompY">
+          <div>
+            <dt>App</dt>
+            <dd>CompY v0.9.0-beta</dd>
+          </div>
+          <div>
+            <dt>Base</dt>
+            <dd>validada: 09/05/2026</dd>
+          </div>
+          <div>
+            <dt>Fonte</dt>
+            <dd>Stabilis / IPO-Porto SMI</dd>
+          </div>
+          <div>
+            <dt>Dados</dt>
+            <dd>Supabase</dd>
+          </div>
+          <div>
+            <dt>Ambiente</dt>
+            <dd>protótipo/demonstração</dd>
+          </div>
+        </dl>
       </div>
+
+      <section class="pesquisa-medicamentos" aria-labelledby="pesquisa-medicamentos-titulo">
+        <h3 id="pesquisa-medicamentos-titulo">Selecionar medicamentos</h3>
+        <div class="pesquisa-linha">
+          <label class="campo-pesquisa" for="med-search">
+            Pesquisar por nome, ID ou alias
+            <input
+              type="search"
+              id="med-search"
+              autocomplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded="false"
+              aria-controls="med-suggestions"
+              placeholder="Ex.: sulfato, propofol, noradrenalina"
+            >
+          </label>
+          <button type="button" id="btn-adicionar-med" class="btn-secundario">Adicionar</button>
+        </div>
+
+        <ul id="med-suggestions" class="sugestoes-medicamentos" role="listbox"></ul>
+        <div id="med-chips" class="chips-medicamentos" aria-live="polite"></div>
+        <p id="med-search-feedback" class="feedback-pesquisa" aria-live="polite">
+          Nenhum medicamento selecionado.
+        </p>
+      </section>
+
+      <details class="selects-avancados">
+        <summary>Seleção por lista</summary>
+        <div class="form-grid">
+          <label>
+            Medicamento 1
+            <select class="med-select" name="med1">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+
+          <label>
+            Medicamento 2
+            <select class="med-select" name="med2">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+
+          <label>
+            Medicamento 3
+            <select class="med-select" name="med3">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+
+          <label>
+            Medicamento 4
+            <select class="med-select" name="med4">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+
+          <label>
+            Medicamento 5
+            <select class="med-select" name="med5">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+
+          <label>
+            Medicamento 6
+            <select class="med-select" name="med6">
+              <option value="">-- Selecione --</option>
+            </select>
+          </label>
+        </div>
+      </details>
 
       <div class="acoes-form">
         <button type="button" id="btn-verificar">Verificar compatibilidade</button>
@@ -114,19 +144,16 @@
         <span class="legenda-item"><span class="legenda-cor legenda-sem-dados"></span> Sem dados / não registado</span>
       </div>
 
-      <p class="disclaimer">
-        Este protótipo ainda é experimental. Os exemplos de Incompatibilidade/Compatibilidade devem ser confirmados em protocolos institucionais, Trissel/Micromedex/Lexicomp, bula e com a farmácia clínica.
-      </p>
-
       <section class="fontes-limitacoes" aria-labelledby="fontes-limitacoes-titulo">
         <h3 id="fontes-limitacoes-titulo">Fontes e limitações</h3>
         <p>
-          A CompY é uma ferramenta de apoio à decisão e treino para demonstração institucional. Não substitui validação farmacêutica, protocolo local ou consulta de fontes clínicas oficiais atualizadas.
+          A CompY é uma ferramenta de apoio à decisão e treino para demonstração institucional. Não substitui a validação farmacêutica, o protocolo local ou a consulta de fontes clínicas oficiais atualizadas.
         </p>
         <ul>
           <li>Ausência de dados na base não significa compatibilidade nem ausência de interação.</li>
           <li>Compatibilidade física em Y-site não garante estabilidade química nem adequação clínica ao doente.</li>
           <li>A interpretação final deve considerar concentração, diluente, tempo de contacto, via, contexto clínico e política institucional.</li>
+          <li>Sempre que aplicável, confirmar em fontes institucionais e/ou com a farmácia clínica.</li>
         </ul>
       </section>
     </div>
