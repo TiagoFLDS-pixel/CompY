@@ -120,6 +120,91 @@
       overflow-wrap: anywhere;
     }
 
+    .btn-sobre-base {
+      grid-column: 2;
+      justify-self: end;
+      margin-top: -10px;
+      padding: 4px 9px;
+      border: 1px solid #E2E8F0;
+      border-radius: 999px;
+      background: #FFFFFF;
+      color: #64748B;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .btn-sobre-base:hover,
+    .btn-sobre-base:focus {
+      background: #F8FAFC;
+      color: #36577E;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(48, 146, 251, 0.14);
+    }
+
+    .estado-base {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      background: #FBFDFF;
+      color: #64748B;
+    }
+
+    .estado-base h3 {
+      margin: 0 0 8px;
+      color: #36577E;
+      font-size: 0.86rem;
+    }
+
+    .estado-base-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 7px;
+    }
+
+    .estado-base-item {
+      min-width: 0;
+      padding: 6px 8px;
+      border: 1px solid #EDF2F7;
+      border-radius: 7px;
+      background: #FFFFFF;
+    }
+
+    .estado-base-item span {
+      display: block;
+      color: #7A8AA0;
+      font-size: 0.68rem;
+      line-height: 1.2;
+    }
+
+    .estado-base-item strong {
+      display: block;
+      margin-top: 2px;
+      color: #36577E;
+      font-size: 0.78rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .estado-base-item.estado-ok strong {
+      color: #2E7D32;
+    }
+
+    .estado-base-item.estado-aviso strong {
+      color: #8A4B00;
+    }
+
+    .estado-base-item.estado-erro strong {
+      color: #C62828;
+    }
+
+    .estado-base-nota {
+      margin: 8px 0 0;
+      color: #64748B;
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
+
     .pesquisa-medicamentos {
       margin-top: 18px;
       padding: 14px 0 4px;
@@ -770,6 +855,12 @@
 
   .app-meta {
     justify-content: flex-start;
+  }
+
+  .btn-sobre-base {
+    grid-column: auto;
+    justify-self: start;
+    margin-top: 0;
   }
 
   .app-meta div {
