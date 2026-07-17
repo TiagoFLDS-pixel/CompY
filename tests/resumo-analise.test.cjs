@@ -77,7 +77,15 @@ function createSupabaseMock(responses) {
     rpc(name, params) {
       assert.strictEqual(name, "obter_compatibilidade");
 
+      if (responses instanceof Error) {
+        return Promise.reject(responses);
+      }
+
       const classification = responses[pairKey(params.med_a, params.med_b)];
+
+      if (classification instanceof Error) {
+        return Promise.reject(classification);
+      }
 
       if (!classification) {
         return Promise.resolve({ data: [], error: null });
@@ -99,9 +107,16 @@ function createSupabaseMock(responses) {
   };
 }
 
-function createHarness(selectedIds, responses) {
+function createHarness(selectedIds, responses, options = {}) {
   const resultado = new TestElement("div");
   const selects = selectedIds.map(id => ({ value: id }));
+  const windowConfig = {
+    BACKEND_MODE: options.backendMode || "hybrid",
+    SUPABASE_ENABLED: options.supabaseEnabled !== undefined ? options.supabaseEnabled : true,
+    LOCAL_FALLBACK_ENABLED:
+      options.localFallbackEnabled !== undefined ? options.localFallbackEnabled : true,
+    METRICS_ENABLED: false
+  };
 
   const context = {
     console: {
@@ -115,6 +130,7 @@ function createHarness(selectedIds, responses) {
     clearTimeout,
     navigator: {},
     window: {
+      ...windowConfig,
       addEventListener() {},
       compYSupabase: createSupabaseMock(responses)
     },
@@ -138,6 +154,7 @@ function createHarness(selectedIds, responses) {
 
   context.window.window = context.window;
   context.window.document = context.document;
+  Object.assign(context, windowConfig);
 
   const code = [
     fs.readFileSync(path.join(PROJECT_ROOT, "data", "compatibilidades.js"), "utf8"),
@@ -189,6 +206,84 @@ const tests = [
         semDados: 0
       });
       assert.match(text, /Provavelmente compatível em via Y/);
+    }
+  },
+  {
+    name: "modo local usa snapshot local",
+    async run() {
+      const text = await createHarness(
+        ["sulfato_magnesio", "glucose_5"],
+        new Error("Supabase não deveria ser usado"),
+        { backendMode: "local" }
+      ).run();
+
+      assertSummary(text, {
+        total: 1,
+        compativel: 1,
+        incompativel: 0,
+        variavel: 0,
+        semDados: 0
+      });
+      assert.match(text, /Base consultada: Snapshot local/);
+    }
+  },
+  {
+    name: "modo híbrido usa Supabase quando responde",
+    async run() {
+      const text = await createHarness(
+        ["sulfato_magnesio", "glucose_5"],
+        { [pairKey("sulfato_magnesio", "glucose_5")]: "variavel" },
+        { backendMode: "hybrid" }
+      ).run();
+
+      assertSummary(text, {
+        total: 1,
+        compativel: 0,
+        incompativel: 0,
+        variavel: 1,
+        semDados: 0
+      });
+      assert.match(text, /Base consultada: Supabase/);
+      assert.match(text, /Compatibilidade variável\/controversa/);
+    }
+  },
+  {
+    name: "modo híbrido usa snapshot local se Supabase falhar",
+    async run() {
+      const text = await createHarness(
+        ["sulfato_magnesio", "glucose_5"],
+        new Error("Falha simulada no Supabase"),
+        { backendMode: "hybrid" }
+      ).run();
+
+      assertSummary(text, {
+        total: 1,
+        compativel: 1,
+        incompativel: 0,
+        variavel: 0,
+        semDados: 0
+      });
+      assert.match(text, /Supabase indisponível — usado snapshot local/);
+    }
+  },
+  {
+    name: "modo Supabase não usa fallback local se Supabase falhar",
+    async run() {
+      const text = await createHarness(
+        ["sulfato_magnesio", "glucose_5"],
+        new Error("Falha simulada no Supabase"),
+        { backendMode: "supabase" }
+      ).run();
+
+      assertSummary(text, {
+        total: 1,
+        compativel: 0,
+        incompativel: 0,
+        variavel: 0,
+        semDados: 1
+      });
+      assert.match(text, /Supabase indisponível/);
+      assert.doesNotMatch(text, /Base consultada: Snapshot local/);
     }
   },
   {

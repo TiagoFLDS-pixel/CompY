@@ -7,7 +7,8 @@
   botaoLimpar.disabled = true;
 
   await popularSelects();
-  validarBase();
+  window.compYValidacaoBase = validarBase();
+  configurarEstadoBase();
 
   botao.addEventListener("click", verificarCompatibilidade);
   botaoLimpar.addEventListener("click", limparSelecao);
@@ -15,6 +16,7 @@
   botao.disabled = false;
   botaoLimpar.disabled = false;
   botao.textContent = "Verificar compatibilidade";
+  enviarEventoUso("app_open");
 });
 
 // ==========================
@@ -58,15 +60,23 @@ const aliases = {
 };
 
 function textoOrigemDados(resultado) {
-  if (resultado.origem === "json_local") {
-    if (resultado.status === "nao_identificado") {
-      return "Base consultada: fallback local | Sem registo na base validada para este par.";
+  if (resultado.origem === "snapshot_local") {
+    if (resultado.fallbackDeSupabase) {
+      return "Supabase indisponível — usado snapshot local";
     }
 
-    return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: fallback local";
+    if (resultado.status === "nao_identificado") {
+      return "Base consultada: Snapshot local | Sem registo na base validada para este par.";
+    }
+
+    return "Fonte clínica: Stabilis | Validação CompY: 09/05/2026 | Base consultada: Snapshot local";
   }
 
-  if (resultado.status === "nao_identificado") {
+  if (resultado.origem === "supabase_indisponivel") {
+    return "Supabase indisponível | Sem interpretação automática como compatibilidade.";
+  }
+
+  if (resultado.origem === "supabase" && resultado.status === "nao_identificado") {
     return "Base consultada: Supabase | Sem registo na base validada para este par.";
   }
 
@@ -76,18 +86,107 @@ function textoOrigemDados(resultado) {
 const MENSAGEM_SEM_DADOS =
   "Sem dados disponíveis na base para esta combinação. Isto não implica compatibilidade ou ausência de interação. Validar em fonte institucional/protocolo local.";
 const LIMITE_MEDICAMENTOS_SELECIONADOS = 6;
+const COMPY_APP_VERSION = "CompY v0.9.0-beta";
+const COMPY_BASE_VERSION = "2026-05-09";
+const COMPY_ENVIRONMENT = "protótipo/demonstração";
+const DATA_BASE_COMPY = "09/05/2026";
+const FONTE_PRINCIPAL_COMPY = "Stabilis / IPO-Porto SMI";
+const BACKEND_MODES_SUPORTADOS = new Set(["hybrid", "supabase", "local"]);
+const SUPABASE_TIMEOUT_MS = 5000;
+
+window.compYBackendStatus = {
+  supabase: "não testado",
+  ultimoErroSupabase: null,
+  fallbackLocalUsado: false
+};
+
+function obterBackendMode() {
+  const mode = String(window.BACKEND_MODE || "hybrid").toLowerCase();
+  return BACKEND_MODES_SUPORTADOS.has(mode) ? mode : "hybrid";
+}
+
+function supabaseAtivoPelaConfiguracao() {
+  return window.SUPABASE_ENABLED !== false && obterBackendMode() !== "local";
+}
+
+function obterClienteSupabase() {
+  if (!supabaseAtivoPelaConfiguracao()) {
+    return null;
+  }
+
+  if (window.compYSupabase) {
+    return window.compYSupabase;
+  }
+
+  if (window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+    window.compYSupabase = window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_ANON_KEY
+    );
+    return window.compYSupabase;
+  }
+
+  return null;
+}
+
+function fallbackLocalAtivo() {
+  return window.LOCAL_FALLBACK_ENABLED !== false;
+}
+
+function atualizarEstadoSupabase(estado, erro = null) {
+  window.compYBackendStatus.supabase = estado;
+  window.compYBackendStatus.ultimoErroSupabase = erro ? String(erro.message || erro) : null;
+}
+
+function marcarFallbackLocalUsado() {
+  window.compYBackendStatus.fallbackLocalUsado = true;
+}
+
+function resultadoSupabaseIndisponivel(erro) {
+  atualizarEstadoSupabase("indisponível", erro);
+
+  return {
+    status: "nao_identificado",
+    origem: "supabase_indisponivel",
+    backendIndisponivel: true
+  };
+}
+
+function comTimeoutSupabase(promise) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error("Timeout ao consultar Supabase."));
+      }, SUPABASE_TIMEOUT_MS);
+    })
+  ]);
+}
 
 async function carregarMedicamentosComFallback() {
+  const mode = obterBackendMode();
+
+  if (mode === "local") {
+    atualizarEstadoSupabase("não usado");
+
+    return {
+      medicamentos: MEDICAMENTOS,
+      origem: "snapshot_local"
+    };
+  }
+
   try {
-    if (!window.compYSupabase) {
+    const supabase = obterClienteSupabase();
+
+    if (!supabase) {
       throw new Error("Cliente Supabase não está disponível.");
     }
 
-    const { data, error } = await window.compYSupabase
+    const { data, error } = await comTimeoutSupabase(supabase
       .from("medicamentos")
       .select("id, nome, tipo, ativo")
       .eq("ativo", true)
-      .order("nome", { ascending: true });
+      .order("nome", { ascending: true }));
 
     if (error) {
       throw error;
@@ -97,19 +196,33 @@ async function carregarMedicamentosComFallback() {
       throw new Error("Lista de medicamentos do Supabase vazia.");
     }
 
+    atualizarEstadoSupabase("disponível");
+
     return {
       medicamentos: data,
       origem: "supabase"
     };
   } catch (erro) {
+    atualizarEstadoSupabase("indisponível", erro);
+
+    if (mode === "supabase" || !fallbackLocalAtivo()) {
+      console.warn("Falha ao carregar medicamentos do Supabase. Modo sem fallback local.", erro);
+
+      return {
+        medicamentos: MEDICAMENTOS,
+        origem: "supabase_indisponivel"
+      };
+    }
+
     console.warn(
-      "Falha ao carregar medicamentos do Supabase. A usar lista local como fallback.",
+      "Falha ao carregar medicamentos do Supabase. A usar snapshot local como fallback.",
       erro
     );
+    marcarFallbackLocalUsado();
 
     return {
       medicamentos: MEDICAMENTOS,
-      origem: "json_local"
+      origem: "snapshot_local"
     };
   }
 }
@@ -358,18 +471,24 @@ function buscarCompatibilidade(idA, idB) {
   return null;
 }
 async function buscarCompatibilidadeSupabase(idA, idB) {
-  if (!window.compYSupabase) {
+  const supabase = obterClienteSupabase();
+
+  if (!supabase) {
     throw new Error("Cliente Supabase não está disponível.");
   }
 
-  const { data, error } = await window.compYSupabase.rpc("obter_compatibilidade", {
-    med_a: idA,
-    med_b: idB
-  });
+  const { data, error } = await comTimeoutSupabase(
+    supabase.rpc("obter_compatibilidade", {
+      med_a: idA,
+      med_b: idB
+    })
+  );
 
   if (error) {
     throw error;
   }
+
+  atualizarEstadoSupabase("disponível");
 
   if (!Array.isArray(data) || data.length === 0) {
     return {
@@ -393,41 +512,121 @@ async function buscarCompatibilidadeSupabase(idA, idB) {
   };
 }
 
-async function buscarCompatibilidadeComFallback(idA, idB) {
+function buscarCompatibilidadeSnapshotLocal(idA, idB, opcoes = {}) {
+  const resultadoLocal = buscarCompatibilidade(idA, idB);
+
+  if (!resultadoLocal) {
+    return null;
+  }
+
+  return {
+    ...resultadoLocal,
+    origem: "snapshot_local",
+    fallbackDeSupabase: Boolean(opcoes.fallbackDeSupabase)
+  };
+}
+
+async function obterCompatibilidade(idA, idB) {
+  const mode = obterBackendMode();
+
+  if (mode === "local") {
+    atualizarEstadoSupabase("não usado");
+    return buscarCompatibilidadeSnapshotLocal(idA, idB);
+  }
+
   try {
     return await buscarCompatibilidadeSupabase(idA, idB);
   } catch (erro) {
-    console.warn("Falha ao consultar Supabase. A usar base local como fallback.", erro);
-
-    const resultadoLocal = buscarCompatibilidade(idA, idB);
-
-    if (!resultadoLocal) {
-      return null;
+    if (mode === "supabase" || !fallbackLocalAtivo()) {
+      console.warn("Falha ao consultar Supabase. Modo sem fallback local.", erro);
+      return resultadoSupabaseIndisponivel(erro);
     }
 
-    return {
-      ...resultadoLocal,
-      origem: "json_local"
-    };
+    console.warn("Falha ao consultar Supabase. A usar snapshot local como fallback.", erro);
+    marcarFallbackLocalUsado();
+    atualizarEstadoSupabase("indisponível", erro);
+    return buscarCompatibilidadeSnapshotLocal(idA, idB, { fallbackDeSupabase: true });
   }
 }
 
-async function registrarUtilizacaoAnonima(payload) {
-  try {
-    if (!window.compYSupabase) {
-      throw new Error("Cliente Supabase não está disponível.");
-    }
-
-    const { error } = await window.compYSupabase
-      .from("metricas_utilizacao")
-      .insert([payload]);
-
-    if (error) {
-      throw error;
-    }
-  } catch (erro) {
-    console.warn("Não foi possível registar a métrica anónima de utilização.", erro);
+function metricasUtilizacaoAtivas() {
+  if (Object.prototype.hasOwnProperty.call(window, "METRICS_ENABLED")) {
+    return window.METRICS_ENABLED === true;
   }
+
+  return window.COMPY_USAGE_METRICS_ENABLED === true;
+}
+
+function obterDeviceTypeAproximado() {
+  const largura = window.innerWidth || 1024;
+  const pontosToque = navigator.maxTouchPoints || 0;
+
+  return largura <= 768 || pontosToque > 0 ? "mobile" : "desktop";
+}
+
+const CAMPOS_CONTADORES_METRICAS = [
+  "selected_count",
+  "pair_count",
+  "compatible_count",
+  "incompatible_count",
+  "variable_count",
+  "no_data_count",
+  "alert_count"
+];
+
+function criarPayloadEventoUso(eventName, dados = {}) {
+  const payload = {
+    event_name: eventName,
+    timestamp: new Date().toISOString(),
+    app_version: COMPY_APP_VERSION,
+    base_version: COMPY_BASE_VERSION,
+    environment: COMPY_ENVIRONMENT,
+    device_type: obterDeviceTypeAproximado()
+  };
+
+  CAMPOS_CONTADORES_METRICAS.forEach(campo => {
+    if (Number.isInteger(dados[campo])) {
+      payload[campo] = dados[campo];
+    }
+  });
+
+  return payload;
+}
+
+function enviarEventoUso(eventName, dados = {}) {
+  if (!metricasUtilizacaoAtivas()) {
+    return;
+  }
+
+  const endpoint = window.COMPY_USAGE_LOG_ENDPOINT;
+
+  if (!endpoint || typeof fetch !== "function") {
+    return;
+  }
+
+  const payload = criarPayloadEventoUso(eventName, dados);
+  const headers = {
+    "Content-Type": "application/json"
+  };
+
+  if (window.SUPABASE_ANON_KEY) {
+    headers.Authorization = `Bearer ${window.SUPABASE_ANON_KEY}`;
+  }
+
+  window.setTimeout(() => {
+    fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(erro => {
+      console.warn("Não foi possível registar a métrica anónima de utilização.", erro);
+    });
+  }, 0);
+}
+
+function registrarUtilizacaoAnonima(payload) {
+  enviarEventoUso("analysis_run", payload);
 }
 
 function validarBase() {
@@ -508,6 +707,19 @@ function validarBase() {
   console.log("Medicamentos sem bloco próprio:", medsSemBloco);
   console.log("Pares com conflito de status:", conflitos);
   console.groupEnd();
+
+  return {
+    totalMedicamentos: MEDICAMENTOS.length,
+    totalPares: pares.size,
+    errosCriticos: {
+      chavesSemMatch,
+      refsInvalidas,
+      conflitos
+    },
+    avisos: {
+      medicamentosSemBloco: medsSemBloco
+    }
+  };
 }
 
 // ==========================
@@ -553,6 +765,171 @@ async function popularSelects() {
 function obterNomeMedicamento(id) {
   const med = medsById.get(id);
   return med ? med.nome : id;
+}
+
+function contarErrosCriticosValidacao(validacao) {
+  if (!validacao) {
+    return 0;
+  }
+
+  return (
+    validacao.errosCriticos.chavesSemMatch.length +
+    validacao.errosCriticos.refsInvalidas.length +
+    validacao.errosCriticos.conflitos.length
+  );
+}
+
+function contarAvisosValidacao(validacao) {
+  if (!validacao) {
+    return 0;
+  }
+
+  return validacao.avisos.medicamentosSemBloco.length;
+}
+
+function textoBaseConsultada() {
+  if (window.compYMedicamentosOrigem === "snapshot_local") {
+    return "Snapshot local";
+  }
+
+  if (window.compYMedicamentosOrigem === "supabase_indisponivel") {
+    return "Supabase indisponível";
+  }
+
+  return "Supabase";
+}
+
+function textoModoBackend() {
+  return obterBackendMode();
+}
+
+function textoEstadoSupabase() {
+  if (!supabaseAtivoPelaConfiguracao()) {
+    return "não usado";
+  }
+
+  return window.compYBackendStatus.supabase;
+}
+
+function textoFallbackLocal() {
+  if (obterBackendMode() === "local") {
+    return "fonte principal";
+  }
+
+  return fallbackLocalAtivo() ? "ativo" : "inativo";
+}
+
+function atualizarResumoTopoBackend() {
+  const dados = document.getElementById("app-meta-dados");
+
+  if (!dados) {
+    return;
+  }
+
+  const mode = obterBackendMode();
+
+  if (mode === "local") {
+    dados.textContent = "Snapshot local";
+  } else if (mode === "supabase") {
+    dados.textContent = "Supabase";
+  } else {
+    dados.textContent = "Supabase + snapshot local";
+  }
+}
+
+function adicionarItemEstadoBase(lista, etiqueta, valor, classe) {
+  const item = document.createElement("div");
+  item.classList.add("estado-base-item");
+
+  if (classe) {
+    item.classList.add(classe);
+  }
+
+  const label = document.createElement("span");
+  label.textContent = etiqueta;
+  item.appendChild(label);
+
+  const dado = document.createElement("strong");
+  dado.textContent = valor;
+  item.appendChild(dado);
+
+  lista.appendChild(item);
+}
+
+function renderizarEstadoBase() {
+  const conteudo = document.getElementById("estado-base-conteudo");
+  const validacao = window.compYValidacaoBase;
+
+  if (!conteudo || !validacao) {
+    return;
+  }
+
+  const totalErrosCriticos = contarErrosCriticosValidacao(validacao);
+  const totalAvisos = contarAvisosValidacao(validacao);
+  const lista = document.createElement("div");
+  lista.classList.add("estado-base-grid");
+
+  conteudo.innerHTML = "";
+
+  atualizarResumoTopoBackend();
+
+  adicionarItemEstadoBase(lista, "Modo atual", textoModoBackend());
+  adicionarItemEstadoBase(lista, "Estado do Supabase", textoEstadoSupabase());
+  adicionarItemEstadoBase(lista, "Fallback local", textoFallbackLocal());
+  adicionarItemEstadoBase(lista, "Data do snapshot local", DATA_BASE_COMPY);
+  adicionarItemEstadoBase(lista, "Medicamentos locais", String(validacao.totalMedicamentos));
+  adicionarItemEstadoBase(lista, "Pares locais", String(validacao.totalPares));
+  adicionarItemEstadoBase(lista, "Fonte principal", FONTE_PRINCIPAL_COMPY);
+  adicionarItemEstadoBase(lista, "Base consultada", textoBaseConsultada());
+  adicionarItemEstadoBase(
+    lista,
+    "Última validação",
+    totalErrosCriticos === 0 ? "sem erros críticos" : "com erros críticos",
+    totalErrosCriticos === 0 ? "estado-ok" : "estado-erro"
+  );
+  adicionarItemEstadoBase(
+    lista,
+    "Erros críticos",
+    String(totalErrosCriticos),
+    totalErrosCriticos === 0 ? "estado-ok" : "estado-erro"
+  );
+  adicionarItemEstadoBase(
+    lista,
+    "Avisos não críticos",
+    String(totalAvisos),
+    totalAvisos === 0 ? "estado-ok" : "estado-aviso"
+  );
+
+  conteudo.appendChild(lista);
+
+  if (totalAvisos > 0) {
+    const aviso = document.createElement("p");
+    aviso.classList.add("estado-base-nota");
+    aviso.textContent = `${totalAvisos} medicamento(s) sem bloco próprio na base local.`;
+    conteudo.appendChild(aviso);
+  }
+}
+
+function configurarEstadoBase() {
+  const botao = document.getElementById("btn-sobre-base");
+  const painel = document.getElementById("estado-base");
+
+  if (!botao || !painel) {
+    return;
+  }
+
+  renderizarEstadoBase();
+
+  botao.addEventListener("click", () => {
+    const vaiAbrir = painel.hasAttribute("hidden");
+
+    painel.toggleAttribute("hidden", !vaiAbrir);
+    botao.setAttribute("aria-expanded", String(vaiAbrir));
+
+    if (vaiAbrir) {
+      enviarEventoUso("base_status_viewed");
+    }
+  });
 }
 
 function obterSelectsMedicamentos() {
@@ -905,6 +1282,11 @@ function criarAvisoBolus(idsSelecionados) {
     detalhes.appendChild(recomendacao);
 
     bloco.appendChild(detalhes);
+    bloco.addEventListener("toggle", () => {
+      if (bloco.open) {
+        enviarEventoUso("alert_expanded");
+      }
+    });
 
     caixa.appendChild(bloco);
   });
@@ -1006,6 +1388,7 @@ function limparSelecao() {
 async function verificarCompatibilidade() {
   const resultadoDiv = document.getElementById("resultado");
   resultadoDiv.innerHTML = "";
+  window.compYBackendStatus.fallbackLocalUsado = false;
 
   const selects = Array.from(document.querySelectorAll(".med-select"));
   const selecionados = selects.map(s => s.value).filter(v => v);
@@ -1048,10 +1431,10 @@ async function verificarCompatibilidade() {
       const nomeA = obterNomeMedicamento(idA);
       const nomeB = obterNomeMedicamento(idB);
 
-      const resultado = await buscarCompatibilidadeComFallback(idA, idB);
+      const resultado = await obterCompatibilidade(idA, idB);
       atualizarResumoAnalise(resumoAnalise, resultado);
 
-      if (resultado && resultado.origem === "json_local") {
+      if (resultado && resultado.fallbackDeSupabase) {
         fallbackLocalUsado = true;
       }
 
@@ -1087,7 +1470,14 @@ async function verificarCompatibilidade() {
 
       bloco.appendChild(texto);
 
-      if (resultado && (resultado.origem === "supabase" || resultado.origem === "json_local")) {
+      if (
+        resultado &&
+        (
+          resultado.origem === "supabase" ||
+          resultado.origem === "snapshot_local" ||
+          resultado.origem === "supabase_indisponivel"
+        )
+      ) {
         const fonte = document.createElement("small");
         fonte.classList.add("resultado-fonte");
         fonte.textContent = textoOrigemDados(resultado);
@@ -1105,18 +1495,20 @@ async function verificarCompatibilidade() {
     const avisoFallback = document.createElement("p");
     avisoFallback.classList.add("disclaimer");
     avisoFallback.textContent =
-      "Supabase indisponível. Resultados calculados pela base local de segurança.";
+      "Supabase indisponível — usado snapshot local.";
     resultadoDiv.appendChild(avisoFallback);
   }
 
+  renderizarEstadoBase();
+
   registrarUtilizacaoAnonima({
-    numero_medicamentos: unicos.length,
-    numero_pares: resumoAnalise.total,
-    tem_incompatibilidade: resumoAnalise.incompativel > 0,
-    tem_variavel: resumoAnalise.variavel > 0,
-    tem_sem_dados: resumoAnalise.semDados > 0,
-    base_consultada: fallbackLocalUsado ? "fallback_local" : "supabase",
-    versao_base: "2026-05-09"
+    selected_count: unicos.length,
+    pair_count: resumoAnalise.total,
+    compatible_count: resumoAnalise.compativel,
+    incompatible_count: resumoAnalise.incompativel,
+    variable_count: resumoAnalise.variavel,
+    no_data_count: resumoAnalise.semDados,
+    alert_count: resumoAnalise.alertas
   });
 }
 

@@ -48,14 +48,31 @@
           </div>
           <div>
             <dt>Dados</dt>
-            <dd>Supabase</dd>
+            <dd id="app-meta-dados">Supabase + snapshot local</dd>
           </div>
           <div>
             <dt>Ambiente</dt>
             <dd>protótipo/demonstração</dd>
           </div>
         </dl>
+
+        <button
+          type="button"
+          id="btn-sobre-base"
+          class="btn-sobre-base"
+          aria-expanded="false"
+          aria-controls="estado-base"
+        >
+          Sobre
+        </button>
       </div>
+
+      <section id="estado-base" class="estado-base" hidden aria-labelledby="estado-base-titulo">
+        <h3 id="estado-base-titulo">Estado da base</h3>
+        <div id="estado-base-conteudo" class="estado-base-conteudo">
+          A carregar estado da base...
+        </div>
+      </section>
 
       <section class="pesquisa-medicamentos" aria-labelledby="pesquisa-medicamentos-titulo">
         <h3 id="pesquisa-medicamentos-titulo">Selecionar medicamentos</h3>

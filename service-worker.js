@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v16-ux-refinement";
+const CACHE_NAME = "compy-v20-hybrid-backend";
 
 const URLS_TO_CACHE = [
   "./",
