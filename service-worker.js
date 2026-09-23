@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v21-preparacao-iv";
+const CACHE_NAME = "compy-v22-teste-preparacao";
 
 const URLS_TO_CACHE = [
   "./",
@@ -12,6 +12,7 @@ const URLS_TO_CACHE = [
   "./features/preparacao-medicamentos/preparacao-medicamentos.css",
   "./features/preparacao-medicamentos/config.js",
   "./features/preparacao-medicamentos/schema.js",
+  "./features/preparacao-medicamentos/dados.js",
   "./features/preparacao-medicamentos/preparacao-medicamentos.js"
 ];
 
@@ -24,6 +25,7 @@ const NETWORK_FIRST_PATHS = [
   "/features/preparacao-medicamentos/preparacao-medicamentos.css",
   "/features/preparacao-medicamentos/config.js",
   "/features/preparacao-medicamentos/schema.js",
+  "/features/preparacao-medicamentos/dados.js",
   "/features/preparacao-medicamentos/preparacao-medicamentos.js",
   "/service-worker.js"
 ];
