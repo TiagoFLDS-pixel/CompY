@@ -2,7 +2,7 @@
 
 ## 1. Objetivo da app
 
-A CompY é uma aplicação web para apoiar a avaliação rápida de compatibilidade de medicamentos em via Y. A app permite selecionar 2 a 6 medicamentos, avaliar os pares possíveis e apresentar um resumo da análise com contagem por categoria.
+A CompY é uma aplicação web para apoiar a avaliação rápida de compatibilidade de medicamentos em via Y. A app permite selecionar 2 a 12 medicamentos, avaliar os pares possíveis e apresentar um resumo da análise com contagem por categoria.
 
 O objetivo da demonstração é mostrar o potencial da ferramenta como apoio à decisão, treino e padronização visual da consulta de compatibilidades, sem substituir validação farmacêutica.
 
