@@ -4,10 +4,10 @@ Módulo experimental para registar informação de preparação e administraçã
 
 ## Estado
 
-- Visível em modo experimental na página principal.
+- Visível através do botão `Teste`, junto ao botão `Sobre`.
 - Identificado claramente como conteúdo não validado.
 - Sem medicamentos ou recomendações clínicas pré-preenchidas.
-- Os registos validados no formulário podem ser exportados como JSON; ainda não são enviados ao Supabase.
+- A base clínica ainda não é enviada ao Supabase.
 
 ## Visibilidade
 
@@ -19,14 +19,11 @@ PREPARACAO_MEDICAMENTOS: true
 
 O formulário não contém recomendações clínicas pré-preenchidas e não envia dados ao Supabase.
 
-## Campos estruturados
+## Fluxo da interface
 
-- medicamento, apresentação e via;
-- líquido e volume de reconstituição;
-- líquido e volume final de diluição;
-- concentração final mínima, recomendada e máxima, com unidade;
-- taxa de perfusão mínima, recomendada e máxima, com unidade, ou duração;
-- observações e efeitos adversos relevantes;
-- fonte, data de consulta e estado de validação.
+- medicamento, dose total, apresentação e tipo de acesso;
+- número de frascos necessários;
+- diluição habitual e menor volume permitido pela concentração máxima validada;
+- diluente, tempo de administração, observações e efeitos adversos.
 
-O estado `validado` exige identificação do validador e data de validação.
+A Anfotericina B surge apenas com a apresentação de 50 mg informada pelo utilizador. Não existem ainda recomendações clínicas associadas.

@@ -4,164 +4,149 @@
   if (!global.COMPY_FEATURES?.PREPARACAO_MEDICAMENTOS) return;
 
   const root = document.getElementById("preparacao-medicamentos-root");
+  const botaoAbrir = document.getElementById("btn-teste-preparacao");
   const schema = global.CompYPreparacaoSchema;
-  if (!root || !schema) return;
+  const fichas = Array.isArray(global.COMPY_PREPARACOES) ? global.COMPY_PREPARACOES : [];
+  if (!root || !botaoAbrir || !schema) return;
 
-  const opcoes = valores => valores.map(valor => `<option value="${valor}">${valor}</option>`).join("");
-
+  root.className = "preparacao-painel";
+  root.setAttribute("role", "dialog");
+  root.setAttribute("aria-modal", "true");
+  root.setAttribute("aria-labelledby", "preparacao-titulo");
   root.innerHTML = `
-    <div class="preparacao-cabecalho">
+    <div class="preparacao-painel-topo">
       <div>
-        <p class="preparacao-etiqueta">Módulo experimental — conteúdo não validado</p>
-        <h2>Preparação e administração IV</h2>
-        <p>Área interna para registar orientações de reconstituição, diluição e perfusão.</p>
+        <p class="preparacao-etiqueta">Teste — base clínica em construção</p>
+        <h2 id="preparacao-titulo">Preparação e administração IV</h2>
       </div>
+      <button type="button" id="fechar-preparacao" class="preparacao-fechar" aria-label="Fechar Teste">×</button>
     </div>
-
+    <p class="preparacao-introducao">Selecione o medicamento, a dose total e o tipo de acesso. A recomendação terá em conta a apresentação disponível e os limites validados para cada via.</p>
     <form id="form-preparacao" class="preparacao-form" novalidate>
-      <fieldset>
-        <legend>Medicamento</legend>
-        <label>Nome do medicamento <input name="medicamento" required></label>
-        <label>Apresentação <input name="apresentacao" placeholder="Ex.: frasco 500 mg"></label>
-        <label>Via <input name="via" value="Intravenosa"></label>
+      <label class="preparacao-largo">Medicamento<select name="medicamento" required><option value="">-- Selecione --</option></select></label>
+      <label>Dose total prescrita<input name="dose" type="number" min="0" step="any" inputmode="decimal" placeholder="Ex.: 150" required></label>
+      <label>Unidade<input name="unidadeDose" value="mg" readonly></label>
+      <label class="preparacao-largo">Apresentação disponível<select name="apresentacao" required disabled><option value="">Selecione primeiro o medicamento</option></select></label>
+      <fieldset class="preparacao-vias">
+        <legend>Tipo de acesso</legend>
+        <label><input type="radio" name="via" value="periferica" required> Via periférica</label>
+        <label><input type="radio" name="via" value="central" required> Via central</label>
       </fieldset>
-
-      <fieldset>
-        <legend>Reconstituição</legend>
-        <label class="preparacao-check"><input type="checkbox" name="reconstituicaoNecessaria"> Necessita de reconstituição</label>
-        <label>Líquido de reconstituição <input name="reconstituicaoLiquido"></label>
-        <label>Volume (mL) <input name="reconstituicaoVolume" type="number" min="0" step="any"></label>
-        <label class="preparacao-largo">Observações <textarea name="reconstituicaoObservacoes" rows="2"></textarea></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Diluição</legend>
-        <label>Líquido de diluição <input name="diluicaoLiquido" required></label>
-        <label>Volume final (mL) <input name="diluicaoVolumeFinal" type="number" min="0" step="any"></label>
-        <label class="preparacao-largo">Observações <textarea name="diluicaoObservacoes" rows="2"></textarea></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Concentração final</legend>
-        <label>Mínima <input name="concentracaoMinima" type="number" min="0" step="any"></label>
-        <label>Recomendada <input name="concentracaoRecomendada" type="number" min="0" step="any" required></label>
-        <label>Máxima <input name="concentracaoMaxima" type="number" min="0" step="any"></label>
-        <label>Unidade <select name="concentracaoUnidade" required><option value="">-- Selecione --</option>${opcoes(schema.UNIDADES_CONCENTRACAO)}</select></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Perfusão recomendada</legend>
-        <label>Taxa mínima <input name="taxaMinima" type="number" min="0" step="any"></label>
-        <label>Taxa recomendada <input name="taxaRecomendada" type="number" min="0" step="any"></label>
-        <label>Taxa máxima <input name="taxaMaxima" type="number" min="0" step="any"></label>
-        <label>Unidade <select name="taxaUnidade"><option value="">-- Selecione --</option>${opcoes(schema.UNIDADES_TAXA)}</select></label>
-        <label>Duração (minutos) <input name="duracaoMinutos" type="number" min="0" step="any"></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Segurança e observações</legend>
-        <label class="preparacao-largo">Observações clínicas <textarea name="observacoes" rows="4"></textarea></label>
-        <label class="preparacao-largo">Efeitos adversos relevantes <textarea name="efeitosAdversos" rows="4"></textarea></label>
-      </fieldset>
-
-      <fieldset>
-        <legend>Fonte e validação</legend>
-        <label>Referência clínica <input name="fonteReferencia" required></label>
-        <label>Ligação da fonte <input name="fonteUrl" type="url"></label>
-        <label>Data da consulta <input name="fonteConsultadaEm" type="date"></label>
-        <label>Estado <select name="estadoValidacao">${opcoes(schema.ESTADOS_VALIDACAO)}</select></label>
-        <label>Validado por <input name="validadoPor"></label>
-        <label>Data da validação <input name="validadoEm" type="date"></label>
-        <label>Próxima revisão <input name="revistoEm" type="date"></label>
-      </fieldset>
-
-      <div class="preparacao-acoes">
-        <button type="submit">Validar rascunho</button>
-        <button type="button" id="exportar-preparacao" class="btn-secundario" disabled>Exportar JSON</button>
-      </div>
-      <div id="preparacao-feedback" class="preparacao-feedback" aria-live="polite"></div>
+      <button type="submit" class="preparacao-calcular">Ver recomendação</button>
     </form>
+    <div id="preparacao-feedback" class="preparacao-feedback" aria-live="polite"></div>
+    <section id="preparacao-resultado" class="preparacao-resultado" hidden aria-live="polite"></section>
+    <p class="preparacao-aviso">Ferramenta experimental. Não utilizar para decisão clínica enquanto a ficha do medicamento não estiver validada pela farmácia/protocolo institucional.</p>
   `;
-  root.hidden = false;
 
+  const selectMedicamento = root.querySelector('[name="medicamento"]');
+  const selectApresentacao = root.querySelector('[name="apresentacao"]');
+  const unidadeDose = root.querySelector('[name="unidadeDose"]');
   const form = root.querySelector("#form-preparacao");
   const feedback = root.querySelector("#preparacao-feedback");
-  const botaoExportar = root.querySelector("#exportar-preparacao");
-  let ultimoRegisto = null;
+  const resultado = root.querySelector("#preparacao-resultado");
+  const botaoFechar = root.querySelector("#fechar-preparacao");
 
-  function valoresDoFormulario() {
-    const dados = new FormData(form);
-    return schema.criarRegistoPreparacao({
-      medicamento: dados.get("medicamento"),
-      apresentacao: dados.get("apresentacao"),
-      via: dados.get("via"),
-      reconstituicao: {
-        necessaria: dados.get("reconstituicaoNecessaria") === "on",
-        liquido: dados.get("reconstituicaoLiquido"),
-        volumeMl: dados.get("reconstituicaoVolume"),
-        observacoes: dados.get("reconstituicaoObservacoes")
-      },
-      diluicao: {
-        liquido: dados.get("diluicaoLiquido"),
-        volumeFinalMl: dados.get("diluicaoVolumeFinal"),
-        observacoes: dados.get("diluicaoObservacoes")
-      },
-      concentracaoFinal: {
-        minima: dados.get("concentracaoMinima"),
-        recomendada: dados.get("concentracaoRecomendada"),
-        maxima: dados.get("concentracaoMaxima"),
-        unidade: dados.get("concentracaoUnidade")
-      },
-      perfusao: {
-        taxaMinima: dados.get("taxaMinima"),
-        taxaRecomendada: dados.get("taxaRecomendada"),
-        taxaMaxima: dados.get("taxaMaxima"),
-        unidade: dados.get("taxaUnidade"),
-        duracaoMinutos: dados.get("duracaoMinutos")
-      },
-      observacoes: dados.get("observacoes"),
-      efeitosAdversos: dados.get("efeitosAdversos"),
-      fonte: {
-        referencia: dados.get("fonteReferencia"),
-        url: dados.get("fonteUrl"),
-        consultadaEm: dados.get("fonteConsultadaEm")
-      },
-      validacao: {
-        estado: dados.get("estadoValidacao"),
-        validadoPor: dados.get("validadoPor"),
-        validadoEm: dados.get("validadoEm"),
-        revistoEm: dados.get("revistoEm")
-      }
-    });
+  for (const ficha of fichas) {
+    const option = document.createElement("option");
+    option.value = ficha.id;
+    option.textContent = ficha.nome;
+    selectMedicamento.append(option);
   }
 
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    const registo = valoresDoFormulario();
-    const erros = schema.validarRegistoPreparacao(registo);
+  const fichaSelecionada = () => fichas.find(ficha => ficha.id === selectMedicamento.value) || null;
 
-    if (erros.length) {
-      ultimoRegisto = null;
-      botaoExportar.disabled = true;
-      feedback.className = "preparacao-feedback preparacao-feedback--erro";
-      feedback.innerHTML = `<strong>Rascunho incompleto:</strong><ul>${erros.map(erro => `<li>${erro}</li>`).join("")}</ul>`;
+  function abrirPainel() {
+    root.hidden = false;
+    document.body.classList.add("preparacao-aberta");
+    botaoAbrir.setAttribute("aria-expanded", "true");
+    selectMedicamento.focus();
+  }
+
+  function fecharPainel() {
+    root.hidden = true;
+    document.body.classList.remove("preparacao-aberta");
+    botaoAbrir.setAttribute("aria-expanded", "false");
+    botaoAbrir.focus();
+  }
+
+  botaoAbrir.addEventListener("click", abrirPainel);
+  botaoFechar.addEventListener("click", fecharPainel);
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !root.hidden) fecharPainel();
+  });
+
+  selectMedicamento.addEventListener("change", () => {
+    const ficha = fichaSelecionada();
+    selectApresentacao.replaceChildren();
+    resultado.hidden = true;
+    feedback.textContent = "";
+
+    if (!ficha) {
+      selectApresentacao.disabled = true;
+      selectApresentacao.append(new Option("Selecione primeiro o medicamento", ""));
+      unidadeDose.value = "mg";
       return;
     }
 
-    ultimoRegisto = registo;
-    botaoExportar.disabled = false;
-    feedback.className = "preparacao-feedback preparacao-feedback--sucesso";
-    feedback.textContent = "Estrutura válida. O conteúdo continua a ser um rascunho clínico até validação formal.";
+    unidadeDose.value = ficha.unidadeDose;
+    selectApresentacao.append(new Option("-- Selecione --", ""));
+    for (const apresentacao of ficha.apresentacoes) {
+      const descricao = `${apresentacao.forma} de ${apresentacao.quantidade} ${apresentacao.unidade}`;
+      selectApresentacao.append(new Option(descricao, String(apresentacao.quantidade)));
+    }
+    selectApresentacao.disabled = false;
   });
 
-  botaoExportar.addEventListener("click", () => {
-    if (!ultimoRegisto) return;
-    const blob = new Blob([JSON.stringify(ultimoRegisto, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `preparacao-${ultimoRegisto.medicamento.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "medicamento"}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const dados = new FormData(form);
+    const calculo = schema.calcularPreparacao({
+      ficha: fichaSelecionada(),
+      dose: dados.get("dose"),
+      apresentacao: dados.get("apresentacao"),
+      via: dados.get("via")
+    });
+
+    if (calculo.erro) {
+      resultado.hidden = true;
+      feedback.className = "preparacao-feedback preparacao-feedback--erro";
+      feedback.textContent = calculo.erro;
+      return;
+    }
+
+    feedback.textContent = "";
+    feedback.className = "preparacao-feedback";
+    resultado.replaceChildren();
+    const resumo = document.createElement("div");
+    resumo.className = "preparacao-resumo";
+    resumo.innerHTML = `<div><span>Dose</span><strong>${calculo.dose} ${calculo.unidadeDose}</strong></div><div><span>Apresentação</span><strong>${calculo.apresentacao} ${calculo.unidadeDose}</strong></div><div><span>Frascos necessários</span><strong>${calculo.numeroFrascos}</strong></div><div><span>Acesso</span><strong>${calculo.via === "central" ? "Central" : "Periférico"}</strong></div>`;
+    resultado.append(resumo);
+
+    if (calculo.incompleto) {
+      const aviso = document.createElement("div");
+      aviso.className = "preparacao-sem-ficha";
+      aviso.innerHTML = `<strong>Ficha ainda não disponível</strong><p>${calculo.mensagem}</p><p>Não foi calculado qualquer volume ou concentração.</p>`;
+      resultado.append(aviso);
+      resultado.hidden = false;
+      return;
+    }
+
+    const recomendacoes = document.createElement("div");
+    recomendacoes.className = "preparacao-recomendacoes";
+    recomendacoes.innerHTML = `<article><h3>Diluição habitual</h3><p><strong>${calculo.habitual.volumeMl.toFixed(1)} mL</strong></p><p>${calculo.habitual.concentracao} ${calculo.unidadeConcentracao}</p></article><article><h3>Menor volume validado</h3><p><strong>${calculo.volumeMinimo.volumeMl.toFixed(1)} mL</strong></p><p>Concentração máxima: ${calculo.volumeMinimo.concentracao} ${calculo.unidadeConcentracao}</p></article>`;
+    resultado.append(recomendacoes);
+
+    const detalhes = document.createElement("dl");
+    detalhes.className = "preparacao-detalhes";
+    for (const [titulo, valor] of [["Diluente(s)", calculo.diluentes.join(" ou ")], ["Tempo recomendado", calculo.tempoAdministracao], ["Observações", calculo.observacoes], ["Efeitos adversos", calculo.efeitosAdversos]]) {
+      const dt = document.createElement("dt");
+      const dd = document.createElement("dd");
+      dt.textContent = titulo;
+      dd.textContent = valor || "Sem informação registada.";
+      detalhes.append(dt, dd);
+    }
+    resultado.append(detalhes);
+    resultado.hidden = false;
   });
 })(window, document);
