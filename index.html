@@ -16,6 +16,7 @@
   <meta name="theme-color" content="#3092FB">
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="features/preparacao-medicamentos/preparacao-medicamentos.css">
 </head>
 <body>
   <main class="container">
@@ -173,6 +174,12 @@
           <li>Sempre que aplicável, confirmar em fontes institucionais e/ou com a farmácia clínica.</li>
         </ul>
       </section>
+
+      <!--
+        Módulo em desenvolvimento. O conteúdo só é criado quando a feature flag
+        PREPARACAO_MEDICAMENTOS estiver explicitamente ativa.
+      -->
+      <section id="preparacao-medicamentos-root" hidden></section>
     </div>
   </main>
 
@@ -181,5 +188,8 @@
 
 <script src="data/compatibilidades.js" charset="UTF-8"></script>
 <script src="app.js" charset="UTF-8"></script>
+<script src="features/preparacao-medicamentos/config.js" charset="UTF-8"></script>
+<script src="features/preparacao-medicamentos/schema.js" charset="UTF-8"></script>
+<script src="features/preparacao-medicamentos/preparacao-medicamentos.js" charset="UTF-8"></script>
 </body>
 </html>

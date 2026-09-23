@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v20-hybrid-backend";
+const CACHE_NAME = "compy-v21-preparacao-iv";
 
 const URLS_TO_CACHE = [
   "./",
@@ -8,7 +8,11 @@ const URLS_TO_CACHE = [
   "./config.supabase.js",
   "./manifest.webmanifest",
   "./logo.png",
-  "./data/compatibilidades.js"
+  "./data/compatibilidades.js",
+  "./features/preparacao-medicamentos/preparacao-medicamentos.css",
+  "./features/preparacao-medicamentos/config.js",
+  "./features/preparacao-medicamentos/schema.js",
+  "./features/preparacao-medicamentos/preparacao-medicamentos.js"
 ];
 
 const NETWORK_FIRST_PATHS = [
@@ -17,6 +21,10 @@ const NETWORK_FIRST_PATHS = [
   "/style.css",
   "/app.js",
   "/data/compatibilidades.js",
+  "/features/preparacao-medicamentos/preparacao-medicamentos.css",
+  "/features/preparacao-medicamentos/config.js",
+  "/features/preparacao-medicamentos/schema.js",
+  "/features/preparacao-medicamentos/preparacao-medicamentos.js",
   "/service-worker.js"
 ];
 
