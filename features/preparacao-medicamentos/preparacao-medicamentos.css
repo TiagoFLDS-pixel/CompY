@@ -1,0 +1,104 @@
+#preparacao-medicamentos-root[hidden] {
+  display: none !important;
+}
+
+#preparacao-medicamentos-root {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #d7e8fb;
+}
+
+.preparacao-cabecalho {
+  margin-bottom: 1rem;
+}
+
+.preparacao-etiqueta {
+  color: #9a3412;
+  font-weight: 700;
+}
+
+.preparacao-form fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 0 1rem;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+}
+
+.preparacao-form legend {
+  padding: 0 .4rem;
+  font-weight: 700;
+}
+
+.preparacao-form label {
+  display: grid;
+  gap: .35rem;
+  font-weight: 600;
+}
+
+.preparacao-form input,
+.preparacao-form select,
+.preparacao-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: .7rem;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.preparacao-form textarea {
+  resize: vertical;
+}
+
+.preparacao-largo {
+  grid-column: 1 / -1;
+}
+
+.preparacao-form .preparacao-check {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+}
+
+.preparacao-check input {
+  width: auto;
+}
+
+.preparacao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.preparacao-feedback {
+  margin-top: 1rem;
+  padding: .85rem;
+  border-radius: 8px;
+}
+
+.preparacao-feedback:empty {
+  display: none;
+}
+
+.preparacao-feedback--erro {
+  color: #7f1d1d;
+  background: #fee2e2;
+}
+
+.preparacao-feedback--sucesso {
+  color: #14532d;
+  background: #dcfce7;
+}
+
+@media (max-width: 680px) {
+  .preparacao-form fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  .preparacao-largo {
+    grid-column: auto;
+  }
+}
