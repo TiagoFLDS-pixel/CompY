@@ -19,7 +19,7 @@ Destina-se a contextos onde a administração em via Y é frequente e crítica p
 
 ## Funcionalidades principais
 
-- Seleção de múltiplos medicamentos (≥2)
+- Seleção de 2 a 12 medicamentos
 - Avaliação automática de compatibilidade par-a-par
 - Classificação do resultado:
   - Compatível

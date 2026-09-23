@@ -1,4 +1,4 @@
-const CACHE_NAME = "compy-v22-teste-preparacao";
+const CACHE_NAME = "compy-v23-doze-medicamentos";
 
 const URLS_TO_CACHE = [
   "./",

@@ -85,7 +85,7 @@ function textoOrigemDados(resultado) {
 
 const MENSAGEM_SEM_DADOS =
   "Sem dados disponíveis na base para esta combinação. Isto não implica compatibilidade ou ausência de interação. Validar em fonte institucional/protocolo local.";
-const LIMITE_MEDICAMENTOS_SELECIONADOS = 6;
+const LIMITE_MEDICAMENTOS_SELECIONADOS = 12;
 const COMPY_APP_VERSION = "CompY v0.9.0-beta";
 const COMPY_BASE_VERSION = "2026-05-09";
 const COMPY_ENVIRONMENT = "protótipo/demonstração";
@@ -1523,5 +1523,4 @@ if ("serviceWorker" in navigator) {
       });
   });
 }
-
 
