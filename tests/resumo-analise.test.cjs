@@ -381,6 +381,28 @@ const tests = [
     }
   },
   {
+    name: "avalia os 66 pares possíveis entre doze medicamentos",
+    async run() {
+      const medicamentos = [
+        "acido_tranexamico",
+        "adrenalina",
+        "albumina_humana_20",
+        "alteplase",
+        "aminofilina",
+        "amiodarona_cloridrato",
+        "bicarbonato_sodio",
+        "cetamina_cloridrato",
+        "ciclofosfamida",
+        "cloreto_calcio",
+        "cloreto_potassio",
+        "glucose_5"
+      ];
+      const text = await createHarness(medicamentos, {}, { backendMode: "local" }).run();
+
+      assert.match(text, /Total de pares avaliados:\s*66/);
+    }
+  },
+  {
     name: "conta alertas relevantes dos medicamentos selecionados",
     async run() {
       const text = await createHarness(
